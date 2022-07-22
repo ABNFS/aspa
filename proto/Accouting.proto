@@ -1,0 +1,69 @@
+/*
+  IntroducƟon to Financial AccounƟng
+  by H. Dauderis, D. Annand, T. Jensen, and Lyryx Learning.
+  View the text for free at https://lyryx.com/introduction-financial-accounting/
+ */
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+enum DoubleEntryType {
+  DEBIT = 0;
+  CREDIT = 1;
+}
+
+enum AccountType {
+  EQUITY = 0;
+  ASSETS = 1;
+  LIABILITIES = 2;
+  REVENUE = 3;
+  EXPENSE = 4;
+}
+
+message Money {
+  uint32 id = 1;
+  uint64 cambio = 2;
+  string name = 3;
+}
+
+message Account {
+  uint32 id = 1; //never show this
+  string cod = 2; //show this
+  uint64 founds = 3;
+  string alias = 4;
+  string name = 20;
+  DoubleEntryType accountEntryType = 21;
+  AccountType type = 22;
+  Money money = 23;
+}
+
+message RecordMovement {
+  uint32 id = 1;
+  Account debitAccount = 2;
+  Account creditAccount = 3;
+  uint64 amount = 4;
+  Money money = 5;
+  google.protobuf.Timestamp data = 6;
+  string note = 7;
+}
+
+message GetAccount {
+  string cod = 1; //show this
+  AccountType type = 2;
+  string alias = 3;
+}
+
+message GetMovement {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+  string codAccount = 3;
+}
+
+message AccountList {
+  map<uint32, Account> items = 1;
+}
+
+message MovementList {
+  map<uint32, RecordMovement> items = 1;
+}
