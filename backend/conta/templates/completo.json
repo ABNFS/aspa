@@ -1,0 +1,13 @@
+[
+  {% for conta in contas %}
+  {
+  "codigo": "{{ conta. codigo }}",
+  "saldo": {{ conta.saldo }},
+  "sigla": "{{ conta.sigla }}",
+  "nome": "{{ conta.nome}}",
+  "tipoSaldo": "{{ conta.tipoSaldo.nome }}",
+  "tipoConta": "{{ conta.tipoConta.nome }}",
+  "moedaConta": "{{ conta.moeda.nome }}",
+  },
+ {% endfor %}
+]

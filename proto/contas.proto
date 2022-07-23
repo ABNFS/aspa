@@ -1,0 +1,96 @@
+/*
+  IntroducƟon to Financial AccounƟng
+  by H. Dauderis, D. Annand, T. Jensen, and Lyryx Learning.
+  View the text for free at https://lyryx.com/introduction-financial-accounting/
+ */
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+enum TipoPartidasDobradas {
+  DEBITO = 0;
+  CREDITO = 1;
+}
+
+enum TipoContaBalanco {
+  PATRIMONIO_LIQUIDO = 0;
+  ATIVO = 1;
+  EXIGIVEL = 2;
+  RECEBIMENTO = 3;
+  PAGAMENTO = 4;
+}
+
+message Moeda {
+  uint32 id = 1;
+  uint64 taxaCambio = 2;
+  string nome = 3;
+}
+
+message RetornoAlterarDados {
+  uint32 cod = 1;
+  string msg = 2;
+}
+
+message Conta {
+  uint32 id = 1; //never show this
+  string codigo = 2; //show this
+  uint64 saldo = 3;
+  string sigla = 4;
+  string nome = 20;
+  TipoPartidasDobradas tipoSaldo = 21;
+  TipoContaBalanco tipoConta = 22;
+  Moeda moedaMovimento = 23;
+}
+
+message RegistroMovimento {
+  uint32 id = 1;
+  Conta debitAccount = 2;
+  Conta creditAccount = 3;
+  uint64 valor = 4;
+  Moeda moedaUsada = 5;
+  google.protobuf.Timestamp data = 6;
+  string anotacao = 7;
+}
+
+message BuscaConta {
+  string cod = 1; //show this
+  TipoContaBalanco type = 2;
+  string sigla = 3;
+}
+
+message BuscaRegistro {
+  google.protobuf.Timestamp inicio = 1;
+  google.protobuf.Timestamp fim = 2;
+  string codConta = 3;
+}
+
+message ListaMoeda {
+  map<uint32, Moeda> itens = 1;
+}
+
+message ListaConta {
+  map<uint32, Conta> itens = 1;
+}
+
+message ListaRegistro {
+  map<uint32, RegistroMovimento> itens = 1;
+}
+
+service Contabilidade {
+  rpc CadastrarMoeda(Moeda) returns (RetornoAlterarDados);
+  rpc AtualizarMoeda(Moeda) returns (RetornoAlterarDados);
+  rpc ApagarMoeda(Moeda) returns (RetornoAlterarDados);
+
+  rpc CadastrarConta(Conta) returns (RetornoAlterarDados);
+  rpc AtualizarConta(Conta) returns (RetornoAlterarDados);
+  rpc ApagarConta(Conta) returns (RetornoAlterarDados);
+
+  rpc CadastrarMovimento(RegistroMovimento) returns (RetornoAlterarDados);
+  rpc AtualizarMovimento(RegistroMovimento) returns (RetornoAlterarDados);
+  rpc ApagarMovimento(RegistroMovimento) returns (RetornoAlterarDados);
+
+  rpc BuscarMoeda(Moeda) returns (ListaMoeda);
+  rpc BuscarContas(BuscaConta) returns (ListaConta);
+  rpc BuscarRegristos(BuscaRegistro) returns (ListaRegistro);
+}

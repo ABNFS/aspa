@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+from conta.controller import app as conta
+
 
 app = FastAPI()
+app.mount("/conta", conta)
 
 
 @app.get("/")

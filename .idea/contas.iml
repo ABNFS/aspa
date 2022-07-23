@@ -3,8 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/backend" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/backend/virtualenv" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend" />
+      <excludeFolder url="file://$MODULE_DIR$/proto" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (contas)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
