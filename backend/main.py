@@ -1,16 +1,23 @@
 from fastapi import FastAPI
-from conta.controller import app as conta
+from fastapi.responses import HTMLResponse
 
+
+from conta.controller import app as conta
+from dinheiro.controller import app as dinheiro
 
 app = FastAPI()
 app.mount("/conta", conta)
+app.mount("/dinheiro", dinheiro)
 
 
-@app.get("/")
+
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+    return """
+    <!DOCTYPE html>
+    <html>
+    <body>
+    It's working! Coming Soon.
+    </body>
+    </html>
+    """

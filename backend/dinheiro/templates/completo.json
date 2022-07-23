@@ -1,13 +1,9 @@
 [
   {% for d in dinheiros %}
   {
-
-  "taxaCambio": {{ d.taxaCambio }},
+  "taxaCambio": {{ d.taxaCambio/100 }},
   "sigla": "{{ d.sigla }}",
-  "nome": "{{ d.nome}}",
-  "tipoSaldo": "{{ conta.tipoSaldo.nome }}",
-  "tipoConta": "{{ conta.tipoConta.nome }}",
-  "moedaConta": "{{ conta.moeda.nome }}",
+  "nome": "{{ d.nome}}"
   },
  {% endfor %}
 ]
