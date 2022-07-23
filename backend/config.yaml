@@ -1,0 +1,6 @@
+database:
+  drive: mariadb
+  url: localhost
+  user: contas
+  password: contas123
+  name: contabilidade
