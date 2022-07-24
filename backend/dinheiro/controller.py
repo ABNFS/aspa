@@ -2,16 +2,17 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
+from .service import DinheiroService
+from .data import DinheiroData
+
 templates = Jinja2Templates(directory="dinheiro/templates")
+service = DinheiroService()
 
 app = FastAPI()
 
 @app.get("/", response_class=JSONResponse)
-async def listar(request: Request):
-    dinheiros : list = [
-        {"id": 1, "nome": "Real", "sigla": "R$", "taxaCambio": 100},
-        {"id": 2, "nome": "Dólar", "sigla": "US$", "taxaCambio": 469}
-    ]
+async def listar(request: Request, nome: str = ''):
+    dinheiros: list[DinheiroData] = service.busca(nome)
     return templates.TemplateResponse("completo.json", {"request": request, "dinheiros": dinheiros})
 
 @app.post("/")

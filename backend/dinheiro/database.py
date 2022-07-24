@@ -1,5 +1,5 @@
-from sqlalchemy import Column, VARCHAR, BIGINT
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, VARCHAR, BIGINT, BOOLEAN
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -10,7 +10,8 @@ class Dinheiro(Base):
     id = Column(BIGINT, primary_key=True)
     nome = Column(VARCHAR(200), nullable=False)
     sigla = Column(VARCHAR(5), nullable=False)
-    cambio = Column("taxa_cambio", BIGINT, nullable=False)
+    padrao = Column(BOOLEAN, default=False)
+    excluido = Column(BOOLEAN, default=False)
 
     def __repr__(self) -> str:
-        return f'{"id": ${self.id},"nome": \'${self.nome}\', "sigla": \'${self.sigla}\', "cambio": ${self.cambio / 100} }'
+        return f'nome: ${self.nome}, sigla: ${self.sigla}'
