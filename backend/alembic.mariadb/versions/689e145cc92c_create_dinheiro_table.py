@@ -18,430 +18,447 @@ depends_on = None
 
 def upgrade() -> None:
 
-    tipo_partida = op.create_table(
-        "tipo_partida_dobrada",
+    op_type = op.create_table(
+        "operation_type",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('nome', sa.VARCHAR(20), nullable=False),
-        sa.Column('sigla', sa.CHAR(1), nullable=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('name', sa.VARCHAR(20), nullable=False),
+        sa.Column('alias', sa.CHAR(1), nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
     op.bulk_insert(
-        tipo_partida,
+        op_type,
         [
-            {"id": 1, "nome": 'Débito', "sigla": 'D'},
-            {"id": 2, "nome": 'Crédito', "sigla": 'C'}
+            {"id": 1, "name": 'Débito', "alias": 'D'},
+            {"id": 2, "name": 'Crédito', "alias": 'C'}
         ]
     )
 
-    tipo_conta = op.create_table(
-        "tipo_conta",
+    account_type = op.create_table(
+        "account_type",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('nome', sa.VARCHAR(26), nullable=False),
-        sa.Column('sigla', sa.CHAR(3), nullable=False),
-        sa.Column('tipo_saldo', sa.BIGINT, sa.ForeignKey("tipo_partida_dobrada.id"), nullable=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('name', sa.VARCHAR(26), nullable=False),
+        sa.Column('alias', sa.CHAR(3), nullable=False),
+        sa.Column('operation', sa.BIGINT, sa.ForeignKey("operation_type.id"), nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
     op.bulk_insert(
-        tipo_conta,
+        account_type,
         [
-            {"id": 3, "nome": 'Patrimônio', "sigla": 'PL', "tipo_saldo": 2},
-            {"id": 4, "nome": 'Ativo', "sigla": 'ATV', "tipo_saldo": 1},
-            {"id": 5, "nome": 'Exegível', "sigla": 'EXE', "tipo_saldo": 2},
-            {"id": 6, "nome": 'Receitas', "sigla": 'REC', "tipo_saldo": 2},
-            {"id": 7, "nome": 'Despesas', "sigla": 'DES', "tipo_saldo": 1},
-            {"id": 8, "nome": 'Conta Retificadora Ativo', "sigla": 'CRA', "tipo_saldo": 2},
-            {"id": 9, "nome": 'Conta Retificadora Passivo', "sigla": 'CRP', "tipo_saldo": 1}
+            {"id": 3, "name": 'Patrimônio', "alias": 'PL', "operation": 2},
+            {"id": 4, "name": 'Ativo', "alias": 'ATV', "operation": 1},
+            {"id": 5, "name": 'Exegível', "alias": 'EXE', "operation": 2},
+            {"id": 6, "name": 'Receitas', "alias": 'REC', "operation": 2},
+            {"id": 7, "name": 'Despesas', "alias": 'DES', "operation": 1},
+            {"id": 8, "name": 'Conta Retificadora Ativo', "alias": 'CRA', "operation": 2},
+            {"id": 9, "name": 'Conta Retificadora Passivo', "alias": 'CRP', "operation": 1}
         ]
     )
 
-    moeda = op.create_table(
-        "moeda",
+    currency = op.create_table(
+        "currency",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('nome', sa.VARCHAR(200), nullable=False),
-        sa.Column('sigla', sa.VARCHAR(5), nullable=False),
-        sa.Column('padrao', sa.BOOLEAN, default=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('name', sa.VARCHAR(200), nullable=False),
+        sa.Column('alias', sa.VARCHAR(5), nullable=False),
+        sa.Column('default', sa.BOOLEAN, default=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
     op.bulk_insert(
-        moeda,
+        currency,
         [
-            {"id": 10, "nome": 'Real', "sigla": 'R$', "padrao": True}
+            {"id": 10, "name": 'Real', "alias": 'R$', "default": True}
         ]
     )
 
     op.create_table(
-        "cambio",
+        "exchange",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('moeda_padrao', sa.BIGINT, sa.ForeignKey("moeda.id"), default=10),
-        sa.Column('moeda_comprada', sa.BIGINT, sa.ForeignKey("moeda.id"), nullable=False),
-        sa.Column('data', sa.DATE, nullable=False),
-        sa.Column('taxa', sa.BIGINT, nullable=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('currency_default', sa.BIGINT, sa.ForeignKey("currency.id"), default=10),
+        sa.Column('currency_buy', sa.BIGINT, sa.ForeignKey("currency.id"), nullable=False),
+        sa.Column('date', sa.DATE, nullable=False),
+        sa.Column('rate', sa.BIGINT, nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
-    conta = op.create_table(
-        "conta",
+    account = op.create_table(
+        "account",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('codigo', sa.VARCHAR(20), nullable=False),
-        sa.Column('nome', sa.VARCHAR(200), nullable=False),
-        sa.Column('saldo', sa.BIGINT, nullable=False, default=0),
-        sa.Column('sigla', sa.VARCHAR(5), nullable=True, default=None),
-        sa.Column('moeda', sa.BIGINT, sa.ForeignKey("moeda.id"), nullable=False, default=10),
-        sa.Column('tipo_conta', sa.BIGINT, sa.ForeignKey("tipo_conta.id"), nullable=False),
-        sa.Column('pai', sa.BIGINT, sa.ForeignKey("conta.id"), nullable=True, default=None),
-        sa.Column('pode_movimentar', sa.BOOLEAN, nullable=False, default=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('code', sa.VARCHAR(20), nullable=False),
+        sa.Column('name', sa.VARCHAR(200), nullable=False),
+        sa.Column('balance', sa.BIGINT, nullable=False, default=0),
+        sa.Column('alias', sa.VARCHAR(5), nullable=True, default=None),
+        sa.Column('currency', sa.BIGINT, sa.ForeignKey("currency.id"), nullable=False, default=10),
+        sa.Column('account_type', sa.BIGINT, sa.ForeignKey("account_type.id"), nullable=False),
+        sa.Column('parent', sa.BIGINT, sa.ForeignKey("account.id"), nullable=True, default=None),
+        sa.Column('operate', sa.BOOLEAN, nullable=False, default=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
     op.bulk_insert(
-        conta,
+        account,
         [
-            {"id": 11, "codigo": '1.0.0.0', "nome": 'Ativo', "saldo": 0, "sigla": 'ATV', "moeda": 10,
-             "tipo_conta": 4, "pai": None, "pode_movimentar": False},
-            {"id": 12, "codigo": '2.0.0.0', "nome": 'Passivo Exegível', "saldo": 0, "sigla": 'EXE', "moeda": 10,
-             "tipo_conta": 5, "pai": None, "pode_movimentar": False},
-            {"id": 13, "codigo": '3.0.0.0', "nome": 'Patrimônio Líquido', "saldo": 0, "sigla": 'PL', "moeda": 10,
-             "tipo_conta": 3,"pai": None, "pode_movimentar": False},
-            {"id": 14, "codigo": '4.0.0.0', "nome": 'Pagamentos', "saldo": 0, "sigla": 'PGMTO', "moeda": 10,
-             "tipo_conta": 7,"pai": None, "pode_movimentar": False},
-            {"id": 15, "codigo": '5.0.0.0', "nome": 'Recebimentos', "saldo": 0, "sigla": 'REC', "moeda": 10,
-             "tipo_conta": 6,"pai": None, "pode_movimentar": False},
-            {"id": 172, "codigo": '6.0.0.0', "nome": 'Ajustes Ativos', "saldo": 0, "sigla": 'AA', "moeda": 10,
-             "tipo_conta": 8,"pai": None, "pode_movimentar": False},
-            {"id": 173, "codigo": '7.0.0.0', "nome": 'Ajustes Passivos', "saldo": 0, "sigla": 'AP', "moeda": 10,
-             "tipo_conta": 9,"pai": None, "pode_movimentar": False}
+            {"id": 11, "code": '1.0.0.0', "name": 'Ativo', "balance": 0, "alias": 'ATV', "currency": 10,
+             "account_type": 4, "parent": None, "operate": False},
+            {"id": 12, "code": '2.0.0.0', "name": 'Passivo Exegível', "balance": 0, "alias": 'EXE', "currency": 10,
+             "account_type": 5, "parent": None, "operate": False},
+            {"id": 13, "code": '3.0.0.0', "name": 'Patrimônio Líquido', "balance": 0, "alias": 'PL', "currency": 10,
+             "account_type": 3,"parent": None, "operate": False},
+            {"id": 14, "code": '4.0.0.0', "name": 'Pagamentos', "balance": 0, "alias": 'PGMTO', "currency": 10,
+             "account_type": 7,"parent": None, "operate": False},
+            {"id": 15, "code": '5.0.0.0', "name": 'Recebimentos', "balance": 0, "alias": 'REC', "currency": 10,
+             "account_type": 6,"parent": None, "operate": False},
+            {"id": 172, "code": '6.0.0.0', "name": 'Ajustes Ativos', "balance": 0, "alias": 'AA', "currency": 10,
+             "account_type": 8,"parent": None, "operate": False},
+            {"id": 173, "code": '7.0.0.0', "name": 'Ajustes Passivos', "balance": 0, "alias": 'AP', "currency": 10,
+             "account_type": 9,"parent": None, "operate": False}
         ]
     )
     
     op.bulk_insert(
-        conta,
+        account,
         [
-            {"id": 16, "codigo": '1.1.0.0', "nome": 'Financeiro', "tipo_conta": 4, "pai": 11},
-            {"id": 17, "codigo": '1.2.0.0', "nome": 'Bens', "tipo_conta": 4, "pai": 11},
-            {"id": 18, "codigo": '1.3.0.0', "nome": 'Recebíveis', "tipo_conta": 4, "pai": 11},
+            {"id": 16, "code": '1.1.0.0', "name": 'Financeiro', "account_type": 4, "parent": 11},
+            {"id": 17, "code": '1.2.0.0', "name": 'Bens', "account_type": 4, "parent": 11},
+            {"id": 18, "code": '1.3.0.0', "name": 'Recebíveis', "account_type": 4, "parent": 11},
 
-            {"id": 20, "codigo": '1.1.2.0', "nome": 'Contas à vista', "tipo_conta": 4, "pai": 16},
-            {"id": 38, "codigo": '1.1.3.0', "nome": 'Investimenos à vista', "tipo_conta": 4, "pai": 16},
+            {"id": 20, "code": '1.1.2.0', "name": 'accounts à vista', "account_type": 4, "parent": 16},
+            {"id": 38, "code": '1.1.3.0', "name": 'Investimenos à vista', "account_type": 4, "parent": 16},
 
-            {"id": 21, "codigo": '1.2.1.0', "nome": 'Móveis', "tipo_conta": 4, "pai": 17},
-            {"id": 22, "codigo": '1.2.2.0', "nome": 'Imóveis', "tipo_conta": 4, "pai": 17},
-            {"id": 23, "codigo": '1.2.3.0', "nome": 'Intangíveis', "tipo_conta": 4, "pai": 17},
+            {"id": 21, "code": '1.2.1.0', "name": 'Móveis', "account_type": 4, "parent": 17},
+            {"id": 22, "code": '1.2.2.0', "name": 'Imóveis', "account_type": 4, "parent": 17},
+            {"id": 23, "code": '1.2.3.0', "name": 'Intangíveis', "account_type": 4, "parent": 17},
 
-            {"id": 24, "codigo": '1.3.1.0', "nome": 'Salário', "tipo_conta": 4, "pai": 18},
-            {"id": 25, "codigo": '1.3.2.0', "nome": 'Férias', "tipo_conta": 4, "pai": 18},
-            {"id": 26, "codigo": '1.3.3.0', "nome": 'Décimo-terceiro', "tipo_conta": 4, "pai": 18},
+            {"id": 24, "code": '1.3.1.0', "name": 'Salário', "account_type": 4, "parent": 18},
+            {"id": 25, "code": '1.3.2.0', "name": 'Férias', "account_type": 4, "parent": 18},
+            {"id": 26, "code": '1.3.3.0', "name": 'Décimo-terceiro', "account_type": 4, "parent": 18},
         ]
     )
     op.bulk_insert(
-        conta,
+        account,
         [
 
-            {"id": 19, "codigo": '1.1.1.0', "nome": 'Dinheiro em espécie', "tipo_conta": 4, "pai": 16,
-             "pode_movimentar": True},
-            {"id": 27, "codigo": '1.3.4.0', "nome": 'Diária', "tipo_conta": 4, "pai": 18,
-             "pode_movimentar": True},
-            {"id": 28, "codigo": '1.3.5.0', "nome": 'Honorário', "tipo_conta": 4, "pai": 18,
-             "pode_movimentar": True},
-            {"id": 29, "codigo": '1.3.6.0', "nome": 'Serviços Prestado', "tipo_conta": 4, "pai": 18,
-             "pode_movimentar": True},
+            {"id": 19, "code": '1.1.1.0', "name": 'Dinheiro em espécie', "account_type": 4, "parent": 16,
+             "operate": True},
+            {"id": 27, "code": '1.3.4.0', "name": 'Diária', "account_type": 4, "parent": 18,
+             "operate": True},
+            {"id": 28, "code": '1.3.5.0', "name": 'Honorário', "account_type": 4, "parent": 18,
+             "operate": True},
+            {"id": 29, "code": '1.3.6.0', "name": 'Serviços Prestado', "account_type": 4, "parent": 18,
+             "operate": True},
 
-            {"id": 30, "codigo": '1.1.2.1', "nome": 'Banco do Brasil', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 31, "codigo": '1.1.2.2', "nome": 'Nubank', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 32, "codigo": '1.1.2.3', "nome": 'Caixa', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 33, "codigo": '1.1.2.4', "nome": 'Santander', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 34, "codigo": '1.1.2.5', "nome": 'Mercado Pago', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 35, "codigo": '1.1.2.6', "nome": 'Bradesco', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 36, "codigo": '1.1.2.7', "nome": 'Inter', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
-            {"id": 37, "codigo": '1.1.2.8', "nome": 'C6', "tipo_conta": 4, "pai": 20,
-             "pode_movimentar": True},
+            {"id": 30, "code": '1.1.2.1', "name": 'Banco do Brasil', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 31, "code": '1.1.2.2', "name": 'Nubank', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 32, "code": '1.1.2.3', "name": 'Caixa', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 33, "code": '1.1.2.4', "name": 'Santander', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 34, "code": '1.1.2.5', "name": 'Mercado Pago', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 35, "code": '1.1.2.6', "name": 'Bradesco', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 36, "code": '1.1.2.7', "name": 'Inter', "account_type": 4, "parent": 20,
+             "operate": True},
+            {"id": 37, "code": '1.1.2.8', "name": 'C6', "account_type": 4, "parent": 20,
+             "operate": True},
 
-            {"id": 39, "codigo": '1.2.1.1', "nome": 'Notebook', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
-            {"id": 40, "codigo": '1.2.1.2', "nome": 'Carro', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
-            {"id": 41, "codigo": '1.2.1.3', "nome": 'Moto', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
-            {"id": 42, "codigo": '1.2.1.4', "nome": 'Celular', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
-            {"id": 43, "codigo": '1.2.1.5', "nome": 'Tablet', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
-            {"id": 44, "codigo": '1.2.1.6', "nome": 'Desktop', "tipo_conta": 4, "pai": 21,
-             "pode_movimentar": True},
+            {"id": 39, "code": '1.2.1.1', "name": 'Notebook', "account_type": 4, "parent": 21,
+             "operate": True},
+            {"id": 40, "code": '1.2.1.2', "name": 'Carro', "account_type": 4, "parent": 21,
+             "operate": True},
+            {"id": 41, "code": '1.2.1.3', "name": 'Moto', "account_type": 4, "parent": 21,
+             "operate": True},
+            {"id": 42, "code": '1.2.1.4', "name": 'Celular', "account_type": 4, "parent": 21,
+             "operate": True},
+            {"id": 43, "code": '1.2.1.5', "name": 'Tablet', "account_type": 4, "parent": 21,
+             "operate": True},
+            {"id": 44, "code": '1.2.1.6', "name": 'Desktop', "account_type": 4, "parent": 21,
+             "operate": True},
 
-            {"id": 45, "codigo": '1.2.2.1', "nome": 'Lote', "tipo_conta": 4, "pai": 22, "pode_movimentar": True},
-            {"id": 46, "codigo": '1.2.2.2', "nome": 'Casa', "tipo_conta": 4, "pai": 22, "pode_movimentar": True},
+            {"id": 45, "code": '1.2.2.1', "name": 'Lote', "account_type": 4, "parent": 22, "operate": True},
+            {"id": 46, "code": '1.2.2.2', "name": 'Casa', "account_type": 4, "parent": 22, "operate": True},
 
-            {"id": 47, "codigo": '1.2.3.1', "nome": 'Participação em empresas', "tipo_conta": 4, "pai": 23,
-             "pode_movimentar": True},
+            {"id": 47, "code": '1.2.3.1', "name": 'Participação em empresas', "account_type": 4, "parent": 23,
+             "operate": True},
 
-            {"id": 48, "codigo": '1.1.3.1', "nome": 'Ações', "tipo_conta": 4, "pai": 48,
-             "pode_movimentar": True},
-            {"id": 49, "codigo": '1.1.3.2', "nome": 'Fundos Investimento', "tipo_conta": 4, "pai": 48,
-             "pode_movimentar": True},
+            {"id": 48, "code": '1.1.3.1', "name": 'Ações', "account_type": 4, "parent": 48,
+             "operate": True},
+            {"id": 49, "code": '1.1.3.2', "name": 'Fundos Investimento', "account_type": 4, "parent": 48,
+             "operate": True},
 
-            {"id": 50, "codigo": '1.3.1.1', "nome": 'TRE', "tipo_conta": 4, "pai": 24, "pode_movimentar": True},
-            {"id": 51, "codigo": '1.3.1.2', "nome": 'Unitins', "tipo_conta": 4, "pai": 24,
-             "pode_movimentar": True},
-            {"id": 52, "codigo": '1.3.1.3', "nome": 'Unest', "tipo_conta": 4, "pai": 24, "pode_movimentar": True},
+            {"id": 50, "code": '1.3.1.1', "name": 'TRE', "account_type": 4, "parent": 24, "operate": True},
+            {"id": 51, "code": '1.3.1.2', "name": 'Unitins', "account_type": 4, "parent": 24,
+             "operate": True},
+            {"id": 52, "code": '1.3.1.3', "name": 'Unest', "account_type": 4, "parent": 24, "operate": True},
 
-            {"id": 53, "codigo": '1.3.2.1', "nome": 'TRE', "tipo_conta": 4, "pai": 25, "pode_movimentar": True},
-            {"id": 54, "codigo": '1.3.2.2', "nome": 'Unitins', "tipo_conta": 4, "pai": 25,
-             "pode_movimentar": True},
-            {"id": 55, "codigo": '1.3.2.3', "nome": 'Unest', "tipo_conta": 4, "pai": 25, "pode_movimentar": True},
+            {"id": 53, "code": '1.3.2.1', "name": 'TRE', "account_type": 4, "parent": 25, "operate": True},
+            {"id": 54, "code": '1.3.2.2', "name": 'Unitins', "account_type": 4, "parent": 25,
+             "operate": True},
+            {"id": 55, "code": '1.3.2.3', "name": 'Unest', "account_type": 4, "parent": 25, "operate": True},
 
-            {"id": 56, "codigo": '1.3.3.1', "nome": 'TRE', "tipo_conta": 4, "pai": 26, "pode_movimentar": True},
-            {"id": 57, "codigo": '1.3.3.2', "nome": 'Unitins', "tipo_conta": 4, "pai": 26,
-             "pode_movimentar": True},
-            {"id": 58, "codigo": '1.3.3.3', "nome": 'Unest', "tipo_conta": 4, "pai": 26, "pode_movimentar": True},
-        ]
-    )
-
-    op.bulk_insert(
-        conta,
-        [
-            {"id": 59, "codigo": '2.1.0.0', "nome": 'Financeiro', "tipo_conta": 5, "pai": 12},
-            {"id": 60, "codigo": '2.2.0.0', "nome": 'Contas Serviço Público', "tipo_conta": 5, "pai": 12},
-            {"id": 61, "codigo": '2.3.0.0', "nome": 'Impostos', "tipo_conta": 5, "pai": 12},
-            {"id": 62, "codigo": '2.4.0.0', "nome": 'Dívidas', "tipo_conta": 5, "pai": 12},
-
-            {"id": 63, "codigo": '2.1.1.0', "nome": 'Bancos', "tipo_conta": 5, "pai": 59},
-            {"id": 64, "codigo": '2.1.2.0', "nome": 'Cartões de Crédito', "tipo_conta": 5, "pai": 59},
-            {"id": 65, "codigo": '2.1.3.0', "nome": 'Empréstimos', "tipo_conta": 5, "pai": 59},
-            {"id": 66, "codigo": '2.1.4.0', "nome": 'Cheque Especial', "tipo_conta": 5, "pai": 59},
+            {"id": 56, "code": '1.3.3.1', "name": 'TRE', "account_type": 4, "parent": 26, "operate": True},
+            {"id": 57, "code": '1.3.3.2', "name": 'Unitins', "account_type": 4, "parent": 26,
+             "operate": True},
+            {"id": 58, "code": '1.3.3.3', "name": 'Unest', "account_type": 4, "parent": 26, "operate": True},
         ]
     )
 
     op.bulk_insert(
-        conta,
+        account,
         [
-            {"id": 67, "codigo": '2.2.1.0', "nome": 'Água', "tipo_conta": 5, "pai": 60, "pode_movimentar": True},
-            {"id": 68, "codigo": '2.2.2.0', "nome": 'Energia', "tipo_conta": 5, "pai": 60, "pode_movimentar": True},
-            {"id": 69, "codigo": '2.2.3.0', "nome": 'Gás', "tipo_conta": 5, "pai": 60, "pode_movimentar": True},
+            {"id": 59, "code": '2.1.0.0', "name": 'Financeiro', "account_type": 5, "parent": 12},
+            {"id": 60, "code": '2.2.0.0', "name": 'accounts Serviço Público', "account_type": 5, "parent": 12},
+            {"id": 61, "code": '2.3.0.0', "name": 'Impostos', "account_type": 5, "parent": 12},
+            {"id": 62, "code": '2.4.0.0', "name": 'Dívidas', "account_type": 5, "parent": 12},
 
-            {"id": 70, "codigo": '2.3.1.0', "nome": 'Imposto de Renda', "tipo_conta": 5, "pai": 61,
-             "pode_movimentar": True},
-            {"id": 71, "codigo": '2.3.2.0', "nome": 'IOF', "tipo_conta": 5, "pai": 61, "pode_movimentar": True},
-
-            {"id": 72, "codigo": '2.3.1.0', "nome": 'Não negociadas', "tipo_conta": 5, "pai": 62,
-             "pode_movimentar": True},
-            {"id": 73, "codigo": '2.3.2.0', "nome": 'Negociadas', "tipo_conta": 5, "pai": 62, "pode_movimentar": True},
-            {"id": 74, "codigo": '2.3.3.0', "nome": 'Sem juros', "tipo_conta": 5, "pai": 62, "pode_movimentar": True},
-
-            {"id": 75, "codigo": '2.1.1.1', "nome": 'Taxas', "tipo_conta": 5, "pai": 63, "pode_movimentar": True},
-            {"id": 76, "codigo": '2.1.1.2', "nome": 'Serviços', "tipo_conta": 5, "pai": 63, "pode_movimentar": True},
-            {"id": 77, "codigo": '2.1.1.3', "nome": 'Título Capitalização', "tipo_conta": 5, "pai": 63,
-             "pode_movimentar": True},
-            {"id": 78, "codigo": '2.1.1.4', "nome": 'Previdência', "tipo_conta": 5, "pai": 63, "pode_movimentar": True},
-
-            {"id": 79, "codigo": '2.1.2.1', "nome": 'Nubank', "tipo_conta": 5, "pai": 64, "pode_movimentar": True},
-            {"id": 80, "codigo": '2.1.2.2', "nome": 'Mercado Pago', "tipo_conta": 5, "pai": 64,
-             "pode_movimentar": True},
-            {"id": 81, "codigo": '2.1.2.3', "nome": 'Santander', "tipo_conta": 5, "pai": 64, "pode_movimentar": True},
-
-            {"id": 82, "codigo": '2.1.3.1', "nome": 'Nubank', "tipo_conta": 5, "pai": 65, "pode_movimentar": True},
-            {"id": 83, "codigo": '2.1.3.2', "nome": 'Santander', "tipo_conta": 5, "pai": 65, "pode_movimentar": True},
-            {"id": 84, "codigo": '2.1.3.3', "nome": 'Mercado Pago', "tipo_conta": 5, "pai": 65,
-             "pode_movimentar": True},
-            {"id": 85, "codigo": '2.1.3.4', "nome": 'Bradesco', "tipo_conta": 5, "pai": 65, "pode_movimentar": True},
-            {"id": 86, "codigo": '2.1.3.5', "nome": 'Financimaneto Carro', "tipo_conta": 5, "pai": 65,
-             "pode_movimentar": True},
-            {"id": 87, "codigo": '2.1.3.6', "nome": 'Financimaneto Energia Solar', "tipo_conta": 5, "pai": 65,
-             "pode_movimentar": True},
-            {"id": 88, "codigo": '2.1.3.7', "nome": 'Consignado', "tipo_conta": 5, "pai": 65, "pode_movimentar": True},
-
-            {"id": 89, "codigo": '2.1.4.1', "nome": 'Caixa', "tipo_conta": 5, "pai": 67, "pode_movimentar": True},
-
-            {"id": 90, "codigo": '3.1.0.0', "nome": 'Resultado', "tipo_conta": 3, "pai": 13, "pode_movimentar": True}
+            {"id": 63, "code": '2.1.1.0', "name": 'Bancos', "account_type": 5, "parent": 59},
+            {"id": 64, "code": '2.1.2.0', "name": 'Cartões de Crédito', "account_type": 5, "parent": 59},
+            {"id": 65, "code": '2.1.3.0', "name": 'Empréstimos', "account_type": 5, "parent": 59},
+            {"id": 66, "code": '2.1.4.0', "name": 'Cheque Especial', "account_type": 5, "parent": 59},
         ]
     )
 
     op.bulk_insert(
-        conta,
+        account,
         [
-            {"id": 91, "codigo": '4.1.0.0', "nome": 'Pagamento', "tipo_conta": 7, "pai": 14},
-            {"id": 92, "codigo": '5.1.0.0', "nome": 'Recebimento', "tipo_conta": 6, "pai": 15},
+            {"id": 67, "code": '2.2.1.0', "name": 'Água', "account_type": 5, "parent": 60, "operate": True},
+            {"id": 68, "code": '2.2.2.0', "name": 'Energia', "account_type": 5, "parent": 60, "operate": True},
+            {"id": 69, "code": '2.2.3.0', "name": 'Gás', "account_type": 5, "parent": 60, "operate": True},
 
-            {"id": 93, "codigo": '4.1.1.0', "nome": 'Casa', "tipo_conta": 7, "pai": 91},
-            {"id": 94, "codigo": '4.1.2.0', "nome": 'Locomoção', "tipo_conta": 7, "pai": 91},
-            {"id": 95, "codigo": '4.1.4.0', "nome": 'Compras', "tipo_conta": 7, "pai": 91},
-            {"id": 96, "codigo": '4.1.5.0', "nome": 'Diversão e Bem estar', "tipo_conta": 7, "pai": 91},
-            {"id": 98, "codigo": '4.1.6.0', "nome": 'Estudo', "tipo_conta": 7, "pai": 91},
-            {"id": 99, "codigo": '4.1.7.0', "nome": 'Roupa e beleza', "tipo_conta": 7, "pai": 91},
-            {"id": 100, "codigo": '4.1.8.0', "nome": 'Animais de estimação', "tipo_conta": 7, "pai": 91},
-            {"id": 101, "codigo": '4.1.9.0', "nome": 'Doação', "tipo_conta": 7, "pai": 91},
-            {"id": 144, "codigo": '4.1.10.0', "nome": 'Softwares', "tipo_conta": 7, "pai": 91},
-            {"id": 115, "codigo": '4.1.11.0', "nome": 'Alimentação', "tipo_conta": 7, "pai": 91},
-            {"id": 131, "codigo": '4.1.12.0', "nome": 'Bens', "tipo_conta": 7, "pai": 91},
-            {"id": 160, "codigo": '4.1.13.0', "nome": 'Financeiro', "tipo_conta": 7, "pai": 91},
+            {"id": 70, "code": '2.3.1.0', "name": 'Imposto de Renda', "account_type": 5, "parent": 61,
+             "operate": True},
+            {"id": 71, "code": '2.3.2.0', "name": 'IOF', "account_type": 5, "parent": 61, "operate": True},
 
-            {"id": 166, "codigo": '5.1.1.0', "nome": 'Salários', "tipo_conta": 6, "pai": 92},
-            {"id": 167, "codigo": '5.1.2.0', "nome": 'Honorários', "tipo_conta": 6, "pai": 92},
-            {"id": 168, "codigo": '5.1.3.0', "nome": 'Serviços', "tipo_conta": 6, "pai": 92},
-            {"id": 169, "codigo": '5.1.4.0', "nome": 'Vendas', "tipo_conta": 6, "pai": 92},
-            {"id": 170, "codigo": '5.1.5.0', "nome": 'Rendimentos Financeiros', "tipo_conta": 6, "pai": 92},
-            {"id": 171, "codigo": '5.1.6.0', "nome": 'Lucros', "tipo_conta": 6, "pai": 92}
+            {"id": 72, "code": '2.3.1.0', "name": 'Não negociadas', "account_type": 5, "parent": 62,
+             "operate": True},
+            {"id": 73, "code": '2.3.2.0', "name": 'Negociadas', "account_type": 5, "parent": 62, "operate": True},
+            {"id": 74, "code": '2.3.3.0', "name": 'Sem juros', "account_type": 5, "parent": 62, "operate": True},
+
+            {"id": 75, "code": '2.1.1.1', "name": 'rates', "account_type": 5, "parent": 63, "operate": True},
+            {"id": 76, "code": '2.1.1.2', "name": 'Serviços', "account_type": 5, "parent": 63, "operate": True},
+            {"id": 77, "code": '2.1.1.3', "name": 'Título Capitalização', "account_type": 5, "parent": 63,
+             "operate": True},
+            {"id": 78, "code": '2.1.1.4', "name": 'Previdência', "account_type": 5, "parent": 63, "operate": True},
+
+            {"id": 79, "code": '2.1.2.1', "name": 'Nubank', "account_type": 5, "parent": 64, "operate": True},
+            {"id": 80, "code": '2.1.2.2', "name": 'Mercado Pago', "account_type": 5, "parent": 64,
+             "operate": True},
+            {"id": 81, "code": '2.1.2.3', "name": 'Santander', "account_type": 5, "parent": 64, "operate": True},
+
+            {"id": 82, "code": '2.1.3.1', "name": 'Nubank', "account_type": 5, "parent": 65, "operate": True},
+            {"id": 83, "code": '2.1.3.2', "name": 'Santander', "account_type": 5, "parent": 65, "operate": True},
+            {"id": 84, "code": '2.1.3.3', "name": 'Mercado Pago', "account_type": 5, "parent": 65,
+             "operate": True},
+            {"id": 85, "code": '2.1.3.4', "name": 'Bradesco', "account_type": 5, "parent": 65, "operate": True},
+            {"id": 86, "code": '2.1.3.5', "name": 'Financimaneto Carro', "account_type": 5, "parent": 65,
+             "operate": True},
+            {"id": 87, "code": '2.1.3.6', "name": 'Financimaneto Energia Solar', "account_type": 5, "parent": 65,
+             "operate": True},
+            {"id": 88, "code": '2.1.3.7', "name": 'Consignado', "account_type": 5, "parent": 65, "operate": True},
+
+            {"id": 89, "code": '2.1.4.1', "name": 'Caixa', "account_type": 5, "parent": 67, "operate": True},
+
+            {"id": 90, "code": '3.1.0.0', "name": 'Resultado', "account_type": 3, "parent": 13, "operate": True}
         ]
     )
 
     op.bulk_insert(
-        conta,
+        account,
         [
-            {"id": 102, "codigo": '4.1.1.1', "nome": 'Aluguel', "tipo_conta": 7, "pai": 93, "pode_movimentar": True},
-            {"id": 103, "codigo": '4.1.1.2', "nome": 'Diárias', "tipo_conta": 7, "pai": 93, "pode_movimentar": True},
-            {"id": 104, "codigo": '4.1.1.3', "nome": 'Manutenção Casa', "tipo_conta": 7, "pai": 93,
-             "pode_movimentar": True},
-            {"id": 105, "codigo": '4.1.1.4', "nome": 'Segurança Casa', "tipo_conta": 7, "pai": 93,
-             "pode_movimentar": True},
+            {"id": 91, "code": '4.1.0.0', "name": 'Pagamento', "account_type": 7, "parent": 14},
+            {"id": 92, "code": '5.1.0.0', "name": 'Recebimento', "account_type": 6, "parent": 15},
 
-            {"id": 106, "codigo": '4.1.2.1', "nome": 'Gasolina', "tipo_conta": 7, "pai": 94, "pode_movimentar": True},
-            {"id": 107, "codigo": '4.1.2.2', "nome": 'Passagens', "tipo_conta": 7, "pai": 94, "pode_movimentar": True},
-            {"id": 108, "codigo": '4.1.2.3', "nome": 'Diárias Hotel', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 109, "codigo": '4.1.2.4', "nome": 'Aluguel Carro', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 110, "codigo": '4.1.2.5', "nome": 'Manutenção veículo', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 111, "codigo": '4.1.2.6', "nome": 'Seguro Veículo', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 112, "codigo": '4.1.2.7', "nome": 'Seguro Viagem', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 113, "codigo": '4.1.2.8', "nome": 'Taxi/Aplicativo', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
-            {"id": 114, "codigo": '4.1.2.9', "nome": 'Entregador/Aplicativo', "tipo_conta": 7, "pai": 94,
-             "pode_movimentar": True},
+            {"id": 93, "code": '4.1.1.0', "name": 'Casa', "account_type": 7, "parent": 91},
+            {"id": 94, "code": '4.1.2.0', "name": 'Locomoção', "account_type": 7, "parent": 91},
+            {"id": 95, "code": '4.1.4.0', "name": 'Compras', "account_type": 7, "parent": 91},
+            {"id": 96, "code": '4.1.5.0', "name": 'Diversão e Bem estar', "account_type": 7, "parent": 91},
+            {"id": 98, "code": '4.1.6.0', "name": 'Estudo', "account_type": 7, "parent": 91},
+            {"id": 99, "code": '4.1.7.0', "name": 'Roupa e beleza', "account_type": 7, "parent": 91},
+            {"id": 100, "code": '4.1.8.0', "name": 'Animais de estimação', "account_type": 7, "parent": 91},
+            {"id": 101, "code": '4.1.9.0', "name": 'Doação', "account_type": 7, "parent": 91},
+            {"id": 144, "code": '4.1.10.0', "name": 'Softwares', "account_type": 7, "parent": 91},
+            {"id": 115, "code": '4.1.11.0', "name": 'Alimentação', "account_type": 7, "parent": 91},
+            {"id": 131, "code": '4.1.12.0', "name": 'Bens', "account_type": 7, "parent": 91},
+            {"id": 160, "code": '4.1.13.0', "name": 'Financeiro', "account_type": 7, "parent": 91},
 
-            {"id": 116, "codigo": '4.1.11.1', "nome": 'Restaurante', "tipo_conta": 7, "pai": 115,
-             "pode_movimentar": True},
-            {"id": 117, "codigo": '4.1.11.2', "nome": 'Entrega', "tipo_conta": 7, "pai": 115,
-             "pode_movimentar": True},
-            {"id": 118, "codigo": '4.1.11.3', "nome": 'Encomenda', "tipo_conta": 7, "pai": 115,
-             "pode_movimentar": True},
-            {"id": 119, "codigo": '4.1.11.4', "nome": 'Lanche', "tipo_conta": 7, "pai": 115,
-             "pode_movimentar": True},
-            {"id": 120, "codigo": '4.1.11.5', "nome": 'Doces', "tipo_conta": 7, "pai": 115,
-             "pode_movimentar": True},
+            {"id": 166, "code": '5.1.1.0', "name": 'Salários', "account_type": 6, "parent": 92},
+            {"id": 167, "code": '5.1.2.0', "name": 'Honorários', "account_type": 6, "parent": 92},
+            {"id": 168, "code": '5.1.3.0', "name": 'Serviços', "account_type": 6, "parent": 92},
+            {"id": 169, "code": '5.1.4.0', "name": 'Vendas', "account_type": 6, "parent": 92},
+            {"id": 170, "code": '5.1.5.0', "name": 'Rendimentos Financeiros', "account_type": 6, "parent": 92},
+            {"id": 171, "code": '5.1.6.0', "name": 'Lucros', "account_type": 6, "parent": 92}
+        ]
+    )
 
-            {"id": 179, "codigo": '4.1.4.1', "nome": 'Mercadinho', "tipo_conta": 7, "pai": 95, "pode_movimentar": True},
-            {"id": 180, "codigo": '4.1.4.2', "nome": 'Farmácia', "tipo_conta": 7, "pai": 95, "pode_movimentar": True},
-            {"id": 181, "codigo": '4.1.4.3', "nome": 'Atacarejo', "tipo_conta": 7, "pai": 95, "pode_movimentar": True},
-            {"id": 182, "codigo": '4.1.4.4', "nome": 'Livraria', "tipo_conta": 7, "pai": 95, "pode_movimentar": True},
-            {"id": 183, "codigo": '4.1.4.5', "nome": 'Bazar', "tipo_conta": 7, "pai": 95, "pode_movimentar": True},
-            {"id": 184, "codigo": '4.1.4.6', "nome": 'Supermercado', "tipo_conta": 7, "pai": 95,
-             "pode_movimentar": True},
+    op.bulk_insert(
+        account,
+        [
+            {"id": 102, "code": '4.1.1.1', "name": 'Aluguel', "account_type": 7, "parent": 93, "operate": True},
+            {"id": 103, "code": '4.1.1.2', "name": 'Diárias', "account_type": 7, "parent": 93, "operate": True},
+            {"id": 104, "code": '4.1.1.3', "name": 'Manutenção Casa', "account_type": 7, "parent": 93,
+             "operate": True},
+            {"id": 105, "code": '4.1.1.4', "name": 'Segurança Casa', "account_type": 7, "parent": 93,
+             "operate": True},
 
-            {"id": 121, "codigo": '4.1.5.1', "nome": 'Cachaçada', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 122, "codigo": '4.1.5.2', "nome": 'Cinema', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 123, "codigo": '4.1.5.3', "nome": 'Stream', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 124, "codigo": '4.1.5.4', "nome": 'Livros e Gibis', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 125, "codigo": '4.1.5.5', "nome": 'Acampamento', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 126, "codigo": '4.1.5.6', "nome": 'Clube', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 136, "codigo": '4.1.5.7', "nome": 'RPG', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
-            {"id": 150, "codigo": '4.1.5.8', "nome": 'Jogos', "tipo_conta": 7, "pai": 96,
-             "pode_movimentar": True},
+            {"id": 106, "code": '4.1.2.1', "name": 'Gasolina', "account_type": 7, "parent": 94, "operate": True},
+            {"id": 107, "code": '4.1.2.2', "name": 'Passagens', "account_type": 7, "parent": 94, "operate": True},
+            {"id": 108, "code": '4.1.2.3', "name": 'Diárias Hotel', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 109, "code": '4.1.2.4', "name": 'Aluguel Carro', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 110, "code": '4.1.2.5', "name": 'Manutenção veículo', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 111, "code": '4.1.2.6', "name": 'Seguro Veículo', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 112, "code": '4.1.2.7', "name": 'Seguro Viagem', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 113, "code": '4.1.2.8', "name": 'Taxi/Aplicativo', "account_type": 7, "parent": 94,
+             "operate": True},
+            {"id": 114, "code": '4.1.2.9', "name": 'Entregador/Aplicativo', "account_type": 7, "parent": 94,
+             "operate": True},
 
-            {"id": 127, "codigo": '4.1.6.1', "nome": 'Escola/Faculdade', "tipo_conta": 7, "pai": 98,
-             "pode_movimentar": True},
-            {"id": 128, "codigo": '4.1.6.2', "nome": 'Cursos', "tipo_conta": 7, "pai": 98,
-             "pode_movimentar": True},
-            {"id": 129, "codigo": '4.1.6.3', "nome": 'Livros Didáticos', "tipo_conta": 7, "pai": 98,
-             "pode_movimentar": True},
-            {"id": 130, "codigo": '4.1.6.4', "nome": 'Material de Escritório', "tipo_conta": 7, "pai": 98,
-             "pode_movimentar": True},
+            {"id": 116, "code": '4.1.11.1', "name": 'Restaurante', "account_type": 7, "parent": 115,
+             "operate": True},
+            {"id": 117, "code": '4.1.11.2', "name": 'Entrega', "account_type": 7, "parent": 115,
+             "operate": True},
+            {"id": 118, "code": '4.1.11.3', "name": 'Encomenda', "account_type": 7, "parent": 115,
+             "operate": True},
+            {"id": 119, "code": '4.1.11.4', "name": 'Lanche', "account_type": 7, "parent": 115,
+             "operate": True},
+            {"id": 120, "code": '4.1.11.5', "name": 'Doces', "account_type": 7, "parent": 115,
+             "operate": True},
 
-            {"id": 132, "codigo": '4.1.7.1', "nome": 'Roupas', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
-            {"id": 133, "codigo": '4.1.7.2', "nome": 'Calçados', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
-            {"id": 134, "codigo": '4.1.7.3', "nome": 'Lingerie', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
-            {"id": 135, "codigo": '4.1.7.4', "nome": 'Fantasia', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
-            {"id": 137, "codigo": '4.1.7.5', "nome": 'Corte Cabelo', "tipo_conta": 7, "pai": 99,
-             "pode_movimentar": True},
-            {"id": 138, "codigo": '4.1.7.6', "nome": 'Manicure', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
-            {"id": 139, "codigo": '4.1.7.7', "nome": 'Depilação', "tipo_conta": 7, "pai": 99, "pode_movimentar": True},
+            {"id": 179, "code": '4.1.4.1', "name": 'Mercadinho', "account_type": 7, "parent": 95, "operate": True},
+            {"id": 180, "code": '4.1.4.2', "name": 'Farmácia', "account_type": 7, "parent": 95, "operate": True},
+            {"id": 181, "code": '4.1.4.3', "name": 'Atacarejo', "account_type": 7, "parent": 95, "operate": True},
+            {"id": 182, "code": '4.1.4.4', "name": 'Livraria', "account_type": 7, "parent": 95, "operate": True},
+            {"id": 183, "code": '4.1.4.5', "name": 'Bazar', "account_type": 7, "parent": 95, "operate": True},
+            {"id": 184, "code": '4.1.4.6', "name": 'Supermercado', "account_type": 7, "parent": 95,
+             "operate": True},
 
-            {"id": 140, "codigo": '4.1.8.1', "nome": 'Ração', "tipo_conta": 7, "pai": 100, "pode_movimentar": True},
-            {"id": 141, "codigo": '4.1.8.2', "nome": 'Veterinário', "tipo_conta": 7, "pai": 100,
-             "pode_movimentar": True},
-            {"id": 142, "codigo": '4.1.8.3', "nome": 'Salão', "tipo_conta": 7, "pai": 100, "pode_movimentar": True},
-            {"id": 143, "codigo": '4.1.8.4', "nome": 'Assessórios', "tipo_conta": 7, "pai": 100,
-             "pode_movimentar": True},
+            {"id": 121, "code": '4.1.5.1', "name": 'Cachaçada', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 122, "code": '4.1.5.2', "name": 'Cinema', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 123, "code": '4.1.5.3', "name": 'Stream', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 124, "code": '4.1.5.4', "name": 'Livros e Gibis', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 125, "code": '4.1.5.5', "name": 'Acampamento', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 126, "code": '4.1.5.6', "name": 'Clube', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 136, "code": '4.1.5.7', "name": 'RPG', "account_type": 7, "parent": 96,
+             "operate": True},
+            {"id": 150, "code": '4.1.5.8', "name": 'Jogos', "account_type": 7, "parent": 96,
+             "operate": True},
 
-            {"id": 145, "codigo": '4.1.9.1', "nome": 'Animais', "tipo_conta": 7, "pai": 101, "pode_movimentar": True},
-            {"id": 146, "codigo": '4.1.9.2', "nome": 'Artistas', "tipo_conta": 7, "pai": 101, "pode_movimentar": True},
-            {"id": 147, "codigo": '4.1.9.3', "nome": 'Cientístas', "tipo_conta": 7, "pai": 101,
-             "pode_movimentar": True},
-            {"id": 148, "codigo": '4.1.9.4', "nome": 'Crianças', "tipo_conta": 7, "pai": 101, "pode_movimentar": True},
-            {"id": 149, "codigo": '4.1.9.5', "nome": 'Pessoas na Rua', "tipo_conta": 7, "pai": 101,
-             "pode_movimentar": True},
+            {"id": 127, "code": '4.1.6.1', "name": 'Escola/Faculdade', "account_type": 7, "parent": 98,
+             "operate": True},
+            {"id": 128, "code": '4.1.6.2', "name": 'Cursos', "account_type": 7, "parent": 98,
+             "operate": True},
+            {"id": 129, "code": '4.1.6.3', "name": 'Livros Didáticos', "account_type": 7, "parent": 98,
+             "operate": True},
+            {"id": 130, "code": '4.1.6.4', "name": 'Material de Escritório', "account_type": 7, "parent": 98,
+             "operate": True},
 
-            {"id": 151, "codigo": '4.1.10.1', "nome": 'Cloud Armazenamento', "tipo_conta": 7, "pai": 144,
-             "pode_movimentar": True},
-            {"id": 152, "codigo": '4.1.10.2', "nome": 'Servidores', "tipo_conta": 7, "pai": 144,
-             "pode_movimentar": True},
-            {"id": 153, "codigo": '4.1.10.3', "nome": 'Desenvolvimento', "tipo_conta": 7, "pai": 144,
-             "pode_movimentar": True},
-            {"id": 154, "codigo": '4.1.10.4', "nome": 'Arte', "tipo_conta": 7, "pai": 144, "pode_movimentar": True},
-            {"id": 155, "codigo": '4.1.10.5', "nome": 'Segurança', "tipo_conta": 7, "pai": 144,
-             "pode_movimentar": True},
+            {"id": 132, "code": '4.1.7.1', "name": 'Roupas', "account_type": 7, "parent": 99, "operate": True},
+            {"id": 133, "code": '4.1.7.2', "name": 'Calçados', "account_type": 7, "parent": 99, "operate": True},
+            {"id": 134, "code": '4.1.7.3', "name": 'Lingerie', "account_type": 7, "parent": 99, "operate": True},
+            {"id": 135, "code": '4.1.7.4', "name": 'Fantasia', "account_type": 7, "parent": 99, "operate": True},
+            {"id": 137, "code": '4.1.7.5', "name": 'Corte Cabelo', "account_type": 7, "parent": 99,
+             "operate": True},
+            {"id": 138, "code": '4.1.7.6', "name": 'Manicure', "account_type": 7, "parent": 99, "operate": True},
+            {"id": 139, "code": '4.1.7.7', "name": 'Depilação', "account_type": 7, "parent": 99, "operate": True},
 
-            {"id": 156, "codigo": '4.1.12.1', "nome": 'Móveis', "tipo_conta": 7, "pai": 131, "pode_movimentar": True},
-            {"id": 157, "codigo": '4.1.12.2', "nome": 'Veículos', "tipo_conta": 7, "pai": 131, "pode_movimentar": True},
-            {"id": 158, "codigo": '4.1.12.3', "nome": 'Eletrônicos', "tipo_conta": 7, "pai": 131,
-             "pode_movimentar": True},
-            {"id": 159, "codigo": '4.1.12.4', "nome": 'Imóveis', "tipo_conta": 7, "pai": 131, "pode_movimentar": True},
+            {"id": 140, "code": '4.1.8.1', "name": 'Ração', "account_type": 7, "parent": 100, "operate": True},
+            {"id": 141, "code": '4.1.8.2', "name": 'Veterinário', "account_type": 7, "parent": 100,
+             "operate": True},
+            {"id": 142, "code": '4.1.8.3', "name": 'Salão', "account_type": 7, "parent": 100, "operate": True},
+            {"id": 143, "code": '4.1.8.4', "name": 'Assessórios', "account_type": 7, "parent": 100,
+             "operate": True},
 
-            {"id": 161, "codigo": '4.1.13.1', "nome": 'Previdência Privada', "tipo_conta": 7, "pai": 160,
-             "pode_movimentar": True},
-            {"id": 162, "codigo": '4.1.13.2', "nome": 'Fundos de Ação', "tipo_conta": 7, "pai": 160,
-             "pode_movimentar": True},
-            {"id": 163, "codigo": '4.1.13.3', "nome": 'Juros', "tipo_conta": 7, "pai": 160, "pode_movimentar": True},
-            {"id": 164, "codigo": '4.1.13.4', "nome": 'Empréstimos', "tipo_conta": 7, "pai": 160,
-             "pode_movimentar": True},
-            {"id": 165, "codigo": '4.1.13.5', "nome": 'Dívidas', "tipo_conta": 7, "pai": 160, "pode_movimentar": True},
+            {"id": 145, "code": '4.1.9.1', "name": 'Animais', "account_type": 7, "parent": 101, "operate": True},
+            {"id": 146, "code": '4.1.9.2', "name": 'Artistas', "account_type": 7, "parent": 101, "operate": True},
+            {"id": 147, "code": '4.1.9.3', "name": 'Cientístas', "account_type": 7, "parent": 101,
+             "operate": True},
+            {"id": 148, "code": '4.1.9.4', "name": 'Crianças', "account_type": 7, "parent": 101, "operate": True},
+            {"id": 149, "code": '4.1.9.5', "name": 'Pessoas na Rua', "account_type": 7, "parent": 101,
+             "operate": True},
 
-            {"id": 174, "codigo": '6.1.0.0', "nome": 'Saldo Inicial', "tipo_conta": 8, "pai": 172,
-             "pode_movimentar": True},
-            {"id": 175, "codigo": '6.2.0.0', "nome": 'Extorno', "tipo_conta": 8, "pai": 172, "pode_movimentar": True},
-            {"id": 176, "codigo": '6.3.0.0', "nome": 'Depreciação', "tipo_conta": 8, "pai": 172,
-             "pode_movimentar": True},
+            {"id": 151, "code": '4.1.10.1', "name": 'Cloud Armazenamento', "account_type": 7, "parent": 144,
+             "operate": True},
+            {"id": 152, "code": '4.1.10.2', "name": 'Servidores', "account_type": 7, "parent": 144,
+             "operate": True},
+            {"id": 153, "code": '4.1.10.3', "name": 'Desenvolvimento', "account_type": 7, "parent": 144,
+             "operate": True},
+            {"id": 154, "code": '4.1.10.4', "name": 'Arte', "account_type": 7, "parent": 144, "operate": True},
+            {"id": 155, "code": '4.1.10.5', "name": 'Segurança', "account_type": 7, "parent": 144,
+             "operate": True},
 
-            {"id": 177, "codigo": '7.1.0.0', "nome": 'Saldo Inicial', "tipo_conta": 9, "pai": 173,
-             "pode_movimentar": True},
-            {"id": 178, "codigo": '7.2.0.0', "nome": 'Extorno', "tipo_conta": 9, "pai": 173, "pode_movimentar": True},
+            {"id": 156, "code": '4.1.12.1', "name": 'Móveis', "account_type": 7, "parent": 131, "operate": True},
+            {"id": 157, "code": '4.1.12.2', "name": 'Veículos', "account_type": 7, "parent": 131, "operate": True},
+            {"id": 158, "code": '4.1.12.3', "name": 'Eletrônicos', "account_type": 7, "parent": 131,
+             "operate": True},
+            {"id": 159, "code": '4.1.12.4', "name": 'Imóveis', "account_type": 7, "parent": 131, "operate": True},
+
+            {"id": 161, "code": '4.1.13.1', "name": 'Previdência Privada', "account_type": 7, "parent": 160,
+             "operate": True},
+            {"id": 162, "code": '4.1.13.2', "name": 'Fundos de Ação', "account_type": 7, "parent": 160,
+             "operate": True},
+            {"id": 163, "code": '4.1.13.3', "name": 'Juros', "account_type": 7, "parent": 160, "operate": True},
+            {"id": 164, "code": '4.1.13.4', "name": 'Empréstimos', "account_type": 7, "parent": 160,
+             "operate": True},
+            {"id": 165, "code": '4.1.13.5', "name": 'Dívidas', "account_type": 7, "parent": 160, "operate": True},
+
+            {"id": 174, "code": '6.1.0.0', "name": 'balance Inicial', "account_type": 8, "parent": 172,
+             "operate": True},
+            {"id": 175, "code": '6.2.0.0', "name": 'Extorno', "account_type": 8, "parent": 172, "operate": True},
+            {"id": 176, "code": '6.3.0.0', "name": 'Depreciação', "account_type": 8, "parent": 172,
+             "operate": True},
+
+            {"id": 177, "code": '7.1.0.0', "name": 'balance Inicial', "account_type": 9, "parent": 173,
+             "operate": True},
+            {"id": 178, "code": '7.2.0.0', "name": 'Extorno', "account_type": 9, "parent": 173, "operate": True},
 
         ]
     )
+
     op.create_table(
-        "movimento",
+        "tag",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
-        sa.Column('anotacao', sa.VARCHAR(200), nullable=False),
-        sa.Column('data', sa.DATE, nullable=False),
-        sa.Column('valor', sa.BIGINT, nullable=False),
-        sa.Column('contaDebito', sa.BIGINT, sa.ForeignKey("conta.id"), nullable=False),
-        sa.Column('contaCredito', sa.BIGINT, sa.ForeignKey("conta.id"), nullable=False),
-        sa.Column('excluido', sa.BOOLEAN, default=False)
+        sa.Column('name', sa.VARCHAR(200), nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
+    )
+
+    op.create_table(
+        "record",
+        sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
+        sa.Column('anotation', sa.VARCHAR(200), nullable=False),
+        sa.Column('date', sa.DATE, nullable=False),
+        sa.Column('value', sa.BIGINT, nullable=False),
+        sa.Column('accountDebit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
+        sa.Column('accountCredit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
+    )
+
+    op.create_table(
+        "tag_record",
+        sa.Column('id', sa.BIGINT, primary_key=True, autoincrement=False),
+        sa.Column('tag', sa.BIGINT, sa.ForeignKey("tag.id"), nullable=False),
+        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), nullable=False),
     )
 
 
 def downgrade() -> None:
-    op.drop_table("movimento")
-    op.drop_table("conta")
-    op.drop_table("cambio")
-    op.drop_table("moeda")
-    op.drop_table("tipo_conta")
-    op.drop_table("tipo_partida_dobrada")
+    op.drop_table("tag_record")
+    op.drop_table("record")
+    op.drop_table("tag")
+    op.drop_table("account")
+    op.drop_table("exchange")
+    op.drop_table("currency")
+    op.drop_table("account_type")
+    op.drop_table("operation_type")

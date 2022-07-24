@@ -1,0 +1,14 @@
+[
+  {% for c in currencys %}
+      {
+      "id": {{ c.id }},
+      "name": "{{ c.name}}",
+      "alias": "{{ c.alias }}",
+      "default": "{{ c.defauly }}",
+  {% if loop.last %}
+   }
+  {% else %}
+   },
+  {% endif %}
+ {% endfor %}
+]

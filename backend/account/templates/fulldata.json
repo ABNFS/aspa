@@ -1,0 +1,27 @@
+[
+  {% for account in accounts %}
+  {
+  "id": {{ account.id }},
+  "code": "{{ account.code }}",
+  "balance": {{ account.balance }},
+  {%if account.alias %}
+  "alias": "{{ account.alias }}",
+  {% endif %}
+  {% if account.parent %}
+  "parent": {{ account.parent }},
+  {% endif %}
+  "name": "{{ account.name}}",
+  "accont": {{ account.account }},
+  "currency": {{ account.currency }},
+  {% if account.operate %}
+  "operate": true
+  {% else %}
+  "operate": false
+  {% endif %}
+  {% if loop.last %}
+   }
+  {% else %}
+   },
+  {% endif %}
+ {% endfor %}
+]

@@ -2,28 +2,28 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from .service import DinheiroService
+from .service import CurrencyService
 
-templates = Jinja2Templates(directory="dinheiro/templates")
+templates = Jinja2Templates(directory="currency/templates")
 
 app = FastAPI()
 
 
 @app.get("/", response_class=JSONResponse)
-async def listar(request: Request, nome: str = ''):
-    return templates.TemplateResponse("completo.json", {"request": request, "dinheiros": DinheiroService.busca(nome)})
+async def list(request: Request, name: str = ''):
+    return templates.TemplateResponse("fulldata.json", {"request": request, "currencys": CurrencyService.search(name)})
 
 
 @app.post("/")
-async def criar(name: str):
+async def create(name: str):
     return {"message": f"Hello {name}"}
 
 
 @app.put("/")
-async def atualizar(name: str):
+async def update(name: str):
     return {"message": f"Hello {name}"}
 
 
 @app.put("/")
-async def apagar(name: str):
+async def delete(name: str):
     return {"message": f"Hello {name}"}
