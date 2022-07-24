@@ -6,13 +6,12 @@ from .service import DinheiroService
 from .data import DinheiroData
 
 templates = Jinja2Templates(directory="dinheiro/templates")
-service = DinheiroService()
 
 app = FastAPI()
 
 @app.get("/", response_class=JSONResponse)
 async def listar(request: Request, nome: str = ''):
-    dinheiros: list[DinheiroData] = service.busca(nome)
+    dinheiros: list[DinheiroData] = DinheiroService.busca(nome)
     return templates.TemplateResponse("completo.json", {"request": request, "dinheiros": dinheiros})
 
 @app.post("/")

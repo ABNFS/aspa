@@ -7,9 +7,19 @@ from sqlalchemy.orm import Session
 
 class DinheiroRepository:
 
-    def busca_por_nome(self, nome) -> list:
-        result: list = []
+    @staticmethod
+    async def busca_por_nome(nome) -> list[Dinheiro]:
+        result: list[Dinheiro] = []
         query = select(Dinheiro).where(Dinheiro.nome.like(nome))
+        with Session(database_engine) as session:
+            for dinheiro in session.scalars(query):
+                result.append(dinheiro)
+        return result
+
+    @staticmethod
+    async def busca_todos() -> list[Dinheiro]:
+        result: list[Dinheiro] = []
+        query = select(Dinheiro).where(not Dinheiro.excluido)
         with Session(database_engine) as session:
             for dinheiro in session.scalars(query):
                 result.append(dinheiro)
