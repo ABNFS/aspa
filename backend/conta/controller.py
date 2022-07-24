@@ -2,17 +2,15 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
+from .service import ContaService
+
 templates = Jinja2Templates(directory="conta/templates")
 
 app = FastAPI()
 
 @app.get("/", response_class=JSONResponse)
-async def listar(request: Request):
-    contas : list = [
-        {"codigo": 123, "sigla": "CC", "nome": "conta-corrente", "saldo": 23, "tipoSaldo": {"nome": "credito"}, "tipoConta": {"nome": "ativo"}, "moeda": {"nome": "Reais"} },
-        {"codigo": "abc", "sigla": "CT", "nome": "cartão", "saldo": 123, "tipoSaldo": {"nome": "debito"}, "tipoConta": {"nome": "exegível"}, "moeda": {"nome": "Reais"} }
-    ]
-    return templates.TemplateResponse("completo.json", {"request": request, "contas": contas})
+async def listar(request: Request, nome: str = ""):
+    return templates.TemplateResponse("completo.json", {"request": request, "contas": ContaService.busca(nome)})
 
 @app.post("/")
 async def criar(name: str):

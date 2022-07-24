@@ -7,5 +7,5 @@ class DinheiroService:
         pass
 
     @staticmethod
-    async def busca(nome):
+    def busca(nome):
         return DinheiroRepository.busca_por_nome(nome) if nome else DinheiroRepository.busca_todos()

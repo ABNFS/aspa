@@ -3,11 +3,24 @@
   {
   "codigo": "{{ conta. codigo }}",
   "saldo": {{ conta.saldo }},
+  {%if conta.sigla %}
   "sigla": "{{ conta.sigla }}",
+  {% endif %}
+  {% if conta.pai %}
+  "pai": {{ conta.pai }},
+  {% endif %}
   "nome": "{{ conta.nome}}",
-  "tipoSaldo": "{{ conta.tipoSaldo.nome }}",
-  "tipoConta": "{{ conta.tipoConta.nome }}",
-  "moedaConta": "{{ conta.moeda.nome }}",
-  },
+  "tipoConta": {{ conta.tipo_conta }},
+  "moedaConta": {{ conta.moeda }},
+  {% if conta.pode_movimentar %}
+  "podeMovimentar": true
+  {% else %}
+  "podeMovimentar": false
+  {% endif %}
+  {% if loop.last %}
+   }
+  {% else %}
+   },
+  {% endif %}
  {% endfor %}
 ]
