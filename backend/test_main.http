@@ -1,11 +1,33 @@
 # Test your FastAPI endpoints
 
-GET http://127.0.0.1:8000/conta/
+GET http://127.0.0.1:8000/account/?name=TRE
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/hello/User
+POST http://127.0.0.1:8000/account
 Accept: application/json
+Content-Type: application/json
+
+{
+"code": "8.0.0.0",
+"name": "Teste de Cadastro",
+"balance": 0,
+"alias": "ATV",
+"currency": 10,
+"account_type": 4,
+"operate": false
+}
+
+###
+
+POST http://127.0.0.1:8000/currency/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Dólares",
+  "alias": "US$"
+}
 
 ###

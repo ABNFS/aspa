@@ -1,26 +1,19 @@
 from .database import Account
-from startup import database_engine
+from Repository import GenericsRepository
 
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 
 class AccountRepository:
 
     @staticmethod
-    def search_by_name(name) -> list[Account]:
-        result: list[Account] = []
-        query = select(Account).where(Account.name.ilike(f'%{name}%')).where(Account.deleted == False)
-        with Session(database_engine) as session:
-            for account in session.scalars(query):
-                result.append(account)
-        return result
+    def search_by_name(db: Session, name: str = "") -> list[Account]:
+        return GenericsRepository.search_by_name(db, Account, name)
 
     @staticmethod
-    def get_all() -> list[Account]:
-        result: list[Account] = []
-        query = select(Account).where(Account.deleted == False)
-        with Session(database_engine) as session:
-            for account in session.scalars(query):
-                result.append(account)
-        return result
+    def get_all(db: Session) -> list[Account]:
+        return GenericsRepository.get_all(db, Account)
+
+    @staticmethod
+    def save(db: Session, account: Account) -> Account:
+        return GenericsRepository.save(db, account)

@@ -1,26 +1,20 @@
 from .database import Currency
-from startup import database_engine
+from Repository import GenericsRepository
 
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 
 class CurrencyRepository:
 
     @staticmethod
-    def find_by_name(name) -> list[Currency]:
-        result: list[Currency] = []
-        query = select(Currency).where(Currency.name.ilike(f'%{name}%')).where(Currency.deleted == False)
-        with Session(database_engine) as session:
-            for currency in session.scalars(query):
-                result.append(currency)
-        return result
+    def search_by_name(db: Session, name: str = "") -> list[Currency]:
+        return GenericsRepository.search_by_name(db, Currency, name)
 
     @staticmethod
-    def get_all() -> list[Currency]:
-        result: list[Currency] = []
-        query = select(Currency).where(Currency.deleted == False)
-        with Session(database_engine) as session:
-            for currency in session.scalars(query):
-                result.append(currency)
-        return result
+    def get_all(db: Session) -> list[Currency]:
+        return GenericsRepository.get_all(db, Currency)
+
+    @staticmethod
+    def save(db: Session, currency: Currency):
+        return GenericsRepository.save(db, currency)
+

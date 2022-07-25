@@ -1,0 +1,18 @@
+[
+  {% for a in accounts %}
+  {
+    "id": {{ a. id }},
+    "name": "{{ a.name}}",
+    "alias": "{{ a.alias }}",
+  {% if a.operation %}
+    "operation": true
+  {% else %}
+    "operation": false
+  {% endif %}
+  {% if loop.last %}
+  }
+  {% else %}
+   },
+  {% endif %}
+  {% endfor %}
+]

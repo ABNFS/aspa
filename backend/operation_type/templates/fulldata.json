@@ -1,0 +1,14 @@
+[
+{% for op in operations %}
+  {
+    "id": {{ op.id }},
+    "name": "{{ op.name }}",
+    "alias": "{{ op.alias}}"
+  {% if loop.last %}
+  }
+  {% else %}
+  },
+  {% endif %}
+  {% endfor %}
+]
+

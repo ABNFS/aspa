@@ -4,7 +4,11 @@
       "id": {{ c.id }},
       "name": "{{ c.name}}",
       "alias": "{{ c.alias }}",
-      "default": "{{ c.defauly }}",
+  {% if c.default %}
+      "default": true,
+  {% else %}
+    "default": false,
+  {% endif %}
   {% if loop.last %}
    }
   {% else %}

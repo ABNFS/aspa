@@ -1,0 +1,732 @@
+POST http://127.0.0.1:8000/operation_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Débito", "alias": "D"}
+> {% client.global.set("id_debit", response.body[0].id); %}
+
+###
+POST http://127.0.0.1:8000/operation_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Crédito", "alias": "C"}
+> {% client.global.set("id_credit", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Patrimônio", "alias": "PL", "operation": {{id_credit}}}
+> {% client.global.set("id_pl", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Ativo", "alias": "ATV", "operation": {{id_debit}} }
+> {% client.global.set("id_atv", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Exegível", "alias": "EXE", "operation": {{id_credit}}}
+> {% client.global.set("id_exe", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Receitas", "alias": "REC", "operation": {{id_credit}}}
+> {% client.global.set("id_rec", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Despesas", "alias": "DES", "operation": {{id_debit}}}
+> {% client.global.set("id_des", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Conta Retificadora Ativo", "alias": "CRA", "operation": {{id_credit}}}
+> {% client.global.set("id_cra", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Conta Retificadora Passivo", "alias": "CRP", "operation": {{id_debit}}}
+> {% client.global.set("id_crp", response.body[0].id); %}
+
+###
+
+
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Real", "alias": "R$", "default": true}
+
+> {% client.global.set("id_currency", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.0.0.0", "name": "Ativo", "balance": 0, "alias": "ATV", "currency": {{id_currency}},"account_type":{{id_atv}}, "operate": false}
+> {% client.global.set("id_onze", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.0.0.0", "name": "Passivo Exegível", "balance": 0, "alias": "EXE", "currency": {{id_currency}},"account_type":{{id_exe}}, "operate": false}
+> {% client.global.set("id_doze", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "3.0.0.0", "name": "Patrimônio Líquido", "balance": 0, "alias": "PL", "currency": {{id_currency}},"account_type":{{id_pl}},"operate": false}
+> {% client.global.set("id_treze", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.0.0.0", "name": "Pagamentos", "balance": 0, "alias": "PGMTO", "currency": {{id_currency}},"account_type":{{id_des}},"operate": false}
+> {% client.global.set("id_catorse", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.0.0.0", "name": "Recebimentos", "balance": 0, "alias": "REC", "currency": {{id_currency}},"account_type":{{id_rec}},"operate": false}
+> {% client.global.set("id_quinze", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "6.0.0.0", "name": "Ajustes Ativos", "balance": 0, "alias": "AA", "currency": {{id_currency}},"account_type":{{id_cra}},"operate": false}
+> {% client.global.set("id_umsetedois", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "7.0.0.0", "name": "Ajustes Passivos", "balance": 0, "alias": "AP", "currency": {{id_currency}},"account_type":{{id_crp}},"operate": false}
+> {% client.global.set("id_umsetetres", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.1.0.0", "name": "Financeiro", "account_type":{{id_atv}}, "parent":{{id_onze}} }
+> {% client.global.set("id_dezeseis", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.2.0.0", "name": "Bens", "account_type":{{id_atv}}, "parent":{{id_onze}}}
+> {% client.global.set("id_dezessete", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.3.0.0", "name": "Recebíveis", "account_type":{{id_atv}}, "parent":{{id_onze}}}
+> {% client.global.set("id_dezoito", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.1.2.0", "name": "accounts à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
+> {% client.global.set("id_vinte", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.1.3.0", "name": "Investimenos à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
+> {% client.global.set("id_tresoito", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.2.1.0", "name": "Móveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
+> {% client.global.set("id_doisum", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.2.2.0", "name": "Imóveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
+> {% client.global.set("id_doisdois", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "1.2.3.0", "name": "Intangíveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
+> {% client.global.set("id_doistres", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.1.0", "name": "Salário", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
+
+> {% client.global.set("id_doisquatro", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.2.0", "name": "Férias", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
+> {% client.global.set("id_doiscinco", response.body[0].id); %}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.3.0", "name": "Décimo-terceiro", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
+> {% client.global.set("id_doisseis", response.body[0].id); %}
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.1.1.0", "name": "Dinheiro em espécie", "account_type":{{id_atv}}, "parent":{{id_dezeseis}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.4.0", "name": "Diária", "account_type":{{id_atv}}, "parent":{{id_dezoito}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.5.0", "name": "Honorário", "account_type":{{id_atv}}, "parent":{{id_dezoito}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.3.6.0", "name": "Serviços Prestado", "account_type":{{id_atv}}, "parent":{{id_dezoito}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.1.2.1", "name": "Banco do Brasil", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.1.2.2", "name": "Nubank", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.1.2.3", "name": "Caixa", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "1.1.2.4", "name": "Santander", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+[
+{"code": "1.1.2.5", "name": "Mercado Pago", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true},
+{"code": "1.1.2.6", "name": "Bradesco", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true},
+{"code": "1.1.2.7", "name": "Inter", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true},
+{"code": "1.1.2.8", "name": "C6", "account_type":{{id_atv}}, "parent":{{id_vinte}},"operate": true},
+{"code": "1.2.1.1", "name": "Notebook", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.1.2", "name": "Carro", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.1.3", "name": "Moto", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.1.4", "name": "Celular", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.1.5", "name": "Tablet", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.1.6", "name": "Desktop", "account_type":{{id_atv}}, "parent":{{id_doisum}},"operate": true},
+{"code": "1.2.2.1", "name": "Lote", "account_type":{{id_atv}}, "parent":{{id_doisdois}}, "operate": true},
+{"code": "1.2.2.2", "name": "Casa", "account_type":{{id_atv}}, "parent":{{id_doisdois}}, "operate": true},
+{"code": "1.2.3.1", "name": "Participação em empresas", "account_type":{{id_atv}}, "parent":{{id_doistres}},"operate": true},
+{"code": "1.1.3.1", "name": "Ações", "account_type":{{id_atv}}, "parent":{{id_quatrooito}},"operate": true},
+{"code": "1.1.3.2", "name": "Fundos Investimento", "account_type":{{id_atv}}, "parent":{{id_quatrooito}},"operate": true},
+{"code": "1.3.1.1", "name": "TRE", "account_type":{{id_atv}}, "parent":{{id_doisquatro}}, "operate": true},
+{"code": "1.3.1.2", "name": "Unitins", "account_type":{{id_atv}}, "parent":{{id_doisquatro}},"operate": true},
+{"code": "1.3.1.3", "name": "Unest", "account_type":{{id_atv}}, "parent":{{id_doisquatro}}, "operate": true},
+{"code": "1.3.2.1", "name": "TRE", "account_type":{{id_atv}}, "parent":{{id_doiscinco}}, "operate": true},
+{"code": "1.3.2.2", "name": "Unitins", "account_type":{{id_atv}}, "parent":{{id_doiscinco}},"operate": true},
+{"code": "1.3.2.3", "name": "Unest", "account_type":{{id_atv}}, "parent":{{id_doiscinco}}, "operate": true},
+{"code": "1.3.3.1", "name": "TRE", "account_type":{{id_atv}}, "parent":{{id_doisseis}}, "operate": true},
+{"code": "1.3.3.2", "name": "Unitins", "account_type":{{id_atv}}, "parent":{{id_doisseis}},"operate": true},
+{"code": "1.3.3.3", "name": "Unest", "account_type":{{id_atv}}, "parent":{{id_doisseis}}, "operate": true}
+]
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "2.1.0.0", "name": "Financeiro", "account_type":{{id_exe}}, "parent": {{id_doze}}}
+> {% client.global.set("id_cinconove", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.2.0.0", "name": "accounts Serviço Público", "account_type":{{id_exe}}, "parent":{{id_doze}}}
+> {% client.global.set("id_seiszero", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.3.0.0", "name": "Impostos", "account_type":{{id_exe}}, "parent":{{id_doze}}}
+> {% client.global.set("id_seisum", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.4.0.0", "name": "Dívidas", "account_type":{{id_exe}}, "parent":{{id_doze}}}
+> {% client.global.set("id_seisdois", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.1.1.0", "name": "Bancos", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
+> {% client.global.set("id_seistres", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.1.2.0", "name": "Cartões de Crédito", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
+> {% client.global.set("id_seisquatro", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.1.3.0", "name": "Empréstimos", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
+> {% client.global.set("id_seiscinco", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "2.1.4.0", "name": "Cheque Especial", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
+> {% client.global.set("id_seisseis", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+[
+{"code": "2.2.1.0", "name": "Água", "account_type":{{id_exe}}, "parent":{{id_seiszero}}, "operate": true},
+{"code": "2.2.2.0", "name": "Energia", "account_type":{{id_exe}}, "parent":{{id_seiszero}}, "operate": true},
+{"code": "2.2.3.0", "name": "Gás", "account_type":{{id_exe}}, "parent":{{id_seiszero}}, "operate": true},
+{"code": "2.3.1.0", "name": "Imposto de Renda", "account_type":{{id_exe}}, "parent":{{id_seisum}},"operate": true},
+{"code": "2.3.2.0", "name": "IOF", "account_type":{{id_exe}}, "parent":{{id_seisum}}, "operate": true},
+{"code": "2.3.1.0", "name": "Não negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}},"operate": true},
+{"code": "2.3.2.0", "name": "Negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
+{"code": "2.3.3.0", "name": "Sem juros", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
+{"code": "2.1.1.1", "name": "rates", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
+{"code": "2.1.1.2", "name": "Serviços", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
+{"code": "2.1.1.3", "name": "Título Capitalização", "account_type":{{id_exe}}, "parent":{{id_seistres}},"operate": true},
+{"code": "2.1.1.4", "name": "Previdência", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
+{"code": "2.1.2.1", "name": "Nubank", "account_type":{{id_exe}}, "parent":{{id_seisquatro}}, "operate": true},
+{"code": "2.1.2.2", "name": "Mercado Pago", "account_type":{{id_exe}}, "parent":{{id_seisquatro}},"operate": true},
+{"code": "2.1.2.3", "name": "Santander", "account_type":{{id_exe}}, "parent":{{id_seisquatro}}, "operate": true},
+{"code": "2.1.3.1", "name": "Nubank", "account_type":{{id_exe}}, "parent":{{id_seiscinco}}, "operate": true},
+{"code": "2.1.3.2", "name": "Santander", "account_type":{{id_exe}}, "parent":{{id_seiscinco}}, "operate": true},
+{"code": "2.1.3.3", "name": "Mercado Pago", "account_type":{{id_exe}}, "parent":{{id_seiscinco}},"operate": true},
+{"code": "2.1.3.4", "name": "Bradesco", "account_type":{{id_exe}}, "parent":{{id_seiscinco}}, "operate": true},
+{"code": "2.1.3.5", "name": "Financimaneto Carro", "account_type":{{id_exe}}, "parent":{{id_seiscinco}},"operate": true},
+{"code": "2.1.3.6", "name": "Financimaneto Energia Solar", "account_type":{{id_exe}}, "parent":{{id_seiscinco}},"operate": true},
+{"code": "2.1.3.7", "name": "Consignado", "account_type":{{id_exe}}, "parent":{{id_seiscinco}}, "operate": true},
+{"code": "2.1.4.1", "name": "Caixa", "account_type":{{id_exe}}, "parent":{{id_seissete}}, "operate": true},
+{"code": "3.1.0.0", "name": "Resultado", "account_type":{{id_pl}}, "parent":{{id_treze}}, "operate": true}
+]
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.0.0", "name": "Pagamento", "account_type":{{id_des}}, "parent":{{id_catorse}}}
+> {% client.global.set("id_noveum", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.0.0", "name": "Recebimento", "account_type":{{id_rec}}, "parent":{{id_quinze}}}
+> {% client.global.set("id_novedois", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.1.0", "name": "Casa", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_novetres", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.2.0", "name": "Locomoção", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_novequatro", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.4.0", "name": "Compras", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_novecinco", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_noveseis", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.6.0", "name": "Estudo", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_noveoito", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.7.0", "name": "Roupa e beleza", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_novenove", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.8.0", "name": "Animais de estimação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_cem", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.9.0", "name": "Doação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_cemeum", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.10.0", "name": "Softwares", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_catorse4", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.11.0", "name": "Alimentação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_centoequize", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.12.0", "name": "Bens", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_centoetresum", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.13.0", "name": "Financeiro", "account_type":{{id_des}}, "parent":{{id_noveum}}}
+> {% client.global.set("id_umseiszero", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.1.0", "name": "Salários", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umseisseis", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.2.0", "name": "Honorários", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umseissete", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "5.1.3.0", "name": "Serviços", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umseisoito", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.4.0", "name": "Vendas", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umseisnove", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.5.0", "name": "Rendimentos Financeiros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umsetezero", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.6.0", "name": "Lucros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_umseteum", response.body[0].id); %}
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+        [
+            {"code": "4.1.1.1", "name": "Aluguel", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true},
+            {"code": "4.1.1.2", "name": "Diárias", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true},
+            {"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},
+             "operate": true},
+            {"code": "4.1.1.4", "name": "Segurança Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},
+             "operate": true},
+
+            {"code": "4.1.2.1", "name": "Gasolina", "account_type":{{id_des}}, "parent":{{id_novequatro}}, "operate": true},
+            {"code": "4.1.2.2", "name": "Passagens", "account_type":{{id_des}}, "parent":{{id_novequatro}}, "operate": true},
+            {"code": "4.1.2.3", "name": "Diárias Hotel", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.4", "name": "Aluguel Carro", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.5", "name": "Manutenção veículo", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.6", "name": "Seguro Veículo", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.7", "name": "Seguro Viagem", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.8", "name": "Taxi/Aplicativo", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+            {"code": "4.1.2.9", "name": "Entregador/Aplicativo", "account_type":{{id_des}}, "parent":{{id_novequatro}},
+             "operate": true},
+
+            {"code": "4.1.11.1", "name": "Restaurante", "account_type":{{id_des}}, "parent":{{id_centoequize}},
+             "operate": true},
+            {"code": "4.1.11.2", "name": "Entrega", "account_type":{{id_des}}, "parent":{{id_centoequize}},
+             "operate": true},
+            {"code": "4.1.11.3", "name": "Encomenda", "account_type":{{id_des}}, "parent":{{id_centoequize}},
+             "operate": true},
+            {"code": "4.1.11.4", "name": "Lanche", "account_type":{{id_des}}, "parent":{{id_centoequize}},
+             "operate": true},
+            {"code": "4.1.11.5", "name": "Doces", "account_type":{{id_des}}, "parent":{{id_centoequize}},
+             "operate": true},
+
+            {"code": "4.1.4.1", "name": "Mercadinho", "account_type":{{id_des}}, "parent":{{id_novecinco}}, "operate": true},
+            {"code": "4.1.4.2", "name": "Farmácia", "account_type":{{id_des}}, "parent":{{id_novecinco}}, "operate": true},
+            {"code": "4.1.4.3", "name": "Atacarejo", "account_type":{{id_des}}, "parent":{{id_novecinco}}, "operate": true},
+            {"code": "4.1.4.4", "name": "Livraria", "account_type":{{id_des}}, "parent":{{id_novecinco}}, "operate": true},
+            {"code": "4.1.4.5", "name": "Bazar", "account_type":{{id_des}}, "parent":{{id_novecinco}}, "operate": true},
+            {"code": "4.1.4.6", "name": "Supermercado", "account_type":{{id_des}}, "parent":{{id_novecinco}},
+             "operate": true},
+
+            {"code": "4.1.5.1", "name": "Cachaçada", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.2", "name": "Cinema", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.3", "name": "Stream", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.4", "name": "Livros e Gibis", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.5", "name": "Acampamento", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.6", "name": "Clube", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.7", "name": "RPG", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+            {"code": "4.1.5.8", "name": "Jogos", "account_type":{{id_des}}, "parent":{{id_noveseis}},
+             "operate": true},
+
+            {"code": "4.1.6.1", "name": "Escola/Faculdade", "account_type":{{id_des}}, "parent":{{id_noveoito}},
+             "operate": true},
+            {"code": "4.1.6.2", "name": "Cursos", "account_type":{{id_des}}, "parent":{{id_noveoito}},
+             "operate": true},
+            {"code": "4.1.6.3", "name": "Livros Didáticos", "account_type":{{id_des}}, "parent":{{id_noveoito}},
+             "operate": true},
+            {"code": "4.1.6.4", "name": "Material de Escritório", "account_type":{{id_des}}, "parent":{{id_noveoito}},
+             "operate": true},
+
+            {"code": "4.1.7.1", "name": "Roupas", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+            {"code": "4.1.7.2", "name": "Calçados", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+            {"code": "4.1.7.3", "name": "Lingerie", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+            {"code": "4.1.7.4", "name": "Fantasia", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+            {"code": "4.1.7.5", "name": "Corte Cabelo", "account_type":{{id_des}}, "parent":{{id_novenove}},
+             "operate": true},
+            {"code": "4.1.7.6", "name": "Manicure", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+            {"code": "4.1.7.7", "name": "Depilação", "account_type":{{id_des}}, "parent":{{id_novenove}}, "operate": true},
+
+            {"code": "4.1.8.1", "name": "Ração", "account_type":{{id_des}}, "parent":{{id_cem}}, "operate": true},
+            {"code": "4.1.8.2", "name": "Veterinário", "account_type":{{id_des}}, "parent":{{id_cem}},
+             "operate": true},
+            {"code": "4.1.8.3", "name": "Salão", "account_type":{{id_des}}, "parent":{{id_cem}}, "operate": true},
+            {"code": "4.1.8.4", "name": "Assessórios", "account_type":{{id_des}}, "parent":{{id_cem}},
+             "operate": true},
+
+            {"code": "4.1.9.1", "name": "Animais", "account_type":{{id_des}}, "parent":{{id_cemeum}}, "operate": true},
+            {"code": "4.1.9.2", "name": "Artistas", "account_type":{{id_des}}, "parent":{{id_cemeum}}, "operate": true},
+            {"code": "4.1.9.3", "name": "Cientístas", "account_type":{{id_des}}, "parent":{{id_cemeum}},
+             "operate": true},
+            {"code": "4.1.9.4", "name": "Crianças", "account_type":{{id_des}}, "parent":{{id_cemeum}}, "operate": true},
+            {"code": "4.1.9.5", "name": "Pessoas na Rua", "account_type":{{id_des}}, "parent":{{id_cemeum}},
+             "operate": true},
+
+            {"code": "4.1.10.1", "name": "Cloud Armazenamento", "account_type":{{id_des}}, "parent":{{id_catorse4}},
+             "operate": true},
+            {"code": "4.1.10.2", "name": "Servidores", "account_type":{{id_des}}, "parent":{{id_catorse4}},
+             "operate": true},
+            {"code": "4.1.10.3", "name": "Desenvolvimento", "account_type":{{id_des}}, "parent":{{id_catorse4}},
+             "operate": true},
+            {"code": "4.1.10.4", "name": "Arte", "account_type":{{id_des}}, "parent":{{id_catorse4}}, "operate": true},
+            {"code": "4.1.10.5", "name": "Segurança", "account_type":{{id_des}}, "parent":{{id_catorse4}},
+             "operate": true},
+
+            {"code": "4.1.12.1", "name": "Móveis", "account_type":{{id_des}}, "parent":{{id_centoetresum}}, "operate": true},
+            {"code": "4.1.12.2", "name": "Veículos", "account_type":{{id_des}}, "parent":{{id_centoetresum}}, "operate": true},
+            {"code": "4.1.12.3", "name": "Eletrônicos", "account_type":{{id_des}}, "parent":{{id_centoetresum}},
+             "operate": true},
+            {"code": "4.1.12.4", "name": "Imóveis", "account_type":{{id_des}}, "parent":{{id_centoetresum}}, "operate": true},
+
+            {"code": "4.1.13.1", "name": "Previdência Privada", "account_type":{{id_des}}, "parent":{{id_umseiszero}},
+             "operate": true},
+            {"code": "4.1.13.2", "name": "Fundos de Ação", "account_type":{{id_des}}, "parent":{{id_umseiszero}},
+             "operate": true},
+            {"code": "4.1.13.3", "name": "Juros", "account_type":{{id_des}}, "parent":{{id_umseiszero}}, "operate": true},
+            {"code": "4.1.13.4", "name": "Empréstimos", "account_type":{{id_des}}, "parent":{{id_umseiszero}},
+             "operate": true},
+            {"code": "4.1.13.5", "name": "Dívidas", "account_type":{{id_des}}, "parent":{{id_umseiszero}}, "operate": true},
+
+            {"code": "6.1.0.0", "name": "Saldo Inicial", "account_type":{{id_cra}}, "parent":{{id_umsetedois}},
+             "operate": true},
+            {"code": "6.2.0.0", "name": "Extorno", "account_type":{{id_cra}}, "parent":{{id_umsetedois}}, "operate": true},
+            {"code": "6.3.0.0", "name": "Depreciação", "account_type":{{id_cra}}, "parent":{{id_umsetedois}},
+             "operate": true},
+
+            {"code": "7.1.0.0", "name": "Saldo Inicial", "account_type":{{id_crp}}, "parent":{{id_umsetetres}},
+             "operate": true},
+            {"code": "7.2.0.0", "name": "Extorno", "account_type":{{id_crp}}, "parent":{{id_umsetetres}}, "operate": true}
+
+        ]

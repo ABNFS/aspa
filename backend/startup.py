@@ -2,13 +2,27 @@ from yaml import safe_load
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.future import Engine
+from sqlalchemy.orm import sessionmaker
 
-database_url: str = ''
-database_engine: Engine = None
+from typing import Callable
+
+__database_url__: str = ''
+__database_engine__: Engine = None
+
+__SessionLocal__: Callable = None
+
+
+# Dependency
+def get_db():
+    db = __SessionLocal__()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 def __startup__() -> None:
-    global database_url, database_engine
+    global __database_url__, __database_engine__, __SessionLocal__
 
     _FILE: str = 'config.yaml'
     _DATABASE_URL_ENV_NAME = 'DATABASE_URL'
@@ -25,12 +39,14 @@ def __startup__() -> None:
     password = 'contas123' if "password" not in yaml_confs['database'] else yaml_confs['database']['password']
     url = 'localhost' if "url" not in yaml_confs['database'] else yaml_confs['database']['url']
     name = 'contabilidade' if "name" not in yaml_confs['database'] else yaml_confs['database']['name']
-    database_url = getenv(_DATABASE_URL_ENV_NAME, f'{drive}://{user}:{password}@{url}/{name}?charset=utf8')
+    __database_url__ = getenv(_DATABASE_URL_ENV_NAME, f'{drive}://{user}:{password}@{url}/{name}?charset=utf8')
     if drive == "sqlite":
-        database_engine = create_engine(database_url, echo=_DEBUG, future=True,
-                                        connect_args={"check_same_thread": False})
+        __database_engine__ = create_engine(__database_url__, echo=_DEBUG, future=True,
+                                            connect_args={"check_same_thread": False})
     else:
-        database_engine = create_engine(database_url, echo=_DEBUG, future=True)
+        __database_engine__ = create_engine(__database_url__, echo=_DEBUG, future=True)
+
+    __SessionLocal__ = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False)
 
 
 __startup__()
