@@ -30,3 +30,20 @@ class GenericsRepository:
         for account in db.scalars(query):
             result.append(account)
         return result
+
+    @staticmethod
+    def get_by_id(db: Session, cls: ClassVar, id: int):
+        query = select(cls).where(cls.id == id).where(cls.deleted == False)
+        result = db.scalar(query)
+        return result
+
+    @staticmethod
+    def delete(db: Session, cls: ClassVar, id: int):
+        obj = GenericsRepository.get_by_id(db, cls, id)
+        if obj:
+            obj.deleted = True
+            db.add(obj)
+            db.commit()
+            db.refresh(obj)
+            return obj.deleted
+        return False

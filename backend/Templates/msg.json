@@ -1,0 +1,4 @@
+{
+  "code": "{{ message.code }}",
+  "text": "{{ message.text}}"
+}

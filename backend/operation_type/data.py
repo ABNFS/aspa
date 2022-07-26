@@ -13,7 +13,12 @@ class OperationTypeData(BaseModel):
     class Config:
         orm_mode = True
 
-    def to_database(self) -> OperationType:
+    def to_database(self, _db: Optional[OperationType] = None) -> OperationType:
         if self.id:
-            return OperationType(id=self.id, name=self.name, alias=self.alias, deleted=self.deleted)
+            if not _db:
+                raise Exception("To update a object first find this object")
+            _db.name = self.name if self.name else _db.name
+            _db.alias = self.alias if self.alias else _db.alias
+            _db.deleted = self.deleted if self.deleted else _db.deleted
+            return _db
         return OperationType(name=self.name, alias=self.alias, deleted=self.deleted)

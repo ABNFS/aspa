@@ -14,14 +14,15 @@ app = FastAPI()
 templates = Jinja2Templates(directory='operation_type/templates')
 
 
-@app.post("/", response_class=JSONResponse)
+@app.put("/", response_class=JSONResponse, status_code=200)
+@app.post("/", response_class=JSONResponse, status_code=201)
 def new(request: Request, operation_type: OperationTypeData | list[OperationTypeData], db: Session = Depends(get_db)):
     operations_type: list[OperationTypeData] = []
     if isinstance(operation_type, list):
         for data in operation_type:
-            operations_type.append(OperationTypeService.new(db, data))
+            operations_type.append(OperationTypeService.save(db, data))
     else:
-        operations_type.append(OperationTypeService.new(db, operation_type))
+        operations_type.append(OperationTypeService.save(db, operation_type))
     return templates.TemplateResponse('fulldata.json', {"request": request, "operations": operations_type},
                                       headers={'content-type': 'application/json'})
 

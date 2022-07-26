@@ -18,3 +18,11 @@ class CurrencyRepository:
     def save(db: Session, currency: Currency):
         return GenericsRepository.save(db, currency)
 
+    @staticmethod
+    def delete(db: Session, id: int) -> bool:
+        return GenericsRepository.delete(db, Currency, id)
+
+    @staticmethod
+    def get_by_id(db: Session, id: int) -> Currency:
+        return GenericsRepository.get_by_id(db, Currency, id)
+

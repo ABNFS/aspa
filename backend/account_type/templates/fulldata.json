@@ -4,11 +4,7 @@
     "id": {{ a. id }},
     "name": "{{ a.name}}",
     "alias": "{{ a.alias }}",
-  {% if a.operation %}
-    "operation": true
-  {% else %}
-    "operation": false
-  {% endif %}
+    "operation": {{ a.operation }} ,
   {% if loop.last %}
   }
   {% else %}

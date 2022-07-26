@@ -17,3 +17,11 @@ class AccountRepository:
     @staticmethod
     def save(db: Session, account: Account) -> Account:
         return GenericsRepository.save(db, account)
+
+    @staticmethod
+    def get_by_id(db: Session, id: int) -> Account:
+        return GenericsRepository.get_by_id(db, Account, id)
+
+    @staticmethod
+    def delete(db: Session, id: int) -> Account:
+        return GenericsRepository.delete(db, Account, id)

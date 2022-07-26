@@ -3,7 +3,12 @@ from sqlalchemy.orm import Session
 from Repository import GenericsRepository
 from .database import OperationType
 
+
 class OperationTypeRepository:
+
+    @staticmethod
+    def get_by_id(db: Session, id: int) -> OperationType:
+        return GenericsRepository.get_by_id(db, OperationType, id)
 
     @staticmethod
     def save(db: Session, operation_type: OperationType) -> OperationType:

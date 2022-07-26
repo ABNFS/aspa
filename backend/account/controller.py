@@ -11,6 +11,7 @@ from .data import AccountData
 from startup import get_db
 
 templates = Jinja2Templates(directory="account/templates")
+default_templates = Jinja2Templates(directory="Templates")
 
 app = FastAPI()
 
@@ -22,6 +23,7 @@ async def search(request: Request, name: Optional[str] = '', db: Session = Depen
                                       headers={'content-type': 'application/json'})
 
 
+@app.put("/", response_class=JSONResponse)
 @app.post("/", response_class=JSONResponse)
 async def create(request: Request, account: AccountData | list[AccountData], db: Session = Depends(get_db)):
     accounts: list[AccountData] = []
@@ -35,11 +37,14 @@ async def create(request: Request, account: AccountData | list[AccountData], db:
                                       headers={'content-type': 'application/json'})
 
 
-@app.put("/")
-async def update(name: str, db: Session = Depends(get_db)):
-    return {"message": f"Hello {name}"}
-
-
-@app.put("/")
-async def delete(name: str, db: Session = Depends(get_db)):
-    return {"message": f"Hello {name}"}
+@app.delete("/{id}")
+async def delete(request: Request, id: int, db: Session = Depends(get_db)):
+    if AccountService.delete(db, id):
+        return default_templates.TemplateResponse('msg.json', {"request": request,
+                                                               "message": {"code": "ok",
+                                                                           "text": f"Account {id} deleted."}},
+                                                  headers={'content-type': 'application/json'})
+    return default_templates.TemplateResponse('msg.json', {"request": request,
+                                                           "message": {"code": "Error",
+                                                                       "text": f"Cannot delete the account."}},
+                                              headers={'content-type': 'application/json'})

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
 from .repository import OperationTypeRepository
@@ -8,8 +10,11 @@ from .database import OperationType
 class OperationTypeService:
 
     @staticmethod
-    def new(db: Session, operation_type: OperationTypeData) -> OperationType:
-        return OperationTypeRepository.save(db, operation_type.to_database())
+    def save(db: Session, operation_type: OperationTypeData) -> OperationType:
+        operation_db: Optional[OperationType] = None
+        if operation_type.id:
+            operation_db = OperationTypeRepository.get_by_id(db, operation_type.id)
+        return OperationTypeRepository.save(db, operation_type.to_database(operation_db))
 
     @staticmethod
     def search(db: Session, name:str):

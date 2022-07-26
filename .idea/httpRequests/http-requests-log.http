@@ -1,3 +1,305 @@
+DELETE http://127.0.0.1:8000/currency/3
+Content-Type: application/json
+Accept: application/json
+
+<> 2022-07-26T093555.200.json
+
+###
+
+PUT http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 3, "name": "Excluir2", "alias": "EE$" }
+
+<> 2022-07-26T093421.200.json
+
+###
+
+PUT http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 3, "name": "Excluir2", "alias": "EE$" }
+
+<> 2022-07-25T234933.500.txt
+
+###
+
+PUT http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 3, "name": "Excluir2", "alias": "EE$" }
+
+<> 2022-07-25T234712.500.txt
+
+###
+
+PUT http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 3, "name": "Excluir2", "alias": "EE$" }
+
+<> 2022-07-25T234640.500.txt
+
+###
+
+PUT http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 3, "name": "Excluir2", "alias": "EE$" }
+
+<> 2022-07-25T233942.500.txt
+
+###
+
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir", "alias": "EE" }
+
+<> 2022-07-25T233907.201.json
+
+###
+
+DELETE http://127.0.0.1:8000/currency/2
+Content-Type: application/json
+Accept: application/json
+
+<> 2022-07-25T233829.200.json
+
+###
+
+DELETE http://127.0.0.1:8000/currency/2
+Content-Type: application/json
+Accept: application/json
+
+<> 2022-07-25T233648.500.txt
+
+###
+
+DELETE http://127.0.0.1:8000/currency/2
+Content-Type: application/json
+Accept: application/json
+
+<> 2022-07-25T233615.405.json
+
+###
+
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir3", "alias": "EE3" }
+
+<> 2022-07-25T233441.200.json
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/11
+Accept: application/json
+
+<> 2022-07-25T181339.200.json
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T181327.404.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "ee3", "operation": 2 }
+
+<> 2022-07-25T181259.200.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "ee3" }
+
+<> 2022-07-25T181240.422.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir3", "alias": "ee3", "operation": 2 }
+
+<> 2022-07-25T181053.200.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir3", "alias": null, "operation": 2 }
+
+<> 2022-07-25T181026.422.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir3", "operation": 2 }
+
+<> 2022-07-25T180938.422.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "EE4", "operation": 2 }
+
+<> 2022-07-25T180617.200.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "EE4", "operation": 2 }
+
+<> 2022-07-25T175936.200.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "EE4", "operation": 2 }
+
+<> 2022-07-25T175901.200.json
+
+###
+
+PUT http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": 11, "name": "Excluir4", "alias": "EE4", "operation": 2 }
+
+<> 2022-07-25T175117.500.txt
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir3", "alias": "EE3", "operation": 1 }
+
+<> 2022-07-25T175015.200.json
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T174354.404.json
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T174127.500.txt
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T173957.500.txt
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T173934.500.txt
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T173841.200.json
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/10
+Accept: application/json
+
+<> 2022-07-25T173727.200.html
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir2", "alias": "EE2", "operation": 1 }
+
+<> 2022-07-25T173717.200.json
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir", "alias": "EEE", "operation": 1 }
+
+<> 2022-07-25T173616.500.txt
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/8
+Accept: application/json
+
+<> 2022-07-25T173457.200.html
+
+###
+
+DELETE http://127.0.0.1:8000/account_type/8
+Accept: application/json
+
+<> 2022-07-25T173142.500.txt
+
+###
+
+POST http://127.0.0.1:8000/account_type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Excluir", "alias": "EEE", "operation": 1 }
+
+<> 2022-07-25T173112.200.json
+
+###
+
 POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
@@ -284,396 +586,6 @@ Accept: application/json
 {"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":5, "parent":35}
 
 <> 2022-07-25T145714-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.4.0", "name": "Compras", "account_type":5, "parent":35}
-
-<> 2022-07-25T145714.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.2.0", "name": "Locomoção", "account_type":5, "parent":35}
-
-<> 2022-07-25T145713-5.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.1.0", "name": "Casa", "account_type":5, "parent":35}
-
-<> 2022-07-25T145713-4.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "5.1.0.0", "name": "Recebimento", "account_type":4, "parent":5}
-
-<> 2022-07-25T145713-3.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.0.0", "name": "Pagamento", "account_type":5, "parent":4}
-
-<> 2022-07-25T145713-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-[
-{"code": "2.2.1.0", "name": "Água", "account_type":3, "parent":28, "operate": true},
-{"code": "2.2.2.0", "name": "Energia", "account_type":3, "parent":28, "operate": true},
-{"code": "2.2.3.0", "name": "Gás", "account_type":3, "parent":28, "operate": true},
-{"code": "2.3.1.0", "name": "Imposto de Renda", "account_type":3, "parent":29,"operate": true},
-{"code": "2.3.2.0", "name": "IOF", "account_type":3, "parent":29, "operate": true},
-{"code": "2.3.1.0", "name": "Não negociadas", "account_type":3, "parent":30,"operate": true},
-{"code": "2.3.2.0", "name": "Negociadas", "account_type":3, "parent":30, "operate": true},
-{"code": "2.3.3.0", "name": "Sem juros", "account_type":3, "parent":30, "operate": true},
-{"code": "2.1.1.1", "name": "rates", "account_type":3, "parent":31, "operate": true},
-{"code": "2.1.1.2", "name": "Serviços", "account_type":3, "parent":31, "operate": true},
-{"code": "2.1.1.3", "name": "Título Capitalização", "account_type":3, "parent":31,"operate": true},
-{"code": "2.1.1.4", "name": "Previdência", "account_type":3, "parent":31, "operate": true},
-{"code": "2.1.2.1", "name": "Nubank", "account_type":3, "parent":32, "operate": true},
-{"code": "2.1.2.2", "name": "Mercado Pago", "account_type":3, "parent":32,"operate": true},
-{"code": "2.1.2.3", "name": "Santander", "account_type":3, "parent":32, "operate": true},
-{"code": "2.1.3.1", "name": "Nubank", "account_type":3, "parent":33, "operate": true},
-{"code": "2.1.3.2", "name": "Santander", "account_type":3, "parent":33, "operate": true},
-{"code": "2.1.3.3", "name": "Mercado Pago", "account_type":3, "parent":33,"operate": true},
-{"code": "2.1.3.4", "name": "Bradesco", "account_type":3, "parent":33, "operate": true},
-{"code": "2.1.3.5", "name": "Financimaneto Carro", "account_type":3, "parent":33,"operate": true},
-{"code": "2.1.3.6", "name": "Financimaneto Energia Solar", "account_type":3, "parent":33,"operate": true},
-{"code": "2.1.3.7", "name": "Consignado", "account_type":3, "parent":33, "operate": true},
-{"code": "2.1.4.1", "name": "Caixa", "account_type":3, "parent":{{id_seissete}}, "operate": true},
-{"code": "3.1.0.0", "name": "Resultado", "account_type":1, "parent":3, "operate": true}
-]
-
-<> 2022-07-25T145713.422.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.4.0", "name": "Cheque Especial", "account_type":3, "parent":27}
-
-<> 2022-07-25T145713-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.3.0", "name": "Empréstimos", "account_type":3, "parent":27}
-
-<> 2022-07-25T145713.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.2.0", "name": "Cartões de Crédito", "account_type":3, "parent":27}
-
-<> 2022-07-25T145712-4.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.1.0", "name": "Bancos", "account_type":3, "parent":27}
-
-<> 2022-07-25T145712-3.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.4.0.0", "name": "Dívidas", "account_type":3, "parent":2}
-
-<> 2022-07-25T145712-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.3.0.0", "name": "Impostos", "account_type":3, "parent":2}
-
-<> 2022-07-25T145712-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.2.0.0", "name": "accounts Serviço Público", "account_type":3, "parent":2}
-
-<> 2022-07-25T145712.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.0.0", "name": "Financeiro", "account_type":3, "parent": 2}
-
-<> 2022-07-25T145711-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-[
-{"code": "1.1.2.5", "name": "Mercado Pago", "account_type":2, "parent":11,"operate": true},
-{"code": "1.1.2.6", "name": "Bradesco", "account_type":2, "parent":11,"operate": true},
-{"code": "1.1.2.7", "name": "Inter", "account_type":2, "parent":11,"operate": true},
-{"code": "1.1.2.8", "name": "C6", "account_type":2, "parent":11,"operate": true},
-{"code": "1.2.1.1", "name": "Notebook", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.1.2", "name": "Carro", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.1.3", "name": "Moto", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.1.4", "name": "Celular", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.1.5", "name": "Tablet", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.1.6", "name": "Desktop", "account_type":2, "parent":13,"operate": true},
-{"code": "1.2.2.1", "name": "Lote", "account_type":2, "parent":14, "operate": true},
-{"code": "1.2.2.2", "name": "Casa", "account_type":2, "parent":14, "operate": true},
-{"code": "1.2.3.1", "name": "Participação em empresas", "account_type":2, "parent":15,"operate": true},
-{"code": "1.1.3.1", "name": "Ações", "account_type":2, "parent":{{id_quatrooito}},"operate": true},
-{"code": "1.1.3.2", "name": "Fundos Investimento", "account_type":2, "parent":{{id_quatrooito}},"operate": true},
-{"code": "1.3.1.1", "name": "TRE", "account_type":2, "parent":16, "operate": true},
-{"code": "1.3.1.2", "name": "Unitins", "account_type":2, "parent":16,"operate": true},
-{"code": "1.3.1.3", "name": "Unest", "account_type":2, "parent":16, "operate": true},
-{"code": "1.3.2.1", "name": "TRE", "account_type":2, "parent":17, "operate": true},
-{"code": "1.3.2.2", "name": "Unitins", "account_type":2, "parent":17,"operate": true},
-{"code": "1.3.2.3", "name": "Unest", "account_type":2, "parent":17, "operate": true},
-{"code": "1.3.3.1", "name": "TRE", "account_type":2, "parent":18, "operate": true},
-{"code": "1.3.3.2", "name": "Unitins", "account_type":2, "parent":18,"operate": true},
-{"code": "1.3.3.3", "name": "Unest", "account_type":2, "parent":18, "operate": true}
-]
-
-<> 2022-07-25T145711.422.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.2.4", "name": "Santander", "account_type":2, "parent":11,"operate": true}
-
-<> 2022-07-25T145711-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.2.3", "name": "Caixa", "account_type":2, "parent":11,"operate": true}
-
-<> 2022-07-25T145711.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.2.2", "name": "Nubank", "account_type":2, "parent":11,"operate": true}
-
-<> 2022-07-25T145710-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.2.1", "name": "Banco do Brasil", "account_type":2, "parent":11,"operate": true}
-
-<> 2022-07-25T145710-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.6.0", "name": "Serviços Prestado", "account_type":2, "parent":10,"operate": true}
-
-<> 2022-07-25T145710.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.5.0", "name": "Honorário", "account_type":2, "parent":10,"operate": true}
-
-<> 2022-07-25T145709-5.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.4.0", "name": "Diária", "account_type":2, "parent":10,"operate": true}
-
-<> 2022-07-25T145709-4.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.1.0", "name": "Dinheiro em espécie", "account_type":2, "parent":8,"operate": true}
-
-<> 2022-07-25T145709-3.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.3.0", "name": "Décimo-terceiro", "account_type":2, "parent":10}
-
-<> 2022-07-25T145709-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.2.0", "name": "Férias", "account_type":2, "parent":10}
-
-<> 2022-07-25T145709-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.1.0", "name": "Salário", "account_type":2, "parent":10}
-
-<> 2022-07-25T145709.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.2.3.0", "name": "Intangíveis", "account_type":2, "parent":9}
-
-<> 2022-07-25T145708-4.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.2.2.0", "name": "Imóveis", "account_type":2, "parent":9}
-
-<> 2022-07-25T145708-3.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.2.1.0", "name": "Móveis", "account_type":2, "parent":9}
-
-<> 2022-07-25T145708-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.3.0", "name": "Investimenos à vista", "account_type":2, "parent":8}
-
-<> 2022-07-25T145708-1.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.2.0", "name": "accounts à vista", "account_type":2, "parent":8}
-
-<> 2022-07-25T145708.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.3.0.0", "name": "Recebíveis", "account_type":2, "parent":1}
-
-<> 2022-07-25T145707-5.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.2.0.0", "name": "Bens", "account_type":2, "parent":1}
-
-<> 2022-07-25T145707-4.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "1.1.0.0", "name": "Financeiro", "account_type":2, "parent":1 }
-
-<> 2022-07-25T145707-3.200.json
 
 ###
 
