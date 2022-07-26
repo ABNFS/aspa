@@ -1,7 +1,6 @@
-from sqlalchemy import Column, VARCHAR, BIGINT, BOOLEAN, text
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, VARCHAR, BIGINT, BOOLEAN
 
-Base = declarative_base()
+from Database import Base
 
 
 class Currency(Base):

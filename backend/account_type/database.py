@@ -1,8 +1,8 @@
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, BIGINT, VARCHAR, BOOLEAN, ForeignKey
 
 from operation_type.database import OperationType
-Base = declarative_base()
+
+from Database import Base
 
 
 class AccountType(Base):

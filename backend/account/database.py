@@ -1,10 +1,9 @@
 from sqlalchemy import Column, VARCHAR, BIGINT, BOOLEAN, ForeignKey
-from sqlalchemy.orm import declarative_base
 
 from currency.database import Currency
 from account_type.database import AccountType
 
-Base = declarative_base()
+from Database import Base
 
 
 class Account(Base):

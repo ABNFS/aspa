@@ -1,7 +1,6 @@
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, BIGINT,BOOLEAN, VARCHAR,CHAR
 
-Base = declarative_base()
+from Database import Base
 
 
 class OperationType(Base):
