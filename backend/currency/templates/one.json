@@ -1,0 +1,6 @@
+{
+   "id": {{ currency.id }},
+   "name": "{{ currency.name}}",
+   "alias": "{{ currency.alias }}",
+   {% if currency.default %}"default": true{% else %}"default": false{% endif %}
+}

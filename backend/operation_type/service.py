@@ -21,3 +21,11 @@ class OperationTypeService:
         if name:
             return OperationTypeRepository.search_by_name(db, name)
         return OperationTypeRepository.get_all(db)
+
+    @staticmethod
+    def delete(db: Session, id: int) -> bool:
+        return OperationTypeRepository.delete(db, id)
+
+    @staticmethod
+    def get(db: Session, id: int) -> OperationType:
+        return OperationTypeRepository.get_by_id(db, id)

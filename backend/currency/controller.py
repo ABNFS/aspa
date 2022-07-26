@@ -10,6 +10,7 @@ from .data import CurrencyData
 from .service import CurrencyService
 
 from startup import get_db
+from Data import DefaultMessageData
 
 templates = Jinja2Templates(directory="currency/templates")
 default_templates = Jinja2Templates(directory="Templates")
@@ -17,15 +18,20 @@ default_templates = Jinja2Templates(directory="Templates")
 app = FastAPI()
 
 
-@app.get("/", response_class=JSONResponse)
-async def search(request: Request, name: Optional[str] = '', db: Session = Depends(get_db)):
+@app.get("/{id}", response_class=JSONResponse, response_model=CurrencyData)
+@app.get("/", response_class=JSONResponse, response_model=list[CurrencyData])
+async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, db: Session = Depends(get_db)):
+    if id >= 0:
+        return templates.TemplateResponse("one.json", {"request": request,
+                                                       "currency": CurrencyService.get(db, id)},
+                                          headers={'content-type': 'application/json'})
     return templates.TemplateResponse("fulldata.json", {"request": request,
                                                         "currencys": CurrencyService.search(db, name)},
                                       headers={'content-type': 'application/json'})
 
 
-@app.put("/", response_class=JSONResponse, status_code=200)
-@app.post("/", response_class=JSONResponse, status_code=201)
+@app.put("/", response_class=JSONResponse, response_model=list[CurrencyData])
+@app.post("/", response_class=JSONResponse, response_model=list[CurrencyData], status_code=201)
 async def create(request: Request, currency: CurrencyData | list[CurrencyData], db: Session = Depends(get_db)):
     currencys: list[CurrencyData] = []
     if isinstance(currency, list):
@@ -40,7 +46,7 @@ async def create(request: Request, currency: CurrencyData | list[CurrencyData], 
                                       )
 
 
-@app.delete("/{id}")
+@app.delete("/{id}", response_class=JSONResponse, response_model=DefaultMessageData)
 async def delete(request: Request, id: int, db: Session = Depends(get_db)):
     if CurrencyService.delete(db, id):
         return default_templates.TemplateResponse('msg.json', {'request': request, 'message':

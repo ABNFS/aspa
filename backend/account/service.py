@@ -23,3 +23,7 @@ class AccountService:
     @staticmethod
     def delete(db: Session, id: int) -> bool:
         return AccountRepository.delete(db, id)
+
+    @staticmethod
+    def get(db: Session, id: int) -> Account:
+        return AccountRepository.get_by_id(db, id)

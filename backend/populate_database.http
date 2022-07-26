@@ -749,6 +749,12 @@ Accept: application/json
 ###
 DELETE http://127.0.0.1:8000/account_type/{{id_acct_excluir}}
 Accept: application/json
+###
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Dólar", "alias": "US$" }
 
 ###
 PUT http://127.0.0.1:8000/currency/

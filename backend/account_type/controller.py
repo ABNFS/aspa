@@ -15,9 +15,9 @@ default = Jinja2Templates(directory='Templates')
 
 app = FastAPI()
 
-@app.put("/", response_class=JSONResponse)
-@app.post("/", response_class=JSONResponse)
-def new(request: Request, account_type: AccountTypeData | list[AccountTypeData], db: Session = Depends(get_db)):
+@app.put("/", response_class=JSONResponse, response_model=list[AccountTypeData], status_code=200)
+@app.post("/", response_class=JSONResponse, response_model=list[AccountTypeData], status_code=201)
+def save(request: Request, account_type: AccountTypeData | list[AccountTypeData], db: Session = Depends(get_db)):
     accounts_type: list[AccountTypeData] = []
     if isinstance(account_type, list):
         for data in account_type:
@@ -25,11 +25,16 @@ def new(request: Request, account_type: AccountTypeData | list[AccountTypeData],
     else:
         accounts_type.append(AccountTypeService.save(db, account_type))
     return templates.TemplateResponse('fulldata.json', {"request": request, "accounts": accounts_type},
-                                      headers={'content-type': 'application/json'})
+                                      headers={'content-type': 'application/json'},
+                                      status_code= 201 if request.method == 'POST' else 200)
 
 
-@app.get("/", response_class=JSONResponse)
-def search(request: Request, name: Optional[str] = "", db: Session = Depends(get_db)):
+@app.get("/{id}", response_class=JSONResponse, response_model=AccountTypeData)
+@app.get("/", response_class=JSONResponse, response_model=list[AccountTypeData])
+def search(request: Request, name: Optional[str] = "", id: Optional[int] = -1, db: Session = Depends(get_db)):
+    if id >= 0:
+        return templates.TemplateResponse('one.json', {"request": request, "account": AccountTypeService.get(db, id)},
+                                          headers={'content-type': 'application/json'})
     return templates.TemplateResponse('fulldata.json', {"request": request,
                                                         "accounts": AccountTypeService.search(db, name)},
                                       headers={'content-type': 'application/json'})

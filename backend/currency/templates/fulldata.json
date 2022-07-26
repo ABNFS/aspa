@@ -1,18 +1,8 @@
-[
-  {% for c in currencys %}
-      {
-      "id": {{ c.id }},
-      "name": "{{ c.name}}",
-      "alias": "{{ c.alias }}",
-  {% if c.default %}
-      "default": true,
-  {% else %}
-    "default": false,
-  {% endif %}
-  {% if loop.last %}
-   }
-  {% else %}
-   },
-  {% endif %}
- {% endfor %}
-]
+[{% for c in currencys %}
+ {
+   "id": {{ c.id }},
+   "name": "{{ c.name}}",
+   "alias": "{{ c.alias }}",
+   {% if c.default %}"default": true{% else %}"default": false{% endif %}
+ {% if loop.last %}}{% else %}},{% endif %}
+{% endfor %}]

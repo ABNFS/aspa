@@ -21,3 +21,7 @@ class OperationTypeRepository:
     @staticmethod
     def get_all(db: Session):
         return GenericsRepository.get_all(db, OperationType)
+
+    @staticmethod
+    def delete(db: Session, id: int) -> bool:
+        return GenericsRepository.delete(db, OperationType, id)

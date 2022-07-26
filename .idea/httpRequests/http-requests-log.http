@@ -1,3 +1,13 @@
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Dólar", "alias": "US$" }
+
+<> 2022-07-26T113921.201.json
+
+###
+
 DELETE http://127.0.0.1:8000/currency/3
 Content-Type: application/json
 Accept: application/json
@@ -576,16 +586,6 @@ Accept: application/json
 {"code": "4.1.6.0", "name": "Estudo", "account_type":5, "parent":35}
 
 <> 2022-07-25T145714-2.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":5, "parent":35}
-
-<> 2022-07-25T145714-1.200.json
 
 ###
 

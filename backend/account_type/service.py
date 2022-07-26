@@ -26,3 +26,7 @@ class AccountTypeService:
     @staticmethod
     def delete(db: Session, id: int) -> bool:
         return AccountTypeRepository.delete(db, id)
+
+    @staticmethod
+    def get(db: Session, id:int) -> AccountType:
+        return AccountTypeRepository.get_by_id(db, id)

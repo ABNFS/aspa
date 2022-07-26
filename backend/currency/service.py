@@ -24,3 +24,7 @@ class CurrencyService:
     @staticmethod
     def delete(db: Session, id: int) -> bool:
         return CurrencyRepository.delete(db, id)
+
+    @staticmethod
+    def get(db: Session, id: int) -> Currency:
+        return CurrencyRepository.get_by_id(db, id)

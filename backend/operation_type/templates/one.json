@@ -1,0 +1,5 @@
+{
+    "id": {{ operation.id }},
+    "name": "{{ operation.name }}",
+    "alias": "{{ operation.alias}}"
+}
