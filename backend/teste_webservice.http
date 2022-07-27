@@ -14,6 +14,25 @@ Accept: application/json
 > {% client.global.set("id_credit", response.body[0].id); %}
 ###
 
+POST http://127.0.0.1:8000/operation-type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Another", "alias": "A"}
+> {% client.global.set("op_excluir", response.body[0].id); %}
+###
+
+PUT http://127.0.0.1:8000/operation-type/
+Content-Type: application/json
+Accept: application/json
+
+{"id": {{op_excluir}},"name": "Extornes", "alias": "E"}
+###
+DELETE http://127.0.0.1:8000/operation-type/{{op_excluir}}
+Content-Type: application/json
+Accept: application/json
+
+###
 POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
@@ -777,4 +796,21 @@ Accept: application/json
 
 {"id": {{id_seiszero}},"code": "2.2.0.0", "name": "Contas Serviço Público", "account_type":{{id_exe}} }
 
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "10.1.6.0.84", "name": "Lucros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
+> {% client.global.set("id_acct_exc", response.body[0].id); %}
+###
+PUT http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"id": {{id_acct_exc}},"code": "10.1.6.0.84", "name": "Excluindo", "account_type":{{id_debit}}, "parent":{{id_novedois}}}
+###
+DELETE http://127.0.0.1:8000/account/{{id_acct_exc}}
+Content-Type: application/json
+Accept: application/json
 ###

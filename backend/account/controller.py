@@ -19,11 +19,19 @@ app = FastAPI()
 
 @app.get("/{id}", response_class=JSONResponse, response_model=AccountData)
 @app.get("/", response_class=JSONResponse, response_model=list[AccountData])
-async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None, db: Session = Depends(get_db)):
+async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None,
+                 db: Session = Depends(get_db)):
     if id >= 0:
-        return templates.TemplateResponse("one.json", {"request": request,
-                                                       "account": AccountService.get(db, id)},
-                                          headers={'content-type': 'application/json'})
+        account = AccountService.get(db, id)
+        if account:
+            return templates.TemplateResponse("one.json", {"request": request,
+                                                           "account": account},
+                                              headers={'content-type': 'application/json'})
+        return default_templates.TemplateResponse("msg.json", {"request": request,
+                                                               "message": {"code": "Erro",
+                                                                           "text": "Account not found"}},
+                                                  headers={"content-type": "application/json"},
+                                                  status_code=404)
     return templates.TemplateResponse("fulldata.json", {"request": request,
                                                         "accounts": AccountService.search(db, name, code)},
                                       headers={'content-type': 'application/json'})
@@ -41,7 +49,7 @@ async def create(request: Request, account: AccountData | list[AccountData], db:
         accounts.append(AccountService.save(db, account))
     return templates.TemplateResponse("fulldata.json", {"request": request, "accounts": accounts},
                                       headers={'content-type': 'application/json'},
-                                      status_code= 201 if request.method == 'POST' else 200)
+                                      status_code=201 if request.method == 'POST' else 200)
 
 
 @app.delete("/{id}", response_model=DefaultMessageData)

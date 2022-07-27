@@ -33,8 +33,15 @@ def save(request: Request, account_type: AccountTypeData | list[AccountTypeData]
 @app.get("/", response_class=JSONResponse, response_model=list[AccountTypeData])
 def search(request: Request, name: Optional[str] = "", id: Optional[int] = -1, db: Session = Depends(get_db)):
     if id >= 0:
-        return templates.TemplateResponse('one.json', {"request": request, "account": AccountTypeService.get(db, id)},
+        account_type = AccountTypeService.get(db, id)
+        if account_type:
+            return templates.TemplateResponse('one.json', {"request": request, "account": account_type},
                                           headers={'content-type': 'application/json'})
+        return default.TemplateResponse('msg.json', {"request": request,
+                                                     "message": {"code": "erro",
+                                                                 "text": "Account type not found"}},
+                                        headers={"content-type": "application/json"},
+                                        status_code=404)
     return templates.TemplateResponse('fulldata.json', {"request": request,
                                                         "accounts": AccountTypeService.search(db, name)},
                                       headers={'content-type': 'application/json'})

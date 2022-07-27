@@ -22,9 +22,15 @@ app = FastAPI()
 @app.get("/", response_class=JSONResponse, response_model=list[CurrencyData])
 async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, db: Session = Depends(get_db)):
     if id >= 0:
-        return templates.TemplateResponse("one.json", {"request": request,
-                                                       "currency": CurrencyService.get(db, id)},
-                                          headers={'content-type': 'application/json'})
+        currency = CurrencyService.get(db, id)
+        if currency:
+            return templates.TemplateResponse("one.json", {"request": request, "currency": currency},
+                                              headers={'content-type': 'application/json'})
+        return default_templates.TemplateResponse("msg.json", {"request": request,
+                                                               "messagem": {"code": "Erro",
+                                                                            "text": "Currency not found"}},
+                                                  headers={"content-type": "application/json"},
+                                                  status_code=404)
     return templates.TemplateResponse("fulldata.json", {"request": request,
                                                         "currencys": CurrencyService.search(db, name)},
                                       headers={'content-type': 'application/json'})
@@ -52,6 +58,8 @@ async def delete(request: Request, id: int, db: Session = Depends(get_db)):
         return default_templates.TemplateResponse('msg.json', {'request': request, 'message':
             {'code': 'ok', 'text': f'The currency with {id} was deleted.'}},
                                                   headers={'content-type': 'aplication/json'})
-    return default_templates.TemplateResponse('msg.json', {'request': request, 'message':
-            {'code': 'Error', 'text': f'Impossible to delete the currency with {id}.'}},
-                                                  headers={'content-type': 'aplication/json'}, status_code=404)
+    return default_templates.TemplateResponse('msg.json', {'request': request,
+                                                           'message': {'code': 'Erro',
+                                                                       'text': f'Impossible delete the currency {id}'}},
+                                                  headers={'content-type': 'aplication/json'},
+                                              status_code=404)
