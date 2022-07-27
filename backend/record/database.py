@@ -1,19 +1,24 @@
 from sqlalchemy import Column, BIGINT, DATE, BOOLEAN, VARCHAR, ForeignKey
+from sqlalchemy.orm import relationship
 
 from account.database import Account
 
-from Database import Base
+from Database import Base, Mix
 
 
-class Record(Base):
+class TagRecord(Base):
+    __tablename__ = 'tag_record'
+    record = ForeignKey(BIGINT, ForeignKey('Record.id'), primary_key=True)
+    tag = ForeignKey(BIGINT, ForeignKey('Tag.id'), primary_key=True)
 
-    __tablename__ = 'record'
 
-    id = Column(BIGINT, primary_key=True, autoincrement=True)
+class Record(Base, Mix):
+
     anotation = Column(VARCHAR(100), nullable=True)
     date = Column(DATE, nullable=False)
     amount = Column(BIGINT, nullable=False)
     account_debit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
     account_credit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
-    deleted = Column(BOOLEAN, default=False, nullable=True)
-    tags = []
+    my_tags = relationship('Tag', secondary=TagRecord, back_populates='my_records')
+
+    my_accounts = relationship('Account', back_populates='records')

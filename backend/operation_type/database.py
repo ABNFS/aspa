@@ -1,12 +1,12 @@
-from sqlalchemy import Column, BIGINT,BOOLEAN, VARCHAR,CHAR
+from sqlalchemy import Column, VARCHAR,CHAR
+from sqlalchemy.orm import relationship
 
-from Database import Base
+from Database import Base, Mix
 
-
-class OperationType(Base):
-
+class OperationType(Base, Mix):
     __tablename__ = 'operation_type'
-    id = Column(BIGINT, primary_key=True, autoincrement='auto')
+
     name = Column(VARCHAR(20), nullable=False, unique=True)
     alias = Column(CHAR(1), nullable=False, unique=True)
-    deleted = Column(BOOLEAN, default=False)
+
+    accounts_type = relationship("AccountType", back_populates="my_operation")

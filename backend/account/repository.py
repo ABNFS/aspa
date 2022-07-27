@@ -8,7 +8,11 @@ class AccountRepository:
 
     @staticmethod
     def search_by_name(db: Session, name: str = "") -> list[Account]:
-        return GenericsRepository.search_by_name(db, Account, name)
+        return GenericsRepository.search_by_str_fields(db, Account, {"name": name})
+
+    @staticmethod
+    def search_by_name_and_code(db: Session, name: str, code: str) -> list[Account]:
+        return GenericsRepository.search_by_str_fields(db, Account, {"name": name, "code": code})
 
     @staticmethod
     def get_all(db: Session) -> list[Account]:

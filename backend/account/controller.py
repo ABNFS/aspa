@@ -19,13 +19,13 @@ app = FastAPI()
 
 @app.get("/{id}", response_class=JSONResponse, response_model=AccountData)
 @app.get("/", response_class=JSONResponse, response_model=list[AccountData])
-async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, db: Session = Depends(get_db)):
+async def search(request: Request, name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None, db: Session = Depends(get_db)):
     if id >= 0:
         return templates.TemplateResponse("one.json", {"request": request,
                                                        "account": AccountService.get(db, id)},
                                           headers={'content-type': 'application/json'})
     return templates.TemplateResponse("fulldata.json", {"request": request,
-                                                        "accounts": AccountService.search(db, name)},
+                                                        "accounts": AccountService.search(db, name, code)},
                                       headers={'content-type': 'application/json'})
 
 

@@ -88,10 +88,11 @@ def upgrade() -> None:
 
     op.create_table(
         "tag_record",
-        sa.Column('id', sa.BIGINT, primary_key=True, autoincrement="auto"),
-        sa.Column('tag', sa.BIGINT, sa.ForeignKey("tag.id"), nullable=False),
-        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), nullable=False),
+        sa.Column('tag', sa.BIGINT, sa.ForeignKey("tag.id"), primary_key=True),
+        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), primary_key=True),
     )
+
+    op.create_index('id_tag', 'tag_record', ['tag'])
 
 def downgrade() -> None:
     op.drop_table("tag_record")

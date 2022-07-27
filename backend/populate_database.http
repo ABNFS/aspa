@@ -1,4 +1,4 @@
-POST http://127.0.0.1:8000/operation_type/
+POST http://127.0.0.1:8000/operation-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -6,7 +6,7 @@ Accept: application/json
 > {% client.global.set("id_debit", response.body[0].id); %}
 
 ###
-POST http://127.0.0.1:8000/operation_type/
+POST http://127.0.0.1:8000/operation-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -14,7 +14,7 @@ Accept: application/json
 > {% client.global.set("id_credit", response.body[0].id); %}
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -23,7 +23,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -32,7 +32,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -41,7 +41,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -50,7 +50,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -59,7 +59,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -68,7 +68,7 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -185,8 +185,8 @@ Content-Type: application/json
 Accept: application/json
 
 
-{"code": "1.1.3.0", "name": "Investimenos à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
-> {% client.global.set("id_tresoito", response.body[0].id); %}
+{"code": "1.1.3.0", "name": "Investimentos à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
+> {% client.global.set("id_quatrooito", response.body[0].id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -406,10 +406,10 @@ Accept: application/json
 {"code": "2.2.3.0", "name": "Gás", "account_type":{{id_exe}}, "parent":{{id_seiszero}}, "operate": true},
 {"code": "2.3.1.0", "name": "Imposto de Renda", "account_type":{{id_exe}}, "parent":{{id_seisum}},"operate": true},
 {"code": "2.3.2.0", "name": "IOF", "account_type":{{id_exe}}, "parent":{{id_seisum}}, "operate": true},
-{"code": "2.3.1.0", "name": "Não negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}},"operate": true},
-{"code": "2.3.2.0", "name": "Negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
-{"code": "2.3.3.0", "name": "Sem juros", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
-{"code": "2.1.1.1", "name": "rates", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
+{"code": "2.4.1.0", "name": "Não negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}},"operate": true},
+{"code": "2.4.2.0", "name": "Negociadas", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
+{"code": "2.4.3.0", "name": "Sem juros", "account_type":{{id_exe}}, "parent":{{id_seisdois}}, "operate": true},
+{"code": "2.1.1.1", "name": "Taxas", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
 {"code": "2.1.1.2", "name": "Serviços", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
 {"code": "2.1.1.3", "name": "Título Capitalização", "account_type":{{id_exe}}, "parent":{{id_seistres}},"operate": true},
 {"code": "2.1.1.4", "name": "Previdência", "account_type":{{id_exe}}, "parent":{{id_seistres}}, "operate": true},
@@ -423,7 +423,7 @@ Accept: application/json
 {"code": "2.1.3.5", "name": "Financimaneto Carro", "account_type":{{id_exe}}, "parent":{{id_seiscinco}},"operate": true},
 {"code": "2.1.3.6", "name": "Financimaneto Energia Solar", "account_type":{{id_exe}}, "parent":{{id_seiscinco}},"operate": true},
 {"code": "2.1.3.7", "name": "Consignado", "account_type":{{id_exe}}, "parent":{{id_seiscinco}}, "operate": true},
-{"code": "2.1.4.1", "name": "Caixa", "account_type":{{id_exe}}, "parent":{{id_seissete}}, "operate": true},
+{"code": "2.1.4.1", "name": "Caixa", "account_type":{{id_exe}}, "parent":{{id_seisseis}}, "operate": true},
 {"code": "3.1.0.0", "name": "Resultado", "account_type":{{id_pl}}, "parent":{{id_treze}}, "operate": true}
 ]
 ###
@@ -732,7 +732,7 @@ Accept: application/json
         ]
 
 ###
-POST http://127.0.0.1:8000/account_type/
+POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
@@ -740,30 +740,41 @@ Accept: application/json
 > {% client.global.set("id_acct_excluir", response.body[0].id); %}
 
 ###
-PUT  http://127.0.0.1:8000/account_type/
+PUT  http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
 {"id": {{id_acct_excluir}}, "name": "Excluir4", "alias": "ee3", "operation": 2 }
 
 ###
-DELETE http://127.0.0.1:8000/account_type/{{id_acct_excluir}}
+DELETE http://127.0.0.1:8000/account-type/{{id_acct_excluir}}
 Accept: application/json
+
 ###
 POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
 {"name": "Dólar", "alias": "US$" }
+> {% client.global.set("id_curr_excluir", response.body[0].id); %}
 
 ###
 PUT http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"id": 3, "name": "Excluir2", "alias": "EE$" }
+{"id": {{id_curr_excluir}}, "name": "Excluir2", "alias": "EE$" }
 
 ###
-DELETE http://127.0.0.1:8000/currency/3
+DELETE http://127.0.0.1:8000/currency/{{id_curr_excluir}}
 Content-Type: application/json
 Accept: application/json
+
+###
+PUT http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"id": {{id_seiszero}},"code": "2.2.0.0", "name": "Contas Serviço Público", "account_type":{{id_exe}} }
+
+###

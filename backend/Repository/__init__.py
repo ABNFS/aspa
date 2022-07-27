@@ -1,7 +1,7 @@
-from typing import ClassVar, Any
+from typing import ClassVar, Any, Dict
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session, declarative_base
+from sqlalchemy.orm import Session, declarative_base, DeclarativeMeta
 
 Base = declarative_base()
 
@@ -27,6 +27,21 @@ class GenericsRepository:
     def search_by_name(db: Session, cls: ClassVar, name: str = "") -> list:
         result: list = []
         query = select(cls).where(cls.name.ilike(f'%{name}%')).where(cls.deleted == False)
+        for account in db.scalars(query):
+            result.append(account)
+        return result
+
+    @staticmethod
+    def search_by_str_fields(db: Session, cls: ClassVar, fields: Dict[str, str]) -> list:
+        result: list = []
+        query = select(cls).where(cls.deleted == False)
+        for field in fields:
+            try:
+                if fields[field]:
+                    attr = cls.__dict__[field]
+                    query = query.where(attr.ilike(f'%{fields[field]}%'))
+            except KeyError:
+                raise Exception('The field does not existe!')
         for account in db.scalars(query):
             result.append(account)
         return result

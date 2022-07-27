@@ -9,8 +9,11 @@ from sqlalchemy.orm import Session
 
 class AccountService:
     @staticmethod
-    def search(db: Session, name: str = ""):
-        return AccountRepository.search_by_name(db, name) if name else AccountRepository.get_all(db)
+    def search(db: Session, name: str = "", code: str = ""):
+        if name or code:
+            return AccountRepository.search_by_name_and_code(db, name, code)
+        else:
+            return AccountRepository.get_all(db)
 
     @staticmethod
     def save(db: Session, account: AccountData) -> Account:
