@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from sqlalchemy import VARCHAR, Column
+from sqlalchemy import VARCHAR, Column, Table, ForeignKey
 from sqlalchemy.orm import relationship
 
 from default import ServiceDefault as Service, ControllerDefault as Controller, \
@@ -10,10 +10,9 @@ from default import ServiceDefault as Service, ControllerDefault as Controller, 
 
 from record.Record import tag_recorde
 
-
 class Tag(Base, Mix):
     name = Column(VARCHAR(100), nullable=False)
-    # my_records = relationship('Record', secondary=tag_recorde, back_populates='my_tags')
+    my_records = relationship('Record', secondary=tag_recorde, back_populates='my_tags')
 
 
 class TagData(DataModelDefault):

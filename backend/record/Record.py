@@ -2,7 +2,7 @@ from typing import Optional
 from datetime import date
 
 from fastapi import FastAPI
-from  fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse
 
 from sqlalchemy.orm import relationship
 from sqlalchemy import BIGINT, VARCHAR, DATE, Column, ForeignKey, Table
@@ -12,22 +12,21 @@ from default import ServiceDefault as Service, ControllerDefault as Controller, 
 
 from account.Account import Account
 
-
 tag_recorde = Table(
     "tag_record",
     Base.metadata,
-    Column("record", ForeignKey("Record.id"), primary_key=True),
-    Column("tag", ForeignKey("Tag.id"), primary_key=True)
+    Column("record", ForeignKey("record.id"), primary_key=True),
+    Column("tag", ForeignKey("tag.id"), primary_key=True)
 )
 
-class Record(Base, Mix):
 
+class Record(Base, Mix):
     anotation = Column(VARCHAR(100), nullable=True)
     date = Column(DATE, nullable=False)
     amount = Column(BIGINT, nullable=False)
     account_debit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
     account_credit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
-    # my_tags = relationship('Tag', secondary=tag_recorde, back_populates='my_records')
+    my_tags = relationship('Tag', secondary=tag_recorde, back_populates='my_records')
 
     my_credit_accounts = relationship('Account', back_populates='records_with_credits', foreign_keys=[account_credit])
     my_debit_accounts = relationship('Account', back_populates='records_with_debits', foreign_keys=[account_debit])
@@ -44,6 +43,7 @@ class RecordData(DataModelDefault):
 
 app = FastAPI()
 __controller__ = Controller(Service(database_class=Record))
+
 
 @app.get("/{id}", response_class=JSONResponse, response_model=RecordData)
 @app.get("/", response_class=JSONResponse, response_model=list[RecordData])
