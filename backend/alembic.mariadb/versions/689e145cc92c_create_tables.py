@@ -81,8 +81,8 @@ def upgrade() -> None:
         sa.Column('anotation', sa.VARCHAR(200), nullable=False),
         sa.Column('date', sa.DATE, nullable=False),
         sa.Column('amount', sa.BIGINT, nullable=False),
-        sa.Column('accountDebit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
-        sa.Column('accountCredit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
+        sa.Column('account_debit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
+        sa.Column('account_credit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 

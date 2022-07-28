@@ -1,8 +1,0 @@
-[{% for a in accounts %}
-{
-"id": {{ a. id }},
-"name": "{{ a.name}}",
-"alias": "{{ a.alias }}",
-"operation": {{ a.operation }}
-{% if loop.last %}}{% else %}},{% endif %}
-{% endfor %}]

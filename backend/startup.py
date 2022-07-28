@@ -4,25 +4,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.future import Engine
 from sqlalchemy.orm import sessionmaker
 
+
 from typing import Callable
 
 __database_url__: str = ''
 __database_engine__: Engine = None
 
-__SessionLocal__: Callable = None
-
-
-# Dependency
-def get_db():
-    db = __SessionLocal__()
-    try:
-        yield db
-    finally:
-        db.close()
+SessionLocal: Callable = None
 
 
 def __startup__() -> None:
-    global __database_url__, __database_engine__, __SessionLocal__
+    global __database_url__, __database_engine__, SessionLocal
 
     _FILE: str = 'config.yaml'
     _DATABASE_URL_ENV_NAME = 'DATABASE_URL'
@@ -46,7 +38,7 @@ def __startup__() -> None:
     else:
         __database_engine__ = create_engine(__database_url__, echo=_DEBUG, future=True)
 
-    __SessionLocal__ = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False)
+    SessionLocal = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False)
 
 
 __startup__()

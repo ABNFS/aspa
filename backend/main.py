@@ -2,15 +2,19 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from starlette.routing import Mount
 
-from account.controller import app as account
-from account_type.controller import app as account_type
-from currency.controller import app as currency
-from operation_type.controller import app as operation_type
+from account import app as account_app
+from account_type import app as account_type
+from currency import app as currency_app
+from operation_type import app as operation_app
+from record import app as record_app
+from tag import app as tag_app
 
-app = FastAPI(routes=[Mount("/account", account),
+app = FastAPI(routes=[Mount("/account", account_app),
                       Mount("/account-type", account_type),
-                      Mount("/currency", currency),
-                      Mount("/operation-type", operation_type)
+                      Mount("/currency", currency_app),
+                      Mount("/operation-type", operation_app),
+                      Mount("/record", record_app),
+                      Mount("/tag", tag_app)
                       ])
 
 

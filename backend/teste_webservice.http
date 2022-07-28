@@ -19,18 +19,23 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Another", "alias": "A"}
-> {% client.global.set("op_excluir", response.body[0].id); %}
+> {% client.global.set("id_another", response.body[0].id); %}
 ###
 
 PUT http://127.0.0.1:8000/operation-type/
 Content-Type: application/json
 Accept: application/json
 
-{"id": {{op_excluir}},"name": "Extornes", "alias": "E"}
+{"id": {{id_another}},"name": "Extornes", "alias": "E"}
 ###
-DELETE http://127.0.0.1:8000/operation-type/{{op_excluir}}
+DELETE http://127.0.0.1:8000/operation-type/{{id_another}}
 Content-Type: application/json
 Accept: application/json
+
+###
+#DELETE http://127.0.0.1:8000/operation-type/4
+#Content-Type: application/json
+#Accept: application/json
 
 ###
 POST http://127.0.0.1:8000/account-type/

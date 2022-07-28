@@ -1,6 +1,0 @@
-{
-    "id": {{ account. id }},
-    "name": "{{ account.name}}",
-    "alias": "{{ account.alias }}",
-    "operation": {{ account.operation }}
-}
