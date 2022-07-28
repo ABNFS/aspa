@@ -10,8 +10,6 @@ from sqlalchemy import BIGINT, VARCHAR, DATE, Column, ForeignKey, Table
 from default import ServiceDefault, ControllerDefault as Controller, \
     DataModelDefault, Mix, MessageDataDefault, Base
 
-from account.Account import Account
-
 tag_recorde = Table(
     "tag_record",
     Base.metadata,
@@ -19,37 +17,66 @@ tag_recorde = Table(
     Column("tag", ForeignKey("tag.id"), primary_key=True)
 )
 
+account_record = Table(
+    "account_record",
+    Base.metadata,
+    Column('record', BIGINT, ForeignKey("record.id"), primary_key=True),
+    Column('account', BIGINT, ForeignKey("account.id"), primary_key=True),
+    Column('operation', BIGINT, ForeignKey("operation_type.id"), primary_key=True),
+    Column('amount', BIGINT, nullable=False)
+)
+
 
 class Record(Base, Mix):
     anotation = Column(VARCHAR(100), nullable=True)
     date = Column(DATE, nullable=False)
     amount = Column(BIGINT, nullable=False)
-    account_debit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
-    account_credit = Column(BIGINT, ForeignKey(Account.id), nullable=False)
     my_tags = relationship('Tag', secondary=tag_recorde, back_populates='my_records')
+    my_accounts = relationship('Account', secondary=account_record, back_populates='my_records')
 
-    my_credit_accounts = relationship('Account', back_populates='records_with_credits', foreign_keys=[account_credit])
-    my_debit_accounts = relationship('Account', back_populates='records_with_debits', foreign_keys=[account_debit])
+    def __str__(self):
+        return f'{self.anotation} at {str(self.date)} by {str(self.amount / 100)}'
 
 
 class RecordData(DataModelDefault):
-    from account.Account import AccountData
     anotation: Optional[str]
     date: Optional[date]
     amount: Optional[int]
-    account_debit: Optional[int | AccountData]
-    account_credit: Optional[int | AccountData]
     my_tags: Optional[list[int]]
+    accounts: Optional[list[dict]]
 
 
 class Service(ServiceDefault):
 
-    def save(self, db: Session, data: RecordData):
-        _my_tags: list[int] = data.my_tags
+    def save(self, db: Session, data: RecordData) -> tuple[RecordData, int]:
+        def fail(item_id: int) -> tuple[dict, int]:
+            self.delete(db, item_id)
+            return {"code": "Erro",
+                    "text": "Informe account with account, operation and amount to Recorde"
+                    }, status.HTTP_400_BAD_REQUEST
+
+        _my_tags: list[int] = data.my_tags if "my_tags" in data.__dict__ else None
+        _accounts: list[dict] = data.accounts if "accounts" in data.__dict__ else None
         _item, _status = super().save(db, data)
         if _status == status.HTTP_201_CREATED and "id" in _item:
-            for tag in _my_tags:
-                self.repository.raw_insert(db, tag_recorde, tag=tag, record=_item["id"])
+            if _my_tags:
+                for tag in _my_tags:
+                    self.repository.raw_insert(db, tag_recorde, tag=tag, record=_item["id"])
+            if _accounts: #TODO: check ammout sum
+                for account_data in _accounts:
+                    if ("account" in account_data and "amount" in account_data and
+                            ("operation" in account_data or "operation_type" in account_data)):
+                        self.repository.raw_insert(db, account_record, account=account_data["account"],
+                                                   operation=account_data["operation"] \
+                                                       if "operation" in account_data \
+                                                       else account_data["operation_type"],
+                                                   amount=account_data["amount"],
+                                                   record=_item["id"])
+                    else:
+                        _item, _status = fail(_item["id"])
+                        break
+            else:
+                _item, _status = fail(_item["id"])
         return _item, _status
 
 

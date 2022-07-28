@@ -10,10 +10,11 @@ from default import Mix, Base, \
 from sqlalchemy import Column, ForeignKey, VARCHAR, BIGINT, BOOLEAN
 from sqlalchemy.orm import relationship, declared_attr
 
+from account_type.AccountType import AccountType
+from currency.Currency import Currency
+from record.Record import account_record
 
 class Account(Mix, Base):
-    from account_type.AccountType import AccountType
-    from currency.Currency import Currency
 
     code = Column(VARCHAR(20), nullable=False)
     name = Column(VARCHAR(200), nullable=False)
@@ -33,10 +34,10 @@ class Account(Mix, Base):
 
     my_account_type = relationship("AccountType", back_populates="accounts")
     my_currency = relationship("Currency", back_populates="accounts")
-    records_with_credits = relationship('Record', back_populates="my_credit_accounts",
-                                       foreign_keys="Record.account_credit")
-    records_with_debits = relationship('Record', back_populates="my_debit_accounts",
-                                       foreign_keys="Record.account_debit")
+    my_records = relationship('Record', back_populates="my_accounts", secondary=account_record)
+
+    def __str__(self):
+        return f'{self.code} - {self.name}{ f" ({self.alias})" if self.alias else None} - {str(self.account_type)}'
 
 
 class AccountData(DataModelDefault):

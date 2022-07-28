@@ -24,6 +24,9 @@ class CurrencyData(DataModelDefault):
     default: Optional[bool]
     deleted: Optional[bool]
 
+    def __str__(self):
+        return f'{self.name}: {self.alias}'
+
 app: FastAPI = FastAPI()
 __controller__: Controller = Controller(Service(database_class = Currency))
 

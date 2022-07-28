@@ -18,6 +18,9 @@ class OperationType(Base, Mix):
 
     accounts_type = relationship("AccountType", back_populates="my_operation")
 
+    def __str__(self):
+        return f'{self.name} ({self.alias})'
+
 
 class OperationTypeData(DataModelDefault):
     id: Optional[int]

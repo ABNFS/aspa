@@ -83,21 +83,28 @@ def upgrade() -> None:
         sa.Column('anotation', sa.VARCHAR(200), nullable=False),
         sa.Column('date', sa.DATE, nullable=False),
         sa.Column('amount', sa.BIGINT, nullable=False),
-        sa.Column('account_debit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
-        sa.Column('account_credit', sa.BIGINT, sa.ForeignKey("account.id"), nullable=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
+    )
+
+    op.create_table(
+        "account_record",
+        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), primary_key=True),
+        sa.Column('account', sa.BIGINT, sa.ForeignKey("account.id"), primary_key=True),
+        sa.Column('operation', sa.BIGINT, sa.ForeignKey("operation_type.id"), primary_key=True),
+        sa.Column('amount', sa.BIGINT, nullable=False)
     )
 
     op.create_table(
         "tag_record",
         sa.Column('tag', sa.BIGINT, sa.ForeignKey("tag.id"), primary_key=True),
-        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), primary_key=True),
+        sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), primary_key=True)
     )
 
     op.create_index('id_tag', 'tag_record', ['tag'])
 
 def downgrade() -> None:
     op.drop_table("tag_record")
+    op.drop_table("account_record")
     op.drop_table("record")
     op.drop_table("tag")
     op.drop_table("account")

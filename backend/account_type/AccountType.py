@@ -21,6 +21,8 @@ class AccountType(Base, Mix):
     my_operation = relationship("OperationType", back_populates="accounts_type")
     accounts = relationship("Account", back_populates="my_account_type")
 
+    def __str__(self):
+        return f'{self.name} ({self.alias}) - [{str(self.operation)}]'
 
 class AccountTypeData(DataModelDefault):
     id: Optional[int]

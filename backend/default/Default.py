@@ -15,6 +15,7 @@ __db__: Session = None
 Base = declarative_base()
 __MAX_DEEP__: int = 4
 
+
 @declarative_mixin
 class Mix:
 
@@ -89,10 +90,11 @@ class RepositoryDefault:
         db.execute(stm)
         db.commit()
 
-    def save(self, db: Session, data: Base) -> str:
+    def save(self, db: Session, data: Base, commit: bool = True) -> str:
         db.add(data)
-        db.commit()
-        db.refresh(data)
+        if commit:
+            db.commit()
+            db.refresh(data)
         return make_dict(data)
 
     def search_by_name(self, db: Session, cls: ClassVar[Base], name: str = "") -> list:
@@ -129,13 +131,14 @@ class RepositoryDefault:
     def get_by_id(self, db: Session, cls: ClassVar[Base], id: int):
         return make_dict(self.__get_by_id__(db, cls, id))
 
-    def delete(self, db: Session, cls: ClassVar[Base], id: int):
+    def delete(self, db: Session, cls: ClassVar[Base], id: int, commit: bool = True):
         obj = self.__get_by_id__(db, cls, id)
         if obj:
             obj.deleted = True
             db.add(obj)
-            db.commit()
-            db.refresh(obj)
+            if commit:
+                db.commit()
+                db.refresh(obj)
             return obj.deleted
         return False
 
@@ -180,7 +183,6 @@ class ServiceDefault:
     def get(self, db: Session, id: int):
         item = self.repository.get_by_id(db, self.database_class, id)
         return item, status.HTTP_200_OK if item else status.HTTP_404_NOT_FOUND
-
 
     def delete(self, db: Session, id: int):
         deleted = self.repository.delete(db, self.database_class, id)
@@ -246,7 +248,8 @@ class ControllerDefault:
 
         return JSONResponse(message if _status == status.HTTP_404_NOT_FOUND else _item, status_code=_status)
 
-    def delete(self, service: Optional[ServiceDefault] = None, id: Optional[int] = -1, message_sucess: dict[str, str] = None,
+    def delete(self, service: Optional[ServiceDefault] = None, id: Optional[int] = -1,
+               message_sucess: dict[str, str] = None,
                message_fail: Optional[dict[str, str]] = None):
         if service is None:
             service = self.service
