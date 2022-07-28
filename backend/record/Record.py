@@ -1,13 +1,13 @@
 from typing import Optional
 from datetime import date
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Session
 from sqlalchemy import BIGINT, VARCHAR, DATE, Column, ForeignKey, Table
 
-from default import ServiceDefault as Service, ControllerDefault as Controller, \
+from default import ServiceDefault, ControllerDefault as Controller, \
     DataModelDefault, Mix, MessageDataDefault, Base
 
 from account.Account import Account
@@ -35,10 +35,22 @@ class Record(Base, Mix):
 class RecordData(DataModelDefault):
     from account.Account import AccountData
     anotation: Optional[str]
-    data: Optional[date]
+    date: Optional[date]
     amount: Optional[int]
     account_debit: Optional[int | AccountData]
     account_credit: Optional[int | AccountData]
+    my_tags: Optional[list[int]]
+
+
+class Service(ServiceDefault):
+
+    def save(self, db: Session, data: RecordData):
+        _my_tags: list[int] = data.my_tags
+        _item, _status = super().save(db, data)
+        if _status == status.HTTP_201_CREATED and "id" in _item:
+            for tag in _my_tags:
+                self.repository.raw_insert(db, tag_recorde, tag=tag, record=_item["id"])
+        return _item, _status
 
 
 app = FastAPI()
@@ -53,8 +65,8 @@ async def search(name: Optional[str] = '', id: Optional[int] = -1):
 
 @app.put("/", response_class=JSONResponse, response_model=list[RecordData])
 @app.post("/", response_class=JSONResponse, response_model=list[RecordData], status_code=201)
-async def create(account: RecordData | list[RecordData]):
-    return __controller__.new(data=account)
+async def create(record: RecordData | list[RecordData]):
+    return __controller__.new(data=record)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)

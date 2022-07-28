@@ -624,14 +624,40 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-        [
-            {"code": "4.1.1.1", "name": "Aluguel", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true},
-            {"code": "4.1.1.2", "name": "Diárias", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true},
-            {"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},
-             "operate": true},
-            {"code": "4.1.1.4", "name": "Segurança Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},
-             "operate": true},
+{"code": "4.1.1.1", "name": "Aluguel", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true}
+> {% client.global.set("id_cred_account_um", response.body[0].id); %}
 
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.1.2", "name": "Diárias", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true}
+> {% client.global.set("id_cred_account_dois", response.body[0].id); %}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},"operate": true}
+> {% client.global.set("id_debi_account_um", response.body[0].id); %}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+
+{"code": "4.1.1.4", "name": "Segurança Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},"operate": true}
+> {% client.global.set("id_debi_account_dois", response.body[0].id); %}
+
+###
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+       [
             {"code": "4.1.2.1", "name": "Gasolina", "account_type":{{id_des}}, "parent":{{id_novequatro}}, "operate": true},
             {"code": "4.1.2.2", "name": "Passagens", "account_type":{{id_des}}, "parent":{{id_novequatro}}, "operate": true},
             {"code": "4.1.2.3", "name": "Diárias Hotel", "account_type":{{id_des}}, "parent":{{id_novequatro}},
@@ -818,4 +844,68 @@ Accept: application/json
 DELETE http://127.0.0.1:8000/account/{{id_acct_exc}}
 Content-Type: application/json
 Accept: application/json
+###
+
+POST http://127.0.0.1:8000/tag/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Apagar"}
+> {% client.global.set("id_tag_um", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/tag/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Apagar Também"}
+> {% client.global.set("id_tag_dois", response.body[0].id); %}
+###
+POST http://127.0.0.1:8000/tag/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Nova"}
+> {% client.global.set("id_tag_tres", response.body[0].id); %}
+###
+
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Compra no mercado", "date": "2020-05-12", "amount":40000, "account_debit":{{id_debi_account_um}}, "account_credit":{{id_cred_account_um}}}
+> {% client.global.set("id_mov_um", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Carro novo", "date": "2020-05-12", "amount":10000000, "account_debit":{{id_debi_account_dois}}, "account_credit":{{id_cred_account_um}}}
+> {% client.global.set("id_mov_dois", response.body[0].id); %}
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Salários", "date": "2020-06-21", "amount":7789432, "account_debit":{{id_debi_account_um}},
+"account_credit":{{id_cred_account_dois}},
+"my_tags": [{{id_tag_tres}}, {{id_tag_dois}}]
+}
+> {% client.global.set("id_mov_tre", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Outros", "date": "2020-06-21", "amount":2231, "account_debit":19,
+"account_credit":63,
+"my_tags": [1, 3]
+}
+> {% client.global.set("id_mov_quatro", response.body[0].id); %}
 ###

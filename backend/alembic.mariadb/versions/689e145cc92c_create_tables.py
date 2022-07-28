@@ -67,6 +67,7 @@ def upgrade() -> None:
         sa.Column('operate', sa.BOOLEAN, nullable=False, default=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )
+    op.create_index('code_account', 'account', ['code'])
 
     op.create_table(
         "tag",
@@ -74,6 +75,7 @@ def upgrade() -> None:
         sa.Column('name', sa.VARCHAR(200), nullable=False, unique=True),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )
+    op.create_index('name_tag', 'tag', ['name'])
 
     op.create_table(
         "record",

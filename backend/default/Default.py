@@ -1,8 +1,10 @@
 from typing import Optional, ClassVar, Any
+from datetime import date, datetime
 
 from fastapi.responses import JSONResponse
+from fastapi import status
 from pydantic import BaseModel
-from sqlalchemy import select, Column, BIGINT, BOOLEAN
+from sqlalchemy import select, Column, BIGINT, BOOLEAN, insert, Table
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session, declarative_base, declarative_mixin, declared_attr
 
@@ -11,7 +13,7 @@ from startup import SessionLocal
 __db__: Session = None
 
 Base = declarative_base()
-
+__MAX_DEEP__: int = 4
 
 @declarative_mixin
 class Mix:
@@ -24,21 +26,24 @@ class Mix:
     deleted = Column(BOOLEAN, default=False)
 
 
-__visited_objs__ = []
-
-
-def make_dict(obj: Base):
+def make_dict(obj: Base, atual_deep: int = 0, max_deep: int = __MAX_DEEP__):
     # based in aswner https://stackoverflow.com/a/10664192/2638687
-    global __visited_objs__
-
+    atual_deep += 1
     if isinstance(obj.__class__, DeclarativeMeta):
-        if id(obj) in __visited_objs__:
-            return None
-        __visited_objs__.append(id(obj))
+        if atual_deep >= max_deep:
+            return str(obj)
+        dict_obj = dict()
+        fields_to_translate = [x for x in dir(obj) if x not in ['deleted', 'metadata'] and x[0] != '_']
+        for field in fields_to_translate:
+            _obj_field = obj.__getattribute__(field)
+            if isinstance(_obj_field, (date, datetime)):
+                _obj_field = str(_obj_field)
+            elif isinstance(_obj_field.__class__, (DeclarativeMeta, list, tuple)):
+                _obj_field = make_dict(_obj_field, atual_deep=atual_deep)
+            elif not isinstance(_obj_field, (str, int, dict)):
+                continue
+            dict_obj[field] = _obj_field
 
-        dict_obj = {}
-        for field in [x for x in obj.__dict__ if not x.startswith('_') and x != 'metadata' and x != 'deleted']:
-            dict_obj[field] = obj.__getattribute__(field)
         return dict_obj
     return obj
 
@@ -75,9 +80,14 @@ class RepositoryDefault:
     def get_all(self, db: Session, cls: ClassVar[Base]) -> list:
         result: list = []
         query = select(cls).where(cls.deleted == False)
-        for account in db.scalars(query):
-            result.append(make_dict(account))
+        for item in db.scalars(query):
+            result.append(make_dict(item))
         return result
+
+    def raw_insert(self, db: Session, table: Table, **kwargs):
+        stm = insert(table).values(**kwargs)
+        db.execute(stm)
+        db.commit()
 
     def save(self, db: Session, data: Base) -> str:
         db.add(data)
@@ -138,66 +148,82 @@ class ServiceDefault:
         self.database_class = database_class
         self.repository = RepositoryDefault if repository else RepositoryDefault()
 
-    def save(self, db: Session, data: DataModelDefault):
+    def save(self, db, data: DataModelDefault):
         db_obj: Base
-        if not data.id or data.id < 0:
-            db_obj = self.database_class()
+        new: bool = False
+        if not data or not db:
+            raise Exception("You SHOULD save information a data and a Session")
         else:
-            db_obj = self.repository.__get_by_id__(db, self.database_class, data.id)
+            if not data.id or data.id < 0:
+                new = True
+                db_obj = self.database_class()
+            else:
+                db_obj = self.repository.__get_by_id__(db, self.database_class, data.id)
 
-        for item in data.__dict__:
-            try:
-                if not data.__getattribute__(item) is None:
-                    db_obj.__setattr__(item, data.__getattribute__(item))
-            except AttributeError:
-                pass
-        return self.repository.save(db, db_obj)
+            for item in data.__dict__:
+                try:
+                    if not data.__getattribute__(item) is None:
+                        db_obj.__setattr__(item, data.__getattribute__(item))
+                except AttributeError:
+                    pass
+        return self.repository.save(db, db_obj), status.HTTP_201_CREATED if new else status.HTTP_200_OK
 
     def search(self, db: Session, search_dict: dict[str, str]):
-        return self.repository.search_by_str_fields(db, self.database_class, search_dict)
+        return self.repository.search_by_str_fields(db, self.database_class, search_dict), status.HTTP_200_OK
 
     def get_all(self, db: Session):
         res: list[Base] = []
         for data in self.repository.get_all(db, self.database_class):
             res.append(data)
-        return res
+        return res, status.HTTP_200_OK
 
     def get(self, db: Session, id: int):
-        return self.repository.get_by_id(db, self.database_class, id)
+        item = self.repository.get_by_id(db, self.database_class, id)
+        return item, status.HTTP_200_OK if item else status.HTTP_404_NOT_FOUND
+
 
     def delete(self, db: Session, id: int):
-        return self.repository.delete(db, self.database_class, id)
+        deleted = self.repository.delete(db, self.database_class, id)
+        return deleted, status.HTTP_200_OK if deleted else status.HTTP_404_NOT_FOUND
 
 
 class ControllerDefault:
     service: ServiceDefault
+    db: Session
 
     def __init__(self, service: Optional[ServiceDefault] = None):
         self.service = service
+        self.db = get_db()
 
     def new(self, service: Optional[ServiceDefault] = None,
             data: DataModelDefault | list[DataModelDefault] = None,
             message: Optional[dict[str, str]] = None):
+        _status: int
+        save_return_data: list | dict[str, str]
         if service is None:
             service = self.service
         if message is None:
             message = {"code": "Erro", "text": "Not found"}
         if data:
-            save_return_data: list[DataModelDefault] = []
+            save_return_data = []
 
-            db: Session = get_db()
-
+            __db: Session = get_db()
+            _status: int
             if isinstance(data, list):
+                _status = status.HTTP_200_OK
                 for item_data in data:
-                    save_return_data.append(service.save(db, item_data))
+                    __item, _ = service.save(__db, item_data)
+                    save_return_data.append(__item)
             else:
-                save_return_data.append(service.save(db, data))
-            return JSONResponse(save_return_data)
+                __item, _status = service.save(__db, data)
+                save_return_data.append(__item)
         else:
-            return JSONResponse(message, status_code=404)
+            _status = status.HTTP_404_NOT_FOUND
+            save_return_data = message
+        return JSONResponse(save_return_data, status_code=_status)
 
     def search(self, service: Optional[ServiceDefault] = None, name: Optional[str] = "", id: Optional[int] = -1,
-               free_fields: dict = None,
+               free_fields: dict = {},
                message: Optional[dict[str, str]] = None):
 
         db: Session = get_db()
@@ -208,15 +234,17 @@ class ControllerDefault:
         if message is None:
             message = {"code": "Erro", "text": "Not found"}
 
-        if free_fields:
-            return JSONResponse(service.search(db, free_fields))
-        elif id < 0:
-            return JSONResponse(service.search(db, {"name": name}))
-        else:
-            item = service.get(db, id)
-            if item:
-                return JSONResponse(item)
-            return JSONResponse(message, status_code=400)
+        _item: DataModelDefault
+        _status: int
+
+        if id >= 0:
+            _item, _status = service.get(db, id)
+        elif name:
+            _item, _status = service.search(db, free_fields | {"name": name})
+        elif free_fields:
+            _item, _status = service.search(db, free_fields)
+
+        return JSONResponse(message if _status == status.HTTP_404_NOT_FOUND else _item, status_code=_status)
 
     def delete(self, service: Optional[ServiceDefault] = None, id: Optional[int] = -1, message_sucess: dict[str, str] = None,
                message_fail: Optional[dict[str, str]] = None):
@@ -229,8 +257,7 @@ class ControllerDefault:
         if message_fail is None:
             message_fail = {"code": "Erro", "text": f"Imposible to delete {id}"}
 
-        db: Session = get_db()
+        _db: Session = get_db()
+        _deleted, _status = service.delete(_db, id)
 
-        if service.delete(db, id):
-            return JSONResponse(message_sucess)
-        return JSONResponse(message_fail, status_code=404)
+        return JSONResponse(message_sucess if _deleted else message_fail, status_code=_status)
