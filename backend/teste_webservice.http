@@ -33,11 +33,6 @@ Content-Type: application/json
 Accept: application/json
 
 ###
-#DELETE http://127.0.0.1:8000/operation-type/4
-#Content-Type: application/json
-#Accept: application/json
-
-###
 POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
@@ -100,22 +95,37 @@ Accept: application/json
 > {% client.global.set("id_crp", response.body[0].id); %}
 
 ###
-
-
 POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
 {"name": "Real", "alias": "R$", "default": true}
 
-> {% client.global.set("id_currency", response.body[0].id); %}
+> {% client.global.set("id_currency_default", response.body[0].id); %}
 ###
+
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Dolar", "alias": "US$", "default": false}
+
+> {% client.global.set("id_dolar", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/currency/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Libra", "alias": "£", "default": true}
+###
+
 
 POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "1.0.0.0", "name": "Ativo", "balance": 0, "alias": "ATV", "currency": {{id_currency}},"account_type":{{id_atv}}, "operate": false}
+{"code": "1.0.0.0", "name": "Ativo", "balance": 0, "alias": "ATV", "currency": {{id_currency_default}},"account_type":{{id_atv}}, "operate": false}
 > {% client.global.set("id_onze", response.body[0].id); %}
 ###
 
@@ -123,7 +133,7 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "2.0.0.0", "name": "Passivo Exegível", "balance": 0, "alias": "EXE", "currency": {{id_currency}},"account_type":{{id_exe}}, "operate": false}
+{"code": "2.0.0.0", "name": "Passivo Exegível", "balance": 0, "alias": "EXE", "currency": {{id_currency_default}},"account_type":{{id_exe}}, "operate": false}
 > {% client.global.set("id_doze", response.body[0].id); %}
 ###
 
@@ -132,7 +142,7 @@ Content-Type: application/json
 Accept: application/json
 
 
-{"code": "3.0.0.0", "name": "Patrimônio Líquido", "balance": 0, "alias": "PL", "currency": {{id_currency}},"account_type":{{id_pl}},"operate": false}
+{"code": "3.0.0.0", "name": "Patrimônio Líquido", "balance": 0, "alias": "PL", "currency": {{id_currency_default}},"account_type":{{id_pl}},"operate": false}
 > {% client.global.set("id_treze", response.body[0].id); %}
 ###
 
@@ -140,7 +150,7 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.0.0.0", "name": "Pagamentos", "balance": 0, "alias": "PGMTO", "currency": {{id_currency}},"account_type":{{id_des}},"operate": false}
+{"code": "4.0.0.0", "name": "Pagamentos", "balance": 0, "alias": "PGMTO", "currency": {{id_currency_default}},"account_type":{{id_des}},"operate": false}
 > {% client.global.set("id_catorse", response.body[0].id); %}
 ###
 
@@ -148,7 +158,7 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "5.0.0.0", "name": "Recebimentos", "balance": 0, "alias": "REC", "currency": {{id_currency}},"account_type":{{id_rec}},"operate": false}
+{"code": "5.0.0.0", "name": "Recebimentos", "balance": 0, "alias": "REC", "currency": {{id_currency_default}},"account_type":{{id_rec}},"operate": false}
 > {% client.global.set("id_quinze", response.body[0].id); %}
 ###
 
@@ -156,7 +166,7 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "6.0.0.0", "name": "Ajustes Ativos", "balance": 0, "alias": "AA", "currency": {{id_currency}},"account_type":{{id_cra}},"operate": false}
+{"code": "6.0.0.0", "name": "Ajustes Ativos", "balance": 0, "alias": "AA", "currency": {{id_currency_default}},"account_type":{{id_cra}},"operate": false}
 > {% client.global.set("id_umsetedois", response.body[0].id); %}
 ###
 
@@ -164,7 +174,7 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "7.0.0.0", "name": "Ajustes Passivos", "balance": 0, "alias": "AP", "currency": {{id_currency}},"account_type":{{id_crp}},"operate": false}
+{"code": "7.0.0.0", "name": "Ajustes Passivos", "balance": 0, "alias": "AP", "currency": {{id_currency_default}},"account_type":{{id_crp}},"operate": false}
 > {% client.global.set("id_umsetetres", response.body[0].id); %}
 ###
 
@@ -901,11 +911,10 @@ Accept: application/json
 
 {"anotation": "Salários", "date": "2020-06-21", "amount":7789432, "accounts":[
 {"account":  {{id_debi_account_um}}, "operation": 1, "amount":  5000000},
-{"account":  {{id_cred_account_dois}}, "operation": 2, "amount":  7789432},
-],
+{"account":  {{id_cred_account_dois}}, "operation": 2, "amount":  7789432}],
 "my_tags": [{{id_tag_tres}}, {{id_tag_dois}}]
 }
-> {% client.global.set("id_mov_tre", response.body[0].id); %}
+
 ###
 POST http://127.0.0.1:8000/record/
 Content-Type: application/json
@@ -917,7 +926,6 @@ Accept: application/json
   {"account":  104, "operation": 2, "amount":  1101}],
 "my_tags": [1, 3]
 }
-> {% client.global.set("id_mov_quatro", response.body[0].id); %}
 ###
 POST http://127.0.0.1:8000/record/
 Content-Type: application/json
@@ -930,3 +938,48 @@ Accept: application/json
 "my_tags": [2]
 }
 ###
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": {{id_dolar}}, "when": "2020-06-21 12:04", "rate": 586}
+> {% client.global.set("id_exc_um", response.body[0].id); %}
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": {{id_dolar}}, "when": "2020-06-20", "rate": 583}
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": {{id_dolar}}, "when": "2020-06-20 12:00", "rate": 583}
+> {% client.global.set("id_exc_tres", response.body[0].id); %}
+
+###
+
+DELETE http://127.0.0.1:8000/exchange/{{id_exc_tres}}
+Content-Type: application/json
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": {{id_dolar}}, "rate": 583}
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
+
+

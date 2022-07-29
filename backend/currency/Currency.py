@@ -1,13 +1,13 @@
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import Column, VARCHAR, BOOLEAN
 from sqlalchemy.orm import relationship
 
 from default import Mix, Base, \
     DataModelDefault, MessageDataDefault, \
-    ControllerDefault as Controller, ServiceDefault as Service
+    ControllerDefault as Controller, ServiceDefault
 
 
 class Currency(Base, Mix):
@@ -16,6 +16,7 @@ class Currency(Base, Mix):
     default = Column(BOOLEAN, default=False)
 
     accounts = relationship("Account", back_populates="my_currency")
+
 
 class CurrencyData(DataModelDefault):
     id: Optional[int]
@@ -27,13 +28,24 @@ class CurrencyData(DataModelDefault):
     def __str__(self):
         return f'{self.name}: {self.alias}'
 
+
+class Service(ServiceDefault):
+    def __init__(self, database_class=Currency):
+        super().__init__(database_class=database_class)
+
+    def save(self, db, data: CurrencyData):
+        if data.default and self.repository.search_by_fields(db, self.database_class, {"default": True}):
+            return {"code": "Erro", "text": "It MUST have only one default currency"}, status.HTTP_400_BAD_REQUEST
+        return super().save(db, data)
+
 app: FastAPI = FastAPI()
-__controller__: Controller = Controller(Service(database_class = Currency))
+__controller__: Controller = Controller(Service())
 
 
 @app.get("/{id}", response_class=JSONResponse, response_model=CurrencyData)
 @app.get("/", response_class=JSONResponse, response_model=list[CurrencyData])
-async def search(name: Optional[str] = '', id: Optional[int] = -1, alias: Optional[str] = None, default: Optional[bool] = None):
+async def search(name: Optional[str] = '', id: Optional[int] = -1, alias: Optional[str] = None,
+                 default: Optional[bool] = None):
     return __controller__.search(name=name, id=id, free_fields={"alias": alias, "default": default})
 
 

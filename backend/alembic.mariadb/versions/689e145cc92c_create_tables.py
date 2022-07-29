@@ -49,7 +49,7 @@ def upgrade() -> None:
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement="auto"),
         sa.Column('currency_default', sa.BIGINT, sa.ForeignKey("currency.id"), default=1),
         sa.Column('currency_buy', sa.BIGINT, sa.ForeignKey("currency.id"), nullable=False),
-        sa.Column('datetime', sa.DATETIME, nullable=False),
+        sa.Column('when', sa.DATETIME, nullable=False),
         sa.Column('rate', sa.BIGINT, nullable=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )

@@ -54,7 +54,7 @@ class AccountData(DataModelDefault):
 
 class Service(ServiceDefault):
 
-    def __init__(self, database_class: ClassVar = Account):
+    def __init__(self, database_class=Account):
         super().__init__(database_class=database_class)
 
     def can_operate(self, db: Session, id: int):

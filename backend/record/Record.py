@@ -59,7 +59,8 @@ class Service(ServiceDefault):
                  item_id: int, msg: str = "Informe account with account, operation and amount to Recorde" ) \
             -> tuple[dict, int]:
         db.rollback()
-        self.delete(db, item_id)
+        if item_id >= 0:
+            self.delete(db, item_id)
         return {"code": "Erro",
                 "text": msg
                 }, status.HTTP_400_BAD_REQUEST
@@ -96,16 +97,16 @@ class Service(ServiceDefault):
                                                amount=account_data["amount"],
                                                record=item["id"])
                 else:
-                    return self.__fail__(item["id"])
+                    return self.__fail__(db, item["id"] if "id" in item else -1)
 
             for _s in _sum.values():
                 if _s != item["amount"]:
-                    return self.__fail__(db, item["id"],
+                    return self.__fail__(db, item["id"] if "id" in item else -1,
                                          "Total amount should be equals sum accounts by operation amount")
             db.commit()
             return item, status.HTTP_201_CREATED
         else:
-            return self.__fail__(db, item["id"])
+            return self.__fail__(db, item["id"] if "id" in item else -1)
 
     def save(self, db: Session, data: RecordData) -> tuple[RecordData, int]:
 
