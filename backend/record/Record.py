@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, ClassVar
 from datetime import date
 
 from fastapi import FastAPI, status
@@ -48,54 +48,91 @@ class RecordData(DataModelDefault):
 
 class Service(ServiceDefault):
 
+    account_service: ServiceDefault
+
+    def __init__(self, database_class: ClassVar = Record):
+        from account.Account import Service as AccountService
+        super().__init__(database_class)
+        self.account_service = AccountService()
+
+    def __fail__(self, db: Session,
+                 item_id: int, msg: str = "Informe account with account, operation and amount to Recorde" ) \
+            -> tuple[dict, int]:
+        db.rollback()
+        self.delete(db, item_id)
+        return {"code": "Erro",
+                "text": msg
+                }, status.HTTP_400_BAD_REQUEST
+
+    def __new_record__(self, db: Session, item: Record, my_tags: Optional[list[int]] = None, accounts: list[dict] = None):
+        if my_tags:
+            for tag in my_tags:
+                self.repository.raw_insert(db, tag_recorde, commit=False, tag=tag, record=item["id"])
+
+        if accounts:
+            # Every Record is doble-entry with 0 result (debit-credit=0)
+            # Here record are composite with one or more accounts in operaton_type (D, C)
+            #  each operation type sholde have value equal the operation per si.
+            _sum: dict[int, int] = dict()
+
+            for account_data in accounts:
+                if ("account" in account_data and "amount" in account_data and
+                        ("operation" in account_data or "operation_type" in account_data)):
+
+                    if not self.account_service.can_operate(db=db, id=account_data["account"]):
+                        return self.__fail__(db, item["id"], f"Account {account_data['account']} cannot operate.")
+
+                    if "operation_type" in account_data:
+                        account_data["operation"] = account_data["operation_type"]
+
+                    if account_data["operation"] in _sum:
+                        _sum[account_data["operation"]] += account_data["amount"]
+                    else:
+                        _sum[account_data["operation"]] = account_data["amount"]
+
+                    self.repository.raw_insert(db, account_record, commit=False,
+                                               account=account_data["account"],
+                                               operation=account_data["operation"],
+                                               amount=account_data["amount"],
+                                               record=item["id"])
+                else:
+                    return self.__fail__(item["id"])
+
+            for _s in _sum.values():
+                if _s != item["amount"]:
+                    return self.__fail__(db, item["id"],
+                                         "Total amount should be equals sum accounts by operation amount")
+            db.commit()
+            return item, status.HTTP_201_CREATED
+        else:
+            return self.__fail__(db, item["id"])
+
     def save(self, db: Session, data: RecordData) -> tuple[RecordData, int]:
-        def fail(item_id: int) -> tuple[dict, int]:
-            self.delete(db, item_id)
-            return {"code": "Erro",
-                    "text": "Informe account with account, operation and amount to Recorde"
-                    }, status.HTTP_400_BAD_REQUEST
 
         _my_tags: list[int] = data.my_tags if "my_tags" in data.__dict__ else None
         _accounts: list[dict] = data.accounts if "accounts" in data.__dict__ else None
         _item, _status = super().save(db, data)
+
         if _status == status.HTTP_201_CREATED and "id" in _item:
-            if _my_tags:
-                for tag in _my_tags:
-                    self.repository.raw_insert(db, tag_recorde, tag=tag, record=_item["id"])
-            if _accounts: #TODO: check ammout sum
-                for account_data in _accounts:
-                    if ("account" in account_data and "amount" in account_data and
-                            ("operation" in account_data or "operation_type" in account_data)):
-                        self.repository.raw_insert(db, account_record, account=account_data["account"],
-                                                   operation=account_data["operation"] \
-                                                       if "operation" in account_data \
-                                                       else account_data["operation_type"],
-                                                   amount=account_data["amount"],
-                                                   record=_item["id"])
-                    else:
-                        _item, _status = fail(_item["id"])
-                        break
-            else:
-                _item, _status = fail(_item["id"])
+            _item, _status = self.__new_record__(db, _item, _my_tags, _accounts)
         return _item, _status
 
 
 app = FastAPI()
-__controller__ = Controller(Service(database_class=Record))
 
 
 @app.get("/{id}", response_class=JSONResponse, response_model=RecordData)
 @app.get("/", response_class=JSONResponse, response_model=list[RecordData])
 async def search(name: Optional[str] = '', id: Optional[int] = -1):
-    return __controller__.search(name=name, id=id)
+    return Controller(Service()).search(name=name, id=id)
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[RecordData])
 @app.post("/", response_class=JSONResponse, response_model=list[RecordData], status_code=201)
 async def create(record: RecordData | list[RecordData]):
-    return __controller__.new(data=record)
+    return Controller(Service()).new(data=record)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return __controller__.delete(id=id, message_sucess={"code": "Ok", "text": f"Record {id} was deleted."})
+    return Controller(Service()).delete(id=id, message_sucess={"code": "Ok", "text": f"Record {id} was deleted."})

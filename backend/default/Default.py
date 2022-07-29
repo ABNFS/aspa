@@ -85,10 +85,11 @@ class RepositoryDefault:
             result.append(make_dict(item))
         return result
 
-    def raw_insert(self, db: Session, table: Table, **kwargs):
+    def raw_insert(self, db: Session, table: Table, commit: bool = True,  **kwargs):
         stm = insert(table).values(**kwargs)
         db.execute(stm)
-        db.commit()
+        if commit:
+            db.commit()
 
     def save(self, db: Session, data: Base, commit: bool = True) -> str:
         db.add(data)
@@ -245,6 +246,8 @@ class ControllerDefault:
             _item, _status = service.search(db, free_fields | {"name": name})
         elif free_fields:
             _item, _status = service.search(db, free_fields)
+        else:
+            _item, _status = service.get_all(db)
 
         return JSONResponse(message if _status == status.HTTP_404_NOT_FOUND else _item, status_code=_status)
 

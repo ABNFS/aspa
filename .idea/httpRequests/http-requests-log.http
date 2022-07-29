@@ -2,6 +2,96 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
+{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "amount":  10000},
+  {"account":  63, "operation": 2, "amount":  5000},
+  {"account":  18, "operation": 2, "amount":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-07-28T233639.400.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "amount":  10000},
+  {"account":  63, "operation": 2, "amount":  5000},
+  {"account":  18, "operation": 2, "amount":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-07-28T233552.400.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "amount":  10000},
+  {"account":  63, "operation": 2, "amount":  5000},
+  {"account":  18, "operation": 2, "amount":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-07-28T232826.400.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "amount":  10000},
+  {"account":  63, "operation": 2, "amount":  5000},
+  {"account":  18, "operation": 2, "amount":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-07-28T232704.500.txt
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "amount":  10000},
+  {"account":  63, "operation": 2, "amount":  5000},
+  {"account":  18, "operation": 2, "amount":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-07-28T232609.500.txt
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Outros", "date": "2020-06-21", "amount":2231, "accounts":[
+  {"account":  19, "operation": 1, "amount":  2231},
+  {"account":  63, "operation": 2, "amount":  1130},
+  {"account":  104, "operation": 2, "amount":  1101}],
+"my_tags": [1, 3]
+}
+
+<> 2022-07-28T223016.201.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
 {"anotation": "Outros", "date": "2020-06-21", "amount":2231, "accounts":[
   {"account":  19, "operation": 1, "amount":  2231},
   {"account":  63, "operation": 2, "amount":  1130},
@@ -590,91 +680,6 @@ Accept: application/json
 {"code": "4.1.1.0", "name": "Casa", "account_type":5, "parent":83}
 
 <> 2022-07-28T190722.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "5.1.0.0", "name": "Recebimento", "account_type":4, "parent":5}
-
-<> 2022-07-28T190721-1.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.0.0", "name": "Pagamento", "account_type":5, "parent":4}
-
-<> 2022-07-28T190721.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-[
-{"code": "2.2.1.0", "name": "Água", "account_type":3, "parent":52, "operate": true},
-{"code": "2.2.2.0", "name": "Energia", "account_type":3, "parent":52, "operate": true},
-{"code": "2.2.3.0", "name": "Gás", "account_type":3, "parent":52, "operate": true},
-{"code": "2.3.1.0", "name": "Imposto de Renda", "account_type":3, "parent":53,"operate": true},
-{"code": "2.3.2.0", "name": "IOF", "account_type":3, "parent":53, "operate": true},
-{"code": "2.4.1.0", "name": "Não negociadas", "account_type":3, "parent":54,"operate": true},
-{"code": "2.4.2.0", "name": "Negociadas", "account_type":3, "parent":54, "operate": true},
-{"code": "2.4.3.0", "name": "Sem juros", "account_type":3, "parent":54, "operate": true},
-{"code": "2.1.1.1", "name": "Taxas", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.1.2", "name": "Serviços", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.1.3", "name": "Título Capitalização", "account_type":3, "parent":55,"operate": true},
-{"code": "2.1.1.4", "name": "Previdência", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.2.1", "name": "Nubank", "account_type":3, "parent":56, "operate": true},
-{"code": "2.1.2.2", "name": "Mercado Pago", "account_type":3, "parent":56,"operate": true},
-{"code": "2.1.2.3", "name": "Santander", "account_type":3, "parent":56, "operate": true},
-{"code": "2.1.3.1", "name": "Nubank", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.2", "name": "Santander", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.3", "name": "Mercado Pago", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.4", "name": "Bradesco", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.5", "name": "Financimaneto Carro", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.6", "name": "Financimaneto Energia Solar", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.7", "name": "Consignado", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.4.1", "name": "Caixa", "account_type":3, "parent":58, "operate": true},
-{"code": "3.1.0.0", "name": "Resultado", "account_type":1, "parent":3, "operate": true}
-]
-
-<> 2022-07-28T190721.200.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.4.0", "name": "Cheque Especial", "account_type":3, "parent":51}
-
-<> 2022-07-28T190719-4.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.3.0", "name": "Empréstimos", "account_type":3, "parent":51}
-
-<> 2022-07-28T190719-3.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "2.1.2.0", "name": "Cartões de Crédito", "account_type":3, "parent":51}
-
-<> 2022-07-28T190719-2.201.json
 
 ###
 

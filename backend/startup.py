@@ -38,7 +38,7 @@ def __startup__() -> None:
     else:
         __database_engine__ = create_engine(__database_url__, echo=_DEBUG, future=True)
 
-    SessionLocal = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False)
+    SessionLocal = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False, expire_on_commit=True)
 
 
 __startup__()
