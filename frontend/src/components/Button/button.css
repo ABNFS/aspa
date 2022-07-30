@@ -1,0 +1,49 @@
+.button {
+    color: #ffffff;
+    border-color: #ee9900;
+    background-color: #ee9900;
+
+    box-shadow: 10px 10px 30px dimgray;
+    border-radius: 45px;
+    border-style: solid;
+
+    cursor: pointer;
+    margin: 0.5em 0.5em;
+    padding: 0.3em;
+}
+
+.button:hover {
+    color: #eeeeee;
+    background-color: #FFAA00;
+}
+
+.button:active {
+    color: black;
+    background-color: #dd8800;
+    box-shadow: 5px 5px 15px black;
+}
+
+.danger {
+    color: #ffffff;
+    border-color: #f54d44;
+    background-color: #f54d44;
+
+    box-shadow: 10px 10px 30px dimgray;
+    border-radius: 45px;
+    border-style: solid;
+
+    cursor: pointer;
+    margin: 0.5em 0.5em;
+    padding: 0.3em;
+}
+
+.danger:hover {
+    color: #dddddd;
+    background-color:  #f65e55;
+}
+
+.danger:active {
+    color: black;
+    background-color: #e43c33;
+    box-shadow: 5px 5px 15px black;
+}

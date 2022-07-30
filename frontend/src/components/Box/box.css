@@ -1,0 +1,17 @@
+.box {
+    position: absolute;
+    /* thanks to: https://stackoverflow.com/a/68116077/2638687 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b8b8ec;
+
+    box-shadow: 1em 1em 3em dimgray;
+    border-radius: 5%;
+    border-style: wave;
+
+    padding: 1em;
+
+    align-items: center;
+    text-align: center;
+}

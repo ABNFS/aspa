@@ -1,0 +1,15 @@
+input {
+    margin: 3px 0 ;
+    font-size: large;
+}
+
+.input {
+    border-color: #999990;
+    border-radius: 30px;
+    border-style: solid;
+    box-sizing: border-box;
+    background-color: #fffff3;
+    width: 95%;
+    display: inline-block;
+    color: black;
+}
