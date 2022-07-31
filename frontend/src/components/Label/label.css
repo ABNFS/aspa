@@ -1,10 +1,11 @@
 label {
-    font-size: small;
+    /**/
     margin: 0;
     padding: 0;
 }
 
 .label {
+    font-size: small;
 }
 
 .required {
@@ -15,5 +16,10 @@ label {
 .required::after {
     content: '*';
     color: red;
-    font-size: smaller;
+    font-style: italic;
+}
+
+.error {
+    color: red;
+    font-size: 0.5rem;
 }
