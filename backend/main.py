@@ -11,6 +11,8 @@ from operation_type import app as operation_app
 from record import app as record_app
 from tag import app as tag_app
 
+from startup import origins
+
 app = FastAPI(routes=[Mount("/account", account_app),
                       Mount("/account-type", account_type),
                       Mount("/currency", currency_app),
@@ -19,12 +21,6 @@ app = FastAPI(routes=[Mount("/account", account_app),
                       Mount("/record", record_app),
                       Mount("/tag", tag_app)
                       ])
-
-origins = [
-    "http://localhost:3000",
-    "http://localhost",
-    "http://localhost:8080",
-]
 
 app.add_middleware(
     CORSMiddleware,

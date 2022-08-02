@@ -7,6 +7,8 @@ import InputText from "../../components/InputText";
 import Button from "../../components/Button";
 import Label from "../../components/Label";
 
+import Connector from "../../BackendConnector";
+
 class TagCrud extends React.Component{
     constructor(props) {
         super(props);
@@ -34,38 +36,9 @@ class TagCrud extends React.Component{
     }
 
     componentDidMount() {
-        const url = "http://127.0.0.1:8000/tag/";
-
-        const request_header = new Headers();
-        request_header.append('Access-Control-Allow-Origin', 'http://localhost:3000');
-        request_header.append('Access-Control-Allow-Credentials', 'true');
-        request_header.append('Access-Control-Allow-Methods', "GET");
-        request_header.append('Access-Control-Allow-Headers', "Origin, Content-Type, Accept");
-
-        request_header.append('Content-Type', 'application/json');
-        request_header.append('Accept', 'application/json');
-        request_header.append('Origin', 'http://localhost:3000');
-
-        const param = {
-            method: "GET",
-            mode: 'cors',
-            headers: request_header
-        }
-
-        const myRequest = new Request(url, param);
-
-        fetch(myRequest).then(
-            (response)=>{
-                if(!response.ok){
-                    throw new Error(`HTTP error, status = ${response.status}`);
-                }
-                console.log(response);
-                return response.json();
-            }).then(
-                (t)=>{
-                    this.setState({tags: t})
-                    console.log(t);
-                }).catch((e)=>this.setState({error:e.message}));
+        const conn = new Connector('tag');
+        conn.get().then((t)=>this.setState({tags: t}), (e)=>this.setState({tags: e}))
+        return true
     }
 
     render() {
@@ -77,9 +50,8 @@ class TagCrud extends React.Component{
                            alt="Campo para incluir novas tags no sistema"/>
                 <Button label="Salvar" />
                 <Button label="Excluir" action={this.delete} type="danger"/>
-
-                    <Label css_class="error" text={this.state.error} />
-                </form>
+                <Label css_class="error" text={this.state.error} />
+                </form><div>{JSON.stringify(this.state.tags)}</div>
             </Box>);
     }
 }
