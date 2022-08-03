@@ -13,7 +13,7 @@ class TagCrud extends React.Component{
     constructor(props) {
         super(props);
 
-        this.state = { tags: [], error: ""};
+        this.state = { tags: [], error: "", atualName: "Alysson"};
 
         this.submit = this.submit.bind(this);
         this.delete = this.delete.bind(this);
@@ -32,7 +32,10 @@ class TagCrud extends React.Component{
 
     submit = (e) => {
         e.preventDefault();
-        console.log('submited');
+        if(this.state.atualName){
+            const conn = new Connector('tag');
+            conn.post({ name: this.state.atualName }).then((s)=>console.log('Ok'), (e)=>console.log('Nops'));
+        }
     }
 
     componentDidMount() {

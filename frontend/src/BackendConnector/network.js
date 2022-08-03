@@ -9,12 +9,15 @@ function NetworkError(message = "Unknown network error") {
 
 class Connector {
     #server_info;
+    #param;
     constructor(resource){
-        this.#server_info = get_url(resource)
+        this.#server_info = get_url(resource);
+        this.#param = { mode: 'cors'}
     }
 
-    #make_header = (method = 'GET') => {
+    #make_header = () => {
         const request_header = new Headers();
+        const method = 'GET'? this.#param.method === undefined: this.#param.method;
         request_header.append('Access-Control-Allow-Origin', this.#server_info.server);
         request_header.append('Access-Control-Allow-Credentials', 'true');
         request_header.append('Access-Control-Allow-Methods', method);
@@ -26,14 +29,9 @@ class Connector {
         return request_header
     }
 
-    get = () => {
-        return new Promise( (success, fail) => {
-            const param = {
-                method: "GET",
-                mode: 'cors',
-                headers: this.#make_header("GET")
-            }
-            const myRequest = new Request(this.#server_info.uri, param);
+    #make_request = () => {
+        return new Promise( (success,fail) => {
+            const myRequest = new Request(this.#server_info.uri, this.#param);
             fetch(myRequest).then(
                 (response) => {
                     if (!response.ok) {
@@ -44,10 +42,25 @@ class Connector {
                 (json_tags) => {
                     success(json_tags);
                 }).catch((e) => {
-                    const msg = {error: e.message}
-                    fail(msg)
-                });
+                const msg = {error: e.message}
+                fail(msg)
+            });
+
         });
+    }
+
+    get = () => {
+        this.#param.method = "GET";
+        this.#param.headers = this.#make_header();
+        this.#param.body = undefined;
+        return this.#make_request();
+    }
+
+    post = (data_to_send) => {
+        this.#param.method = 'POST';
+        this.#param.headers = this.#make_header();
+        this.#param.body = JSON.stringify(data_to_send);
+        return this.#make_request();
     }
 }
 
