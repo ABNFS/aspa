@@ -2,13 +2,14 @@ from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from sqlalchemy import VARCHAR, Column, Table, ForeignKey
+from sqlalchemy import VARCHAR, Column
 from sqlalchemy.orm import relationship
 
 from default import ServiceDefault as Service, ControllerDefault as Controller, \
     DataModelDefault, Mix, MessageDataDefault, Base
 
 from record.Record import tag_recorde
+
 
 class Tag(Base, Mix):
     name = Column(VARCHAR(100), nullable=False, unique=True)
@@ -20,6 +21,7 @@ class Tag(Base, Mix):
 
 class TagData(DataModelDefault):
     name: Optional[str]
+
 
 app = FastAPI()
 __controller__ = Controller(Service(database_class=Tag))

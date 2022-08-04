@@ -29,9 +29,9 @@ class Connector {
         return request_header
     }
 
-    #make_request = () => {
+    #make_request = (uri=this.#server_info.uri) => {
         return new Promise( (success,fail) => {
-            const myRequest = new Request(this.#server_info.uri, this.#param);
+            const myRequest = new Request(uri, this.#param);
             fetch(myRequest).then(
                 (response) => {
                     if (!response.ok) {
@@ -49,11 +49,15 @@ class Connector {
         });
     }
 
-    get = () => {
+    get = (id=-1) => {
+        if(typeof(id) != 'number'){
+            id = -1;
+        }
+
         this.#param.method = "GET";
         this.#param.headers = this.#make_header();
         this.#param.body = undefined;
-        return this.#make_request();
+        return this.#make_request(`${this.#server_info.uri}/${id}`)? id<0: this.#make_request();
     }
 
     post = (data_to_send) => {
@@ -61,6 +65,22 @@ class Connector {
         this.#param.headers = this.#make_header();
         this.#param.body = JSON.stringify(data_to_send);
         return this.#make_request();
+    }
+
+    put = (data_to_update) => {
+        this.#param.method = 'PUT';
+        this.#param.headers = this.#make_header();
+        this.#param.body = JSON.stringify(data_to_update);
+        return this.#make_request();
+    }
+
+    delete = (id=-1) => {
+        if(typeof(id) != 'number'){
+            id = -1;
+        }
+        this.#param.method = 'DELETE';
+        this.#param.headers = this.#make_header();
+        return this.#make_request(`${this.#server_info.uri}/${id}`)? id<0: this.#make_request();
     }
 }
 

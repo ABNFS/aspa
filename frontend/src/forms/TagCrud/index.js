@@ -13,7 +13,7 @@ class TagCrud extends React.Component{
     constructor(props) {
         super(props);
 
-        this.state = { tags: [], error: "", atualName: "Alysson"};
+        this.state = { tags: [], error: "", atualName: ""};
 
         this.submit = this.submit.bind(this);
         this.delete = this.delete.bind(this);
@@ -48,8 +48,9 @@ class TagCrud extends React.Component{
         return (<Box>
                 <form className="tagCrud modal" onSubmit={this.submit}>
                     <Button type="close" label="X" action={this.close} />
-                <InputText label="Nome" required={true}
+                <InputText label="Nome" required={true} value={this.state.atualName}
                            placeholder="Digite uma Tag"
+                           onChange={v=> this.setState({atualName: v})}
                            alt="Campo para incluir novas tags no sistema"/>
                 <Button label="Salvar" />
                 <Button label="Excluir" action={this.delete} type="danger"/>
