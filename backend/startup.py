@@ -13,16 +13,19 @@ _ALLOW_ORIGINS_ENV_NAME = 'CORS_ALLOW_ORIGIN'
 _CONFIG_FILE_ENV_NAME = 'CONFIG_FILE_PATH'
 _FILE: str = './config.yaml'
 _DEBUG: bool = True
+_DEFAULT_DIGITS: int = 2
 
 __database_url__: str = ''
 __database_engine__: Engine = None
 
 SessionLocal: Callable = None
-
+digits: int = _DEFAULT_DIGITS
 origins: list = []
 
 
 def __startup__(path: Optional[Path] = None) -> None:
+    global __database_url__, __database_engine__, SessionLocal, origins, digits
+
     def get_config_file_from_env() -> Path:
         return Path(getenv(_CONFIG_FILE_ENV_NAME, _FILE))
 
@@ -35,6 +38,10 @@ def __startup__(path: Optional[Path] = None) -> None:
         except FileNotFoundError:
             yaml_confs = {'database': {}}
         return yaml_confs
+
+    def get_digits() -> int:
+        conf = get_yaml_dict()
+        return conf['number']['digits'] if 'number' in conf and 'digits' in conf['number'] else _DEFAULT_DIGITS
 
     def make_url_db_from_config_file(path_to_file: Optional[Path] = None) -> str:
         yaml_confs = get_yaml_dict(path_to_file)
@@ -52,8 +59,6 @@ def __startup__(path: Optional[Path] = None) -> None:
         allow_origins_env: str = getenv(_ALLOW_ORIGINS_ENV_NAME, None)
         return allow_origins_env.split(" ") if allow_origins_env else allow_origins_file
 
-    global __database_url__, __database_engine__, SessionLocal, origins
-
     __database_url__ = getenv(_DATABASE_URL_ENV_NAME, make_url_db_from_config_file(path))
     __drive = __database_url__.split(':')[0]
     if __drive == "sqlite":
@@ -64,6 +69,7 @@ def __startup__(path: Optional[Path] = None) -> None:
 
     SessionLocal = sessionmaker(bind=__database_engine__, autocommit=False, autoflush=False, expire_on_commit=True)
     origins = make_origins_from_config_file()
+    digits = get_digits()
 
 
 __startup__()

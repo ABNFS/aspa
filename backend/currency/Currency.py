@@ -25,9 +25,6 @@ class CurrencyData(DataModelDefault):
     default: Optional[bool]
     deleted: Optional[bool]
 
-    def __str__(self):
-        return f'{self.name}: {self.alias}'
-
 
 class Service(ServiceDefault):
     def __init__(self, database_class=Currency):
@@ -37,6 +34,7 @@ class Service(ServiceDefault):
         if data.default and self.repository.search_by_fields(db, self.database_class, {"default": True}):
             return {"code": "Erro", "text": "It MUST have only one default currency"}, status.HTTP_400_BAD_REQUEST
         return super().save(db, data)
+
 
 app: FastAPI = FastAPI()
 __controller__: Controller = Controller(Service())

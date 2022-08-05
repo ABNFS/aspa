@@ -17,25 +17,34 @@ tag_recorde = Table(
     Column("tag", ForeignKey("tag.id"), primary_key=True)
 )
 
-account_record = Table(
-    "account_record",
-    Base.metadata,
-    Column('record', BIGINT, ForeignKey("record.id"), primary_key=True),
-    Column('account', BIGINT, ForeignKey("account.id"), primary_key=True),
-    Column('operation', BIGINT, ForeignKey("operation_type.id"), primary_key=True),
-    Column('amount', BIGINT, nullable=False)
-)
+
+class AccountRecord(Base):
+    # thanks for https://stackoverflow.com/a/62378982/2638687
+    __tablename__ = "account_record"
+
+    record = Column('record', BIGINT, ForeignKey("record.id"), primary_key=True)
+    account = Column('account', BIGINT, ForeignKey("account.id"), primary_key=True)
+    operation = Column('operation', BIGINT, ForeignKey("operation_type.id"), primary_key=True)
+    value = Column('amount', BIGINT, nullable=False)
+
+    this_record = relationship("Record", back_populates="accounts_record")
+    account_in_record = relationship('Account', back_populates="my_records")
+    account_in_record_operation_type = relationship('OperationType', back_populates="my_records")
+
+    @property
+    def id(self):
+        return self.record
+
+    def __str__(self):
+        return f'{self.record}'
 
 
 class Record(Base, Mix):
     anotation = Column(VARCHAR(100), nullable=True)
     date = Column(DATE, nullable=False)
-    amount = Column(BIGINT, nullable=False)
+    total_amount = Column("amount", BIGINT, nullable=False)
     my_tags = relationship('Tag', secondary=tag_recorde, back_populates='my_records')
-    my_accounts = relationship('Account', secondary=account_record, back_populates='my_records')
-
-    def __str__(self):
-        return f'{self.anotation} at {str(self.date)} by {str(self.amount / 100)}'
+    accounts_record = relationship('AccountRecord', back_populates='this_record')
 
 
 class RecordData(DataModelDefault):
@@ -47,7 +56,6 @@ class RecordData(DataModelDefault):
 
 
 class Service(ServiceDefault):
-
     account_service: ServiceDefault
 
     def __init__(self, database_class: ClassVar = Record):
@@ -56,7 +64,7 @@ class Service(ServiceDefault):
         self.account_service = AccountService()
 
     def __fail__(self, db: Session,
-                 item_id: int, msg: str = "Informe account with account, operation and amount to Recorde" ) \
+                 item_id: int, msg: str = "Informe account with account, operation and amount to Recorde") \
             -> tuple[dict, int]:
         db.rollback()
         if item_id >= 0:
@@ -65,7 +73,8 @@ class Service(ServiceDefault):
                 "text": msg
                 }, status.HTTP_400_BAD_REQUEST
 
-    def __new_record__(self, db: Session, item: Record, my_tags: Optional[list[int]] = None, accounts: list[dict] = None):
+    def __new_record__(self, db: Session, item: Record, my_tags: Optional[list[int]] = None,
+                       accounts: list[dict] = None):
         if my_tags:
             for tag in my_tags:
                 self.repository.raw_insert(db, tag_recorde, commit=False, tag=tag, record=item["id"])

@@ -17,9 +17,7 @@ class OperationType(Base, Mix):
     alias = Column(CHAR(1), nullable=False, unique=True)
 
     accounts_type = relationship("AccountType", back_populates="my_operation")
-
-    def __str__(self):
-        return f'{self.name} ({self.alias})'
+    my_records = relationship('AccountRecord', back_populates="account_in_record_operation_type")
 
 
 class OperationTypeData(DataModelDefault):

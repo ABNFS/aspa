@@ -15,9 +15,6 @@ class Tag(Base, Mix):
     name = Column(VARCHAR(100), nullable=False, unique=True)
     my_records = relationship('Record', secondary=tag_recorde, back_populates='my_tags')
 
-    def __str__(self):
-        return f'{self.name}'
-
 
 class TagData(DataModelDefault):
     name: Optional[str]

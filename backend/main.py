@@ -11,7 +11,7 @@ from operation_type import app as operation_app
 from record import app as record_app
 from tag import app as tag_app
 
-from startup import origins
+from startup import origins, digits
 
 app = FastAPI(routes=[Mount("/account", account_app),
                       Mount("/account-type", account_type),
@@ -41,3 +41,7 @@ async def root():
     </body>
     </html>
     """
+
+@app.get("/digits")
+async def DigitsToShow():
+    return digits

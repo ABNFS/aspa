@@ -11,7 +11,6 @@ from sqlalchemy.orm import relationship, declared_attr, Session
 
 from account_type.AccountType import AccountType
 from currency.Currency import Currency
-from record.Record import account_record
 
 
 class Account(Mix, Base):
@@ -33,10 +32,7 @@ class Account(Mix, Base):
 
     my_account_type = relationship("AccountType", back_populates="accounts")
     my_currency = relationship("Currency", back_populates="accounts")
-    my_records = relationship('Record', back_populates="my_accounts", secondary=account_record)
-
-    def __str__(self):
-        return f'{self.code} - {self.name}{f" ({self.alias})" if self.alias else None} - {str(self.account_type)}'
+    my_records = relationship('AccountRecord', back_populates="account_in_record")
 
 
 class AccountData(DataModelDefault):
@@ -58,7 +54,7 @@ class Service(ServiceDefault):
         super().__init__(database_class=database_class)
 
     def can_operate(self, db: Session, id: int):
-        account = self.repository.__get_by_id__(db=db, cls=Account,id=id)
+        account = self.repository.__get_by_id__(db=db, cls=Account, id=id)
         return account.operate if account else False
 
 

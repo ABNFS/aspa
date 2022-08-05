@@ -27,21 +27,31 @@ class Mix:
     id = Column(BIGINT, primary_key=True, autoincrement=True)
     deleted = Column(BOOLEAN, default=False)
 
+    def __str__(self):
+        return f'{self.id}'
 
 def convert_base_to_dict(obj: Base, atual_deep: int = 0, max_deep: int = __MAX_DEEP__) -> dict | str | Any:
     # based in aswner https://stackoverflow.com/a/10664192/2638687
     atual_deep += 1
-    if isinstance(obj.__class__, DeclarativeMeta):
+    if isinstance(obj.__class__, DeclarativeMeta) or isinstance(obj, (list, tuple)):
         if atual_deep >= max_deep:
-            return str(obj)
+            return getattr(obj, "id", str(obj))
         dict_obj = dict()
         fields_to_translate = [x for x in dir(obj) if x not in ['deleted', 'metadata'] and x[0] != '_']
         for field in fields_to_translate:
             _obj_field = obj.__getattribute__(field)
             if isinstance(_obj_field, (date, datetime)):
                 _obj_field = str(_obj_field)
-            elif isinstance(_obj_field.__class__, (DeclarativeMeta, list, tuple)):
+            elif isinstance(_obj_field.__class__, DeclarativeMeta):
                 _obj_field = convert_base_to_dict(_obj_field, atual_deep=atual_deep)
+            elif isinstance(_obj_field, (list, tuple)):
+                _list_obj_field: list | tuple = _obj_field
+                _obj_field = []
+                for _itens_obj_field in _list_obj_field:
+                    if isinstance(_itens_obj_field.__class__, DeclarativeMeta):
+                        _obj_field.append(convert_base_to_dict(_itens_obj_field, atual_deep=atual_deep))
+                    else:
+                        _obj_field.append(str(_itens_obj_field))
             elif not isinstance(_obj_field, (str, int, dict)):
                 continue
             dict_obj[field] = _obj_field
