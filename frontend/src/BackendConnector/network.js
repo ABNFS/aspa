@@ -57,7 +57,7 @@ class Connector {
         this.#param.method = "GET";
         this.#param.headers = this.#make_header();
         this.#param.body = undefined;
-        return this.#make_request(`${this.#server_info.uri}/${id}`)? id<0: this.#make_request();
+        return id>=0? this.#make_request(`${this.#server_info.uri}/${id}`): this.#make_request();
     }
 
     post = (data_to_send) => {
@@ -80,7 +80,7 @@ class Connector {
         }
         this.#param.method = 'DELETE';
         this.#param.headers = this.#make_header();
-        return this.#make_request(`${this.#server_info.uri}/${id}`)? id<0: this.#make_request();
+        return id>=0? this.#make_request(`${this.#server_info.uri}/${id}`): undefined;
     }
 }
 

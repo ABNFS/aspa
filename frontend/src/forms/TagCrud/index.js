@@ -44,13 +44,17 @@ class TagCrud extends React.Component{
         return true
     }
 
+    setAtualName = (evento) => {
+        this.setState({atualName: evento.target.value});
+    }
+
     render() {
         return (<Box>
                 <form className="tagCrud modal" onSubmit={this.submit}>
                     <Button type="close" label="X" action={this.close} />
                 <InputText label="Nome" required={true} value={this.state.atualName}
                            placeholder="Digite uma Tag"
-                           onChange={v=> this.setState({atualName: v})}
+                           onChange={this.setAtualName}
                            alt="Campo para incluir novas tags no sistema"/>
                 <Button label="Salvar" />
                 <Button label="Excluir" action={this.delete} type="danger"/>
