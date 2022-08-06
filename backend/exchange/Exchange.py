@@ -40,20 +40,20 @@ class Service(ServiceDefault):
     def __init__(self):
         super().__init__(database_class=Exchange)
 
-    def save(self, db, data: ExchangeDataOut):
+    async def save(self, db, data: ExchangeDataOut):
         from currency.Currency import Currency
-        currency_default: Currency = self.repository.search_by_fields(db, Currency, {"default": True})[0]
+        currency_default_list: Currency = await self.repository.search_by_fields(db, Currency, {"default": True})
         new_data: ExchangeData | None
         try:
-            new_data = ExchangeData(data, currency_default.id)
+            new_data = ExchangeData(data, currency_default_list[0].id)
         except ValidationError:
             new_data = None
-        return super().save(db, new_data)
+        return await super().save(db, new_data)
 
 
 class Controller(ControllerDefault):
 
-    def search(self, id: Optional[int] = -1, startdate: Optional[datetime] = None, enddate: Optional[datetime] = None,
+    async def search(self, id: Optional[int] = -1, startdate: Optional[datetime] = None, enddate: Optional[datetime] = None,
                currency: Optional[int] = -1):
         _when: dict = {}
         _currency: dict = {}
@@ -67,7 +67,7 @@ class Controller(ControllerDefault):
         if currency >= 0:
             _currency = {"currency_buy": currency}
 
-        return super().search(service=self.service, name=None, id=id, free_fields=_when | _currency)
+        return await super().search(service=self.service, name=None, id=id, free_fields=_when | _currency)
 
 
 app = FastAPI()
@@ -77,15 +77,15 @@ app = FastAPI()
 @app.get("/", response_class=JSONResponse, response_model=list[ExchangeDataOut])
 async def search(id: Optional[int] = -1, datainicio: Optional[datetime] = None, datafim: Optional[datetime] = None,
                  currency: Optional[int] = -1):
-    return Controller(Service()).search(id, datainicio, datafim, currency)
+    return await Controller(Service()).search(id, datainicio, datafim, currency)
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[ExchangeDataOut])
 @app.post("/", response_class=JSONResponse, response_model=list[ExchangeDataOut], status_code=201)
 async def create(exchange: ExchangeDataOut | list[ExchangeDataOut]):
-    return Controller(Service()).new(data=exchange)
+    return await Controller(Service()).new(data=exchange)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})
+    return await Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})

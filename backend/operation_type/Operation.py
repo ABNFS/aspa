@@ -32,16 +32,16 @@ __controller__: Controller = Controller(Service(database_class=OperationType))
 
 @app.put("/", response_class=JSONResponse, status_code=200, response_model=list[OperationTypeData])
 @app.post("/", response_class=JSONResponse, status_code=201, response_model=list[OperationTypeData])
-def new(operation_type: OperationTypeData | list[OperationTypeData]):
-    return __controller__.new(data=operation_type)
+async def new(operation_type: OperationTypeData | list[OperationTypeData]):
+    return await __controller__.new(data=operation_type)
 
 
 @app.get("/{id}", response_class=JSONResponse, response_model=OperationTypeData)
 @app.get("/", response_class=JSONResponse, response_model=list[OperationTypeData])
-def search(name: Optional[str] = "", id: Optional[int] = -1):
-    return __controller__.search(name=name, id=id)
+async def search(name: Optional[str] = "", id: Optional[int] = -1):
+    return await __controller__.search(name=name, id=id)
 
 
 @app.delete("/{id}", response_class=JSONResponse, response_model=MessageDataDefault)
-def delete(id: int):
-    return __controller__.delete(id=id, message_sucess={"code": "Ok", "text": f"The Operation {id} was deleted."})
+async def delete(id: int):
+    return await __controller__.delete(id=id, message_sucess={"code": "Ok", "text": f"The Operation {id} was deleted."})

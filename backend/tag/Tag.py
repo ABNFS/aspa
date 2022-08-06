@@ -27,15 +27,15 @@ __controller__ = Controller(Service(database_class=Tag))
 @app.get("/{id}", response_class=JSONResponse, response_model=TagData)
 @app.get("/", response_class=JSONResponse, response_model=list[TagData])
 async def search(name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None):
-    return __controller__.search(name=name, id=id, free_fields={"code": code})
+    return await __controller__.search(name=name, id=id, free_fields={"code": code})
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[TagData])
 @app.post("/", response_class=JSONResponse, response_model=list[TagData], status_code=201)
 async def create(account: TagData | list[TagData]):
-    return __controller__.new(data=account)
+    return await __controller__.new(data=account)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return __controller__.delete(id=id, message_sucess={"code": "Ok", "text": f"Tag {id} was deleted."})
+    return await __controller__.delete(id=id, message_sucess={"code": "Ok", "text": f"Tag {id} was deleted."})

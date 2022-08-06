@@ -53,8 +53,8 @@ class Service(ServiceDefault):
     def __init__(self, database_class=Account):
         super().__init__(database_class=database_class)
 
-    def can_operate(self, db: Session, id: int):
-        account = self.repository.__get_by_id__(db=db, cls=Account, id=id)
+    async def can_operate(self, db: Session, id: int):
+        account = await self.repository.__get_by_id__(db=db, cls=Account, id=id)
         return account.operate if account else False
 
 
@@ -64,15 +64,15 @@ app: FastAPI = FastAPI()
 @app.get("/{id}", response_class=JSONResponse, response_model=AccountData)
 @app.get("/", response_class=JSONResponse, response_model=list[AccountData])
 async def search(name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None):
-    return Controller(Service()).search(name=name, id=id, free_fields={"code": code})
+    return await Controller(Service()).search(name=name, id=id, free_fields={"code": code})
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[AccountData])
 @app.post("/", response_class=JSONResponse, response_model=list[AccountData], status_code=201)
 async def create(account: AccountData | list[AccountData]):
-    return Controller(Service()).new(data=account)
+    return await Controller(Service()).new(data=account)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})
+    return await Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})

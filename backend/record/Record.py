@@ -72,35 +72,35 @@ class Service(ServiceDefault):
         self.account_service = AccountService()
         self.account_record_service = ServiceDefault(database_class=AccountRecord)
 
-    def __fail__(self, db: Session,
+    async def __fail__(self, db: Session,
                  item_id: int, msg: str = "Informe account with account, operation and amount to Recorde") \
             -> tuple[dict, int]:
-        def delete_tags(id: int = None):
-            self.repository.raw_delete(db, table=tag_recorde, record=id)
+        async def delete_tags(id: int = None):
+            await self.repository.raw_delete(db, table=tag_recorde, record=id)
 
-        def delete_account_records(id: int = None):
+        async def delete_account_records(id: int = None):
             account_repository = self.account_record_service.repository
-            account_records: list[AccountRecord] = account_repository.search_by_fields(db, AccountRecord, {"record": id})
+            account_records: list[AccountRecord] = await account_repository.search_by_fields(db, AccountRecord, {"record": id})
             for account_rec in account_records:
-                account_repository.delete(db, AccountRecord, {
+                await account_repository.delete(db, AccountRecord, {
                     "record": account_rec.record,
                     "account": account_rec.account,
                     "operation": account_rec.operation})
 
         if item_id >= 0:
-            delete_tags(item_id)
-            delete_account_records(item_id)
-            return self.delete(db, item_id)
+            await delete_tags(item_id)
+            await delete_account_records(item_id)
+            return await self.delete(db, item_id)
 
         return {"code": "Erro",
                 "text": msg
                 }, status.HTTP_400_BAD_REQUEST
 
-    def __new_record__(self, db: Session, item: Record, my_tags: Optional[list[int]] = None,
+    async def __new_record__(self, db: Session, item: Record, my_tags: Optional[list[int]] = None,
                        accounts: list[RecordAccountData] = None):
         if my_tags:
             for tag in my_tags:
-                self.repository.raw_insert(db, tag_recorde, tag=tag, record=item["id"])
+                await self.repository.raw_insert(db, tag_recorde, tag=tag, record=item["id"])
 
         if accounts:
             # Every Record is doble-entry with 0 result (debit-credit=0)
@@ -109,8 +109,8 @@ class Service(ServiceDefault):
             _sum: dict[int, int] = dict()
 
             for account_data in accounts:
-                if not self.account_service.can_operate(db=db, id=account_data.account):
-                    return self.__fail__(db, item["id"], f"Account {account_data.account} cannot operate.")
+                if not await self.account_service.can_operate(db=db, id=account_data.account):
+                    return await self.__fail__(db, item["id"], f"Account {account_data.account} cannot operate.")
 
                 account_data.record = item["id"]
                 if account_data.operation in _sum:
@@ -118,24 +118,26 @@ class Service(ServiceDefault):
                 else:
                     _sum[account_data.operation] = account_data.value
 
-                self.account_record_service.save(db=db, data=account_data)
+                await self.account_record_service.save(db=db, data=account_data)
 
             for _s in _sum.values():
                 if _s != item["total_amount"]:
-                    return self.__fail__(db, item["id"] if "id" in item else -1,
+                    return await self.__fail__(db, item["id"] if "id" in item else -1,
                                          "Total amount should be equals sum accounts by operation amount")
             return item, status.HTTP_201_CREATED
         else:
-            return self.__fail__(db, item["id"] if "id" in item else -1)
+            return await self.__fail__(db, item["id"] if "id" in item else -1)
 
-    def save(self, db: Session, data: RecordData) -> tuple[RecordData, int]:
+    async def save(self, db: Session, data: RecordData) -> tuple[RecordData, int]:
 
         _my_tags: list[int] = data.my_tags if "my_tags" in data.__dict__ else None
         _accounts: list[RecordAccountData] = data.accounts if "accounts" in data.__dict__ else None
-        _item, _status = super().save(db, data)
+        saved = await super().save(db, data)
+        _item, _status = saved[0], saved[1]
 
         if _status == status.HTTP_201_CREATED and "id" in _item:
-            _item, _status = self.__new_record__(db, _item, _my_tags, _accounts)
+            record_save = await self.__new_record__(db, _item, _my_tags, _accounts)
+            _item, _status = record_save[0], record_save[1]
         return _item, _status
 
 
@@ -145,15 +147,15 @@ app = FastAPI()
 @app.get("/{id}", response_class=JSONResponse, response_model=RecordData)
 @app.get("/", response_class=JSONResponse, response_model=list[RecordData])
 async def search(name: Optional[str] = '', id: Optional[int] = -1):
-    return Controller(Service()).search(name=name, id=id)
+    return await Controller(Service()).search(name=name, id=id)
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[RecordData])
 @app.post("/", response_class=JSONResponse, response_model=list[RecordData], status_code=201)
 async def create(record: RecordData | list[RecordData]):
-    return Controller(Service()).new(data=record)
+    return await Controller(Service()).new(data=record)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return Controller(Service()).delete(id=id, message_sucess={"code": "Ok", "text": f"Record {id} was deleted."})
+    return await Controller(Service()).delete(id=id, message_sucess={"code": "Ok", "text": f"Record {id} was deleted."})
