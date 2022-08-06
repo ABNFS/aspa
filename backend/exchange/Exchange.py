@@ -42,10 +42,10 @@ class Service(ServiceDefault):
 
     def save(self, db, data: ExchangeDataOut):
         from currency.Currency import Currency
-        currency_default_dict = self.repository.search_by_fields(db, Currency, {"default": True})[0]
+        currency_default: Currency = self.repository.search_by_fields(db, Currency, {"default": True})[0]
         new_data: ExchangeData | None
         try:
-            new_data = ExchangeData(data, currency_default_dict["id"])
+            new_data = ExchangeData(data, currency_default.id)
         except ValidationError:
             new_data = None
         return super().save(db, new_data)

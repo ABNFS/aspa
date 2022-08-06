@@ -22,6 +22,7 @@ class AccountType(Base, Mix):
     accounts = relationship("Account", back_populates="my_account_type")
 
 
+
 class AccountTypeData(DataModelDefault):
     id: Optional[int]
     name: Optional[str]

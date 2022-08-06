@@ -12,7 +12,7 @@ from default import Mix, Base, \
 
 class Currency(Base, Mix):
     name = Column(VARCHAR(200), nullable=False)
-    alias = Column(VARCHAR(5), nullable=False)
+    iso_code = Column(VARCHAR(5), nullable=False)
     default = Column(BOOLEAN, default=False)
 
     accounts = relationship("Account", back_populates="my_currency")
@@ -21,7 +21,7 @@ class Currency(Base, Mix):
 class CurrencyData(DataModelDefault):
     id: Optional[int]
     name: Optional[str]
-    alias: Optional[str]
+    iso_code: Optional[str]
     default: Optional[bool]
     deleted: Optional[bool]
 

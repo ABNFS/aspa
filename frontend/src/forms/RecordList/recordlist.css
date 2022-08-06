@@ -1,0 +1,30 @@
+.recordListTable {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    text-align: left;
+}
+
+.recordListHead {
+    font-weight: bold;
+}
+
+.recordListRow {
+
+}
+
+.recordListColumnText {
+
+}
+
+.recordListColumnDate {
+
+}
+
+.recordListColumnMoney {
+    text-align: right;
+}
+
+.debit {
+    color: #e43c33;
+}

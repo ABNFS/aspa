@@ -49,15 +49,22 @@ class Connector {
         });
     }
 
-    get = (id=-1) => {
-        if(typeof(id) != 'number'){
-            id = -1;
-        }
+    get = (...params) => {
+        const id = (typeof(params.id) == 'number')? params.id: -1;
+        const search = (typeof(params.search) == 'object')? params.search: undefined;
 
         this.#param.method = "GET";
         this.#param.headers = this.#make_header();
         this.#param.body = undefined;
-        return id>=0? this.#make_request(`${this.#server_info.uri}/${id}`): this.#make_request();
+        if(id>=0){
+            return this.#make_request(`${this.#server_info.uri}/${id}`)
+        }
+        else if (search !== undefined){
+            let str_search = "?"
+            Object.getOwnPropertyNames(search).map(name=>str_search+=`${name}=${search[name]}&`)
+            return this.#make_request(`${this.#server_info.uri}/${str_search}`)
+        }
+        return this.#make_request();
     }
 
     post = (data_to_send) => {
