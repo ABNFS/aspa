@@ -1,3 +1,31 @@
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+  {"account":  19, "operation": 1, "value":  323342},
+  {"account":  63, "operation": 2, "value":  323342}],
+"my_tags": [3,2,1]
+}
+
+<> 2022-08-06T214831.201.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+  {"account":  19, "operation": 1, "value":  109532},
+  {"account":  63, "operation": 2, "value":  109532}],
+"my_tags": [2]
+}
+
+<> 2022-08-06T214627.201.json
+
+###
+
 POST http://127.0.0.1:8000/exchange/
 Content-Type: application/json
 Accept: application/json
@@ -609,51 +637,6 @@ Accept: application/json
 {"code": "5.1.0.0", "name": "Recebimento", "account_type":4, "parent":5}
 
 <> 2022-08-06T192433-1.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.0.0", "name": "Pagamento", "account_type":5, "parent":4}
-
-<> 2022-08-06T192433.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-[
-{"code": "2.2.1.0", "name": "Água", "account_type":3, "parent":52, "operate": true},
-{"code": "2.2.2.0", "name": "Energia", "account_type":3, "parent":52, "operate": true},
-{"code": "2.2.3.0", "name": "Gás", "account_type":3, "parent":52, "operate": true},
-{"code": "2.3.1.0", "name": "Imposto de Renda", "account_type":3, "parent":53,"operate": true},
-{"code": "2.3.2.0", "name": "IOF", "account_type":3, "parent":53, "operate": true},
-{"code": "2.4.1.0", "name": "Não negociadas", "account_type":3, "parent":54,"operate": true},
-{"code": "2.4.2.0", "name": "Negociadas", "account_type":3, "parent":54, "operate": true},
-{"code": "2.4.3.0", "name": "Sem juros", "account_type":3, "parent":54, "operate": true},
-{"code": "2.1.1.1", "name": "Taxas", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.1.2", "name": "Serviços", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.1.3", "name": "Título Capitalização", "account_type":3, "parent":55,"operate": true},
-{"code": "2.1.1.4", "name": "Previdência", "account_type":3, "parent":55, "operate": true},
-{"code": "2.1.2.1", "name": "Nubank", "account_type":3, "parent":56, "operate": true},
-{"code": "2.1.2.2", "name": "Mercado Pago", "account_type":3, "parent":56,"operate": true},
-{"code": "2.1.2.3", "name": "Santander", "account_type":3, "parent":56, "operate": true},
-{"code": "2.1.3.1", "name": "Nubank", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.2", "name": "Santander", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.3", "name": "Mercado Pago", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.4", "name": "Bradesco", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.3.5", "name": "Financimaneto Carro", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.6", "name": "Financimaneto Energia Solar", "account_type":3, "parent":57,"operate": true},
-{"code": "2.1.3.7", "name": "Consignado", "account_type":3, "parent":57, "operate": true},
-{"code": "2.1.4.1", "name": "Caixa", "account_type":3, "parent":58, "operate": true},
-{"code": "3.1.0.0", "name": "Resultado", "account_type":1, "parent":3, "operate": true}
-]
-
-<> 2022-08-06T192433.200.json
 
 ###
 

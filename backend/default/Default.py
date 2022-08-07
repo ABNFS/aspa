@@ -305,7 +305,7 @@ class ControllerDefault:
         _status: int
 
         if id >= 0:
-            _item, _status = await service.get(db, id)
+            _item, _status = await service.get(db, id, max_deep=MAX_DEEP)
         elif name:
             _item, _status = await service.search(db, free_fields | {"name": name})
         elif free_fields:

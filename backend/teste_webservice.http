@@ -987,4 +987,24 @@ Accept: application/json
 
 {"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
 
+###
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
 
+{"anotation": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+  {"account":  19, "operation": 1, "value":  109532},
+  {"account":  63, "operation": 2, "value":  109532}],
+"my_tags": [2]
+}
+
+###
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"anotation": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+  {"account":  19, "operation": 1, "value":  323342},
+  {"account":  63, "operation": 2, "value":  323342}],
+"my_tags": [3,2,1]
+}

@@ -37,7 +37,7 @@ class AccountRecord(Base):
         return self.record
 
     def __str__(self):
-        return f'{self.record}'
+        return f'{self.record}, {self.account}, {self.operation}'
 
 
 class Record(Base, Mix):

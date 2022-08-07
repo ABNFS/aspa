@@ -18,20 +18,20 @@ class RecordList extends React.Component{
         const default_currency = new Connector("currency");
         moviment.get().then((s)=>this.setState( {moviment: s}), (f) => this.setState({erro: f}));
         digits.get().then((s)=>this.setState( {digits: s}), (f) => this.setState({erro: f}));
-        default_currency.get({default: true}).then((s)=>this.setState( {currency: s.iso_code}), (f) => this.setState({erro: f}));
+        default_currency.get({default: true}).then((s)=>this.setState( {currency: s[0].iso_code}), (f) => this.setState({erro: f}));
     }
 
     render() {
         const digits = parseInt(this.state.digits);
         const currency = this.state.currency;
-        const elements = this.state.moviment.map(i=><tr key={i.id} className="recordListRow">
-            <td className="recordListColumnText">{i.anotation}</td>
-            <td className="recordListColumnDate">{i.date}</td>
-            <td className="recordListColumnMoney">{Number(i.total_amount/(10**digits)).toLocaleString('BR', { style: 'currency', currency: currency})}</td>
-            <td className="recordListColumnOptions"><span className="view" /><span className="edit" /><span className="delete" /></td></tr> );
+        const elements = this.state.moviment.map((item, index)=>{ return <tr key={item.id} className="recordListRow">
+            <td className="recordListColumnText" tabIndex={(index+1)*10+1}>{item.anotation}</td>
+            <td className="recordListColumnDate" tabIndex={(index+1)*10+2}>{item.date}</td>
+            <td className="recordListColumnMoney" tabIndex={(index+1)*10+3}>{Number(item.total_amount/(10**digits)).toLocaleString('BR', { style: 'currency', currency: currency})}</td>
+            <td className="recordListColumnOptions"><span className="view" tabIndex={(index+1)*10+4}/><span className="edit" tabIndex={(index+1)*10+5}/><span className="delete" tabIndex={(index+1)*10+6}/></td></tr>;});
         return <div>
             <table className="recordListTable">
-                <thead className="recordListHead"><tr><th>Observação</th><th>Data</th><th>Valor</th><th></th></tr></thead>
+                <thead className="recordListHead"><tr><th tabIndex={1}>Observação</th><th tabIndex={2}>Data</th><th tabIndex={3}>Valor</th><th tabIndex={4}>Opções</th></tr></thead>
                 <tbody>{elements}</tbody>
             </table>
         </div>;
