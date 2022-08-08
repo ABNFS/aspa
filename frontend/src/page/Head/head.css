@@ -1,0 +1,44 @@
+.header {
+    display: block;
+    width: 100%;
+    height: 3rem;
+}
+
+.header .menu {
+    font-size: 1rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999990;
+    border-radius: 5%;
+    width: 10%;
+    padding: 0;
+    display: block;
+    position: absolute;
+    right: 0;
+}
+
+.header .menu:before {
+    content: "=";
+}
+
+.header .menu:hover {
+
+}
+
+.header .menu > li {
+    font-size: 0.5rem;
+    list-style-type: none;
+    background-color: white;
+}
+
+.header .menu > li {
+    display: none;
+}
+
+.header .menu:hover li {
+    display: block;
+}
+
+.header .menu > li:hover {
+    background-color: #dddddd;
+}

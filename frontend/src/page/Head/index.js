@@ -1,13 +1,15 @@
 import "./head.css"
 
-import React from "react";
 
-class Head extends React.Component {
-    render(){
-        return <div>
-            HEAD
-        </div>;
-    }
+const Head = () =>  {
+        return <header className="header">
+            <ul className="menu">
+                <li>Novo Registro</li>
+                <li>Nova Conta</li>
+                <li>Nova Moeda</li>
+                <li>Balancete</li>
+            </ul>
+        </header>;
 }
 
 export default Head;
