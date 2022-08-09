@@ -29,12 +29,12 @@ class RecordList extends React.Component{
             <td className="recordListColumnDate" tabIndex={(index+1)*10+2}>{item.date}</td>
             <td className="recordListColumnMoney" tabIndex={(index+1)*10+3}>{Number(item.total_amount/(10**digits)).toLocaleString('BR', { style: 'currency', currency: currency})}</td>
             <td className="recordListColumnOptions"><span className="view" tabIndex={(index+1)*10+4}/><span className="edit" tabIndex={(index+1)*10+5}/><span className="delete" tabIndex={(index+1)*10+6}/></td></tr>;});
-        return <div>
+        return <>
             <table className="recordListTable">
                 <thead className="recordListHead"><tr><th tabIndex={1}>Observação</th><th tabIndex={2}>Data</th><th tabIndex={3}>Valor</th><th tabIndex={4}>Opções</th></tr></thead>
                 <tbody>{elements}</tbody>
             </table>
-        </div>;
+        </>;
     }
 }
 

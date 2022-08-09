@@ -6,6 +6,7 @@
 
 .header .menu {
     font-size: 1rem;
+    cursor: pointer;
     border-style: solid;
     border-width: 1px;
     border-color: #999990;

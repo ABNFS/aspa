@@ -17,12 +17,6 @@ class TagCrud extends React.Component{
 
         this.submit = this.submit.bind(this);
         this.delete = this.delete.bind(this);
-        this.close = this.close.bind(this);
-    }
-
-    close = (e) => {
-        e.preventDefault();
-        console.log("fechou");
     }
 
     delete = (e) => {
@@ -50,8 +44,7 @@ class TagCrud extends React.Component{
 
     render() {
         return (<Box>
-                <form className="tagCrud modal" onSubmit={this.submit}>
-                    <Button type="close" label="X" action={this.close} />
+                <form className="tagCrud" onSubmit={this.submit}>
                 <InputText label="Nome" required={true} value={this.state.atualName}
                            placeholder="Digite uma Tag"
                            onChange={this.setAtualName}
@@ -59,7 +52,7 @@ class TagCrud extends React.Component{
                 <Button label="Salvar" />
                 <Button label="Excluir" action={this.delete} type="danger"/>
                 <Label css_class="error" text={this.state.error} />
-                </form><div>{JSON.stringify(this.state.tags)}</div>
+                </form>
             </Box>);
     }
 }

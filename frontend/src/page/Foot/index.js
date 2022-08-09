@@ -1,13 +1,11 @@
 import "./foot.css"
 
-import React from "react";
 
-class Foot extends React.Component{
-    render() {
-        return <div>
-            Foot
-        </div>;
-    }
+const Foot = ({ url }) => {
+        url ??= "https://ab78.cc";
+        return <footer className="footer">
+            <a href={url}><span className="copyright"></span></a>
+        </footer>;
 }
 
 export default Foot;

@@ -1,0 +1,13 @@
+.footer {
+    padding-top: 2rem;
+}
+.footer .copyright::after {
+    content: "Alysson Bruno (2022 - today)";
+    background: 30% 0 / 5em 5em no-repeat url(https://fvtt.io/logo_alysson.png);
+    font-size: 0.5em;
+    text-align: center;
+    height: 5em;
+    vertical-align: middle;
+    background-color: rgb(230,230,230);
+    display: block;
+}
