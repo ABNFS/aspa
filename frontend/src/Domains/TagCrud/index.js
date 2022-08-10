@@ -2,12 +2,12 @@ import "./tagcrud.css"
 
 import React from "react";
 
-import Box from "../../components/Box";
-import InputText from "../../components/InputText";
-import Button from "../../components/Button";
-import Label from "../../components/Label";
+import Box from "../../BasicElements/Box";
+import InputText from "../../BasicElements/InputText";
+import Button from "../../BasicElements/Button";
+import Label from "../../BasicElements/Label";
 
-import Connector from "../../BackendConnector";
+import Connector from "../../Infrastructure";
 
 class TagCrud extends React.Component{
     constructor(props) {
@@ -45,7 +45,7 @@ class TagCrud extends React.Component{
     render() {
         return (<Box>
                 <form className="tagCrud" onSubmit={this.submit}>
-                <InputText label="Nome" required={true} value={this.state.atualName}
+                <InputText id="tagNome" label="Nome" required={true} value={this.state.atualName}
                            placeholder="Digite uma Tag"
                            onChange={this.setAtualName}
                            alt="Campo para incluir novas tags no sistema"/>

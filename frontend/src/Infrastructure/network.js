@@ -47,11 +47,21 @@ class Connector {
             });
 
         });
-    }
+    };
 
     get = (...params) => {
-        const id = (typeof(params.id) == 'number')? params.id: -1;
-        const search = (typeof(params.search) == 'object')? params.search: undefined;
+        let id = -1;
+        let search = undefined;
+        if(params.length>0){
+            for (let v in params){
+                if("id" in params[v]){
+                    id = (typeof(params[v].id) == 'number')? params[v].id: parseInt(params[v].id);
+                }
+                else if("search" in params[v]){
+                    search = (typeof(params[v].search) == 'object')? params[v].search: undefined;
+                }
+            }
+        }
 
         this.#param.method = "GET";
         this.#param.headers = this.#make_header();

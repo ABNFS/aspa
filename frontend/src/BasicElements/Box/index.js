@@ -2,6 +2,7 @@ import React from "react";
 
 import './box.css';
 import Button from "../Button";
+import { Link } from "react-router-dom";
 
 
 class Box extends React.Component{
@@ -12,7 +13,7 @@ class Box extends React.Component{
         this.state = { show: true }
     }
     close = () => {
-        this.setState( {show: false})
+        this.setState( {show: false});
     }
 
     render() {
@@ -21,7 +22,7 @@ class Box extends React.Component{
                 <div className='box' >
                     <div className="modal">
                         { this.props.children }
-                        <Button type="close" label="X" action={()=> this.close()} />
+                        <Link to="/"><Button type="close" label="X" action={()=> this.close()} /></Link>
                     </div>
                 </div>
             );

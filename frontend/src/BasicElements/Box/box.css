@@ -7,7 +7,7 @@
     left: 0;
 }
 
-.box > .modal {
+.box .modal {
     background-color: #b8b8ec;
 
     box-shadow: 1em 1em 3em dimgray;
@@ -26,7 +26,8 @@
     text-align: center;
 }
 
-.box > .modal > .close {
+.box .modal .close {
+    position: absolute;
     white-space: pre-wrap;
     background: transparent;
     border: none;
@@ -34,13 +35,13 @@
     color: #e8e8e8;
     cursor: pointer;
     float: right;
-    transform: translate(0.8rem, -8.5rem);
+    transform: translate(7.5rem, -8.5rem);
 }
 
-.box > .modal > .close:hover{
+.box .modal .close:hover{
     color: white;
 }
 
-.box > .modal > .close:active{
+.box .modal .close:active{
     color: black;
 }

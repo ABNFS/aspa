@@ -1,7 +1,7 @@
 import "./App.css"
-import Head from "./page/Head";
-import Foot from "./page/Foot";
-import Content from "./page/Content";
+import Head from "./PageElements/Head";
+import Foot from "./PageElements/Foot";
+import Content from "./PageElements/Content";
 
 function App() {
   return (
