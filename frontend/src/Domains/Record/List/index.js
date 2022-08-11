@@ -1,37 +1,18 @@
 import "./recordlist.css";
 
-import React from "react";
+import React, {useState} from "react";
 import Connector from "../../../Infrastructure";
 import { Outlet, Link} from "react-router-dom";
 
-class RecordList extends React.Component{
+function RecordList () {
+    const [movement, setMovement] = useState([]);
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            moviment : [],
-            digits: 2,
-            currency: 'USD'
-        }
-
-    }
-
-    componentDidMount() {
-        const moviment = new Connector("record");
-        const digits = new Connector("digits");
-        const default_currency = new Connector("currency");
-        moviment.get().then((s)=>this.setState( {moviment: s}), (f) => this.setState({erro: f}));
-        digits.get().then((s)=>this.setState( {digits: s}), (f) => this.setState({erro: f}));
-        default_currency.get({default: true}).then((s)=>this.setState( {currency: s[0].iso_code}), (f) => this.setState({erro: f}));
-    }
-
-    render() {
-        const digits = parseInt(this.state.digits);
-        const currency = this.state.currency;
-        const elements = this.state.moviment.map((item, index)=>{ return (
+    const makeElementsRow = (mov=[]) => {
+        const digits = localStorage.getItem('digits');
+        const currency = localStorage.getItem('default_ISO');
+        return mov.map((item, index)=>{ return (
             <tr key={item.id} className="recordListRow">
-                <td className="recordListColumnText" tabIndex={(index+1)*10+1}>{item.anotation}</td>
+                <td className="recordListColumnText" tabIndex={(index+1)*10+1}>{item.note}</td>
                 <td className="recordListColumnDate" tabIndex={(index+1)*10+2}>{item.date}</td>
                 <td className="recordListColumnMoney" tabIndex={(index+1)*10+3}>{Number(item.total_amount/(10**digits)).toLocaleString('BR', { style: 'currency', currency: currency})}</td>
                 <td className="recordListColumnOptions">
@@ -40,13 +21,34 @@ class RecordList extends React.Component{
                     <Link to={`record-delete\\${item.id}`}><span className="delete" tabIndex={(index+1)*10+6}/></Link>
                 </td>
             </tr>);});
+    };
+
+    const makeTable = (rows=[]) => {
         return <>
             <table className="recordListTable">
-                <thead className="recordListHead"><tr><th tabIndex={1}>Observação</th><th tabIndex={2}>Data</th><th tabIndex={3}>Valor</th><th tabIndex={4}>Opções</th></tr></thead>
-                <tbody>{elements}</tbody>
+                <thead className="recordListHead">
+                <tr>
+                    <th tabIndex={1}>Observação</th>
+                    <th tabIndex={2}>Data</th>
+                    <th tabIndex={3}>Valor</th>
+                    <th tabIndex={4}>Opções</th>
+                </tr>
+                </thead>
+                <tbody>{rows}</tbody>
             </table>
-            <Outlet />
+            <Outlet/>
         </>;
+    }
+
+    let elements = makeElementsRow(movement);
+
+    if(elements.length === 0){
+        const movementConnector = new Connector("record");
+        movementConnector.get().then(s=>setMovement(s)).then(s=>elements = makeElementsRow(movement));
+        return makeTable(elements);
+    }
+    else {
+        return makeTable(elements);
     }
 }
 

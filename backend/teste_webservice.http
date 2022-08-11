@@ -889,7 +889,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
+{"note": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
 "accounts":[{"account":  {{id_debi_account_um}}, "operation": 1, "value":  40000},
 {"account":  {{id_cred_account_um}}, "operation": 2, "value":  40000}], "my_tags": [{{id_tag_um}}, {{id_tag_tres}}]
 }
@@ -901,7 +901,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
+{"note": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
 {"account":  {{id_debi_account_dois}}, "operation": 2, "value":  10000000},
 {"account":  {{id_cred_account_um}}, "operation": 1, "value":  5000000},
 {"account":  {{id_cred_account_dois}}, "operation": 1, "value":  4000000},
@@ -914,7 +914,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
+{"note": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
 {"account":  {{id_debi_account_um}}, "operation": 1, "value":  5000000},
 {"account":  {{id_cred_account_dois}}, "operation": 2, "value":  7789432}],
 "my_tags": [{{id_tag_tres}}, {{id_tag_dois}}]
@@ -925,7 +925,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
+{"note": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
   {"account":  19, "operation": 1},
   {"account":  63, "operation": 2, "value":  1130},
   {"account":  104, "operation": 2, "value":  1101}],
@@ -936,7 +936,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
+{"note": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
   {"account":  19, "operation": 1, "value":  10000},
   {"account":  63, "operation": 2, "value":  5000},
   {"account":  18, "operation": 2, "value":  5000}],
@@ -992,7 +992,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+{"note": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
   {"account":  19, "operation": 1, "value":  109532},
   {"account":  63, "operation": 2, "value":  109532}],
 "my_tags": [2]
@@ -1003,7 +1003,7 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+{"note": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
   {"account":  19, "operation": 1, "value":  323342},
   {"account":  63, "operation": 2, "value":  323342}],
 "my_tags": [3,2,1]

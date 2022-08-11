@@ -2,13 +2,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+{"note": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
   {"account":  19, "operation": 1, "value":  323342},
   {"account":  63, "operation": 2, "value":  323342}],
 "my_tags": [3,2,1]
 }
 
-<> 2022-08-06T214831.201.json
+<> 2022-08-11T114734.201.json
 
 ###
 
@@ -16,13 +16,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+{"note": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
   {"account":  19, "operation": 1, "value":  109532},
   {"account":  63, "operation": 2, "value":  109532}],
 "my_tags": [2]
 }
 
-<> 2022-08-06T214627.201.json
+<> 2022-08-11T114733-2.201.json
 
 ###
 
@@ -32,7 +32,7 @@ Accept: application/json
 
 {"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
 
-<> 2022-08-06T192444-1.400.json
+<> 2022-08-11T114733-1.400.json
 
 ###
 
@@ -42,7 +42,7 @@ Accept: application/json
 
 {"currency": 2, "rate": 583}
 
-<> 2022-08-06T192444.400.json
+<> 2022-08-11T114733.400.json
 
 ###
 
@@ -50,7 +50,7 @@ DELETE http://127.0.0.1:8000/exchange/2
 Content-Type: application/json
 Accept: application/json
 
-<> 2022-08-06T192444.200.json
+<> 2022-08-11T114733-1.200.json
 
 ###
 
@@ -60,7 +60,7 @@ Accept: application/json
 
 {"currency": 2, "when": "2020-06-20 12:00", "rate": 583}
 
-<> 2022-08-06T192444.201.json
+<> 2022-08-11T114733-1.201.json
 
 ###
 
@@ -70,7 +70,7 @@ Accept: application/json
 
 {"currency": 2, "when": "2020-06-20", "rate": 583}
 
-<> 2022-08-06T192443-1.422.json
+<> 2022-08-11T114733.422.json
 
 ###
 
@@ -80,7 +80,7 @@ Accept: application/json
 
 {"currency": 2, "when": "2020-06-21 12:04", "rate": 586}
 
-<> 2022-08-06T192443-1.201.json
+<> 2022-08-11T114733.201.json
 
 ###
 
@@ -88,14 +88,14 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
+{"note": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
   {"account":  19, "operation": 1, "value":  10000},
   {"account":  63, "operation": 2, "value":  5000},
   {"account":  18, "operation": 2, "value":  5000}],
 "my_tags": [2]
 }
 
-<> 2022-08-06T192443-1.200.json
+<> 2022-08-11T114733.200.json
 
 ###
 
@@ -103,14 +103,14 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
+{"note": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
   {"account":  19, "operation": 1},
   {"account":  63, "operation": 2, "value":  1130},
   {"account":  104, "operation": 2, "value":  1101}],
 "my_tags": [1, 3]
 }
 
-<> 2022-08-06T192443.422.json
+<> 2022-08-11T114732.422.json
 
 ###
 
@@ -118,13 +118,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
+{"note": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
 {"account":  105, "operation": 1, "value":  5000000},
 {"account":  104, "operation": 2, "value":  7789432}],
 "my_tags": [3, 2]
 }
 
-<> 2022-08-06T192443.200.json
+<> 2022-08-11T114732.200.json
 
 ###
 
@@ -132,13 +132,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
+{"note": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
 {"account":  106, "operation": 2, "value":  10000000},
 {"account":  103, "operation": 1, "value":  5000000},
 {"account":  104, "operation": 1, "value":  4000000},
 {"account":  105, "operation": 1, "value":  1000000}]}
 
-<> 2022-08-06T192443.201.json
+<> 2022-08-11T114732-1.201.json
 
 ###
 
@@ -146,12 +146,12 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
+{"note": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
 "accounts":[{"account":  105, "operation": 1, "value":  40000},
 {"account":  103, "operation": 2, "value":  40000}], "my_tags": [1, 3]
 }
 
-<> 2022-08-06T192442-4.201.json
+<> 2022-08-11T114732.201.json
 
 ###
 
@@ -161,7 +161,7 @@ Accept: application/json
 
 {"name": "Nova"}
 
-<> 2022-08-06T192442-3.201.json
+<> 2022-08-11T114731-2.201.json
 
 ###
 
@@ -171,7 +171,7 @@ Accept: application/json
 
 {"name": "Apagar Também"}
 
-<> 2022-08-06T192442-2.201.json
+<> 2022-08-11T114731-1.201.json
 
 ###
 
@@ -181,7 +181,7 @@ Accept: application/json
 
 {"name": "Apagar"}
 
-<> 2022-08-06T192442-1.201.json
+<> 2022-08-11T114731.201.json
 
 ###
 
@@ -189,7 +189,7 @@ DELETE http://127.0.0.1:8000/account/174
 Content-Type: application/json
 Accept: application/json
 
-<> 2022-08-06T192442-2.200.json
+<> 2022-08-11T114731-1.200.json
 
 ###
 
@@ -199,7 +199,7 @@ Accept: application/json
 
 {"id": 174,"code": "10.1.6.0.84", "name": "Excluindo", "account_type":1, "parent":84}
 
-<> 2022-08-06T192442-1.200.json
+<> 2022-08-11T114731.200.json
 
 ###
 
@@ -209,7 +209,7 @@ Accept: application/json
 
 {"code": "10.1.6.0.84", "name": "Lucros", "account_type":4, "parent":84}
 
-<> 2022-08-06T192442.201.json
+<> 2022-08-11T114730.201.json
 
 ###
 
@@ -219,7 +219,7 @@ Accept: application/json
 
 {"id": 52,"code": "2.2.0.0", "name": "Contas Serviço Público", "account_type":3 }
 
-<> 2022-08-06T192442.200.json
+<> 2022-08-11T114730-2.200.json
 
 ###
 
@@ -227,7 +227,7 @@ DELETE http://127.0.0.1:8000/currency/null
 Content-Type: application/json
 Accept: application/json
 
-<> 2022-08-06T192439.422.json
+<> 2022-08-11T114730.422.json
 
 ###
 
@@ -237,7 +237,7 @@ Accept: application/json
 
 {"id": null, "name": "Excluir2", "alias": "EE$" }
 
-<> 2022-08-06T192439.400.json
+<> 2022-08-11T114730-1.400.json
 
 ###
 
@@ -247,14 +247,14 @@ Accept: application/json
 
 {"name": "Dólar", "iso_code": "USD" }
 
-<> 2022-08-06T192437.400.json
+<> 2022-08-11T114730.400.json
 
 ###
 
 DELETE http://127.0.0.1:8000/account-type/8
 Accept: application/json
 
-<> 2022-08-06T192437-2.200.json
+<> 2022-08-11T114730-1.200.json
 
 ###
 
@@ -264,7 +264,7 @@ Accept: application/json
 
 {"id": 8, "name": "Excluir4", "alias": "ee3", "operation": 2 }
 
-<> 2022-08-06T192437-1.200.json
+<> 2022-08-11T114730.200.json
 
 ###
 
@@ -274,7 +274,7 @@ Accept: application/json
 
 {"name": "Excluir3", "alias": "EE3", "operation": 1 }
 
-<> 2022-08-06T192437.201.json
+<> 2022-08-11T114729.201.json
 
 ###
 
@@ -406,7 +406,7 @@ Accept: application/json
 
         ]
 
-<> 2022-08-06T192437.200.json
+<> 2022-08-11T114729.200.json
 
 ###
 
@@ -416,7 +416,7 @@ Accept: application/json
 
 {"code": "4.1.1.4", "name": "Segurança Casa", "account_type":5, "parent":85,"operate": true}
 
-<> 2022-08-06T192436-1.201.json
+<> 2022-08-11T114728-4.201.json
 
 ###
 
@@ -426,7 +426,7 @@ Accept: application/json
 
 {"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":5, "parent":85,"operate": true}
 
-<> 2022-08-06T192436.201.json
+<> 2022-08-11T114728-3.201.json
 
 ###
 
@@ -436,7 +436,7 @@ Accept: application/json
 
 {"code": "4.1.1.2", "name": "Diárias", "account_type":5, "parent":85, "operate": true}
 
-<> 2022-08-06T192435-7.201.json
+<> 2022-08-11T114728-2.201.json
 
 ###
 
@@ -446,7 +446,7 @@ Accept: application/json
 
 {"code": "4.1.1.1", "name": "Aluguel", "account_type":5, "parent":85, "operate": true}
 
-<> 2022-08-06T192435-6.201.json
+<> 2022-08-11T114728-1.201.json
 
 ###
 
@@ -456,7 +456,7 @@ Accept: application/json
 
 {"code": "5.1.6.0", "name": "Lucros", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435-5.201.json
+<> 2022-08-11T114728.201.json
 
 ###
 
@@ -466,7 +466,7 @@ Accept: application/json
 
 {"code": "5.1.5.0", "name": "Rendimentos Financeiros", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435-4.201.json
+<> 2022-08-11T114727-4.201.json
 
 ###
 
@@ -476,7 +476,7 @@ Accept: application/json
 
 {"code": "5.1.4.0", "name": "Vendas", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435-3.201.json
+<> 2022-08-11T114727-3.201.json
 
 ###
 
@@ -486,7 +486,7 @@ Accept: application/json
 
 {"code": "5.1.3.0", "name": "Serviços", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435-2.201.json
+<> 2022-08-11T114727-2.201.json
 
 ###
 
@@ -496,7 +496,7 @@ Accept: application/json
 
 {"code": "5.1.2.0", "name": "Honorários", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435-1.201.json
+<> 2022-08-11T114727-1.201.json
 
 ###
 
@@ -506,7 +506,7 @@ Accept: application/json
 
 {"code": "5.1.1.0", "name": "Salários", "account_type":4, "parent":84}
 
-<> 2022-08-06T192435.201.json
+<> 2022-08-11T114727.201.json
 
 ###
 
@@ -516,7 +516,7 @@ Accept: application/json
 
 {"code": "4.1.13.0", "name": "Financeiro", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-6.201.json
+<> 2022-08-11T114726-7.201.json
 
 ###
 
@@ -526,7 +526,7 @@ Accept: application/json
 
 {"code": "4.1.12.0", "name": "Bens", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-5.201.json
+<> 2022-08-11T114726-6.201.json
 
 ###
 
@@ -536,7 +536,7 @@ Accept: application/json
 
 {"code": "4.1.11.0", "name": "Alimentação", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-4.201.json
+<> 2022-08-11T114726-5.201.json
 
 ###
 
@@ -546,7 +546,7 @@ Accept: application/json
 
 {"code": "4.1.10.0", "name": "Softwares", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-3.201.json
+<> 2022-08-11T114726-4.201.json
 
 ###
 
@@ -556,7 +556,7 @@ Accept: application/json
 
 {"code": "4.1.9.0", "name": "Doação", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-2.201.json
+<> 2022-08-11T114726-3.201.json
 
 ###
 
@@ -566,7 +566,7 @@ Accept: application/json
 
 {"code": "4.1.8.0", "name": "Animais de estimação", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434-1.201.json
+<> 2022-08-11T114726-2.201.json
 
 ###
 
@@ -576,7 +576,7 @@ Accept: application/json
 
 {"code": "4.1.7.0", "name": "Roupa e beleza", "account_type":5, "parent":83}
 
-<> 2022-08-06T192434.201.json
+<> 2022-08-11T114726-1.201.json
 
 ###
 
@@ -586,7 +586,7 @@ Accept: application/json
 
 {"code": "4.1.6.0", "name": "Estudo", "account_type":5, "parent":83}
 
-<> 2022-08-06T192433-6.201.json
+<> 2022-08-11T114726.201.json
 
 ###
 
@@ -596,7 +596,7 @@ Accept: application/json
 
 {"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":5, "parent":83}
 
-<> 2022-08-06T192433-5.201.json
+<> 2022-08-11T114725-5.201.json
 
 ###
 
@@ -606,7 +606,7 @@ Accept: application/json
 
 {"code": "4.1.4.0", "name": "Compras", "account_type":5, "parent":83}
 
-<> 2022-08-06T192433-4.201.json
+<> 2022-08-11T114725-4.201.json
 
 ###
 
@@ -616,7 +616,7 @@ Accept: application/json
 
 {"code": "4.1.2.0", "name": "Locomoção", "account_type":5, "parent":83}
 
-<> 2022-08-06T192433-3.201.json
+<> 2022-08-11T114725-3.201.json
 
 ###
 
@@ -626,7 +626,7 @@ Accept: application/json
 
 {"code": "4.1.1.0", "name": "Casa", "account_type":5, "parent":83}
 
-<> 2022-08-06T192433-2.201.json
+<> 2022-08-11T114725-2.201.json
 
 ###
 
@@ -636,7 +636,7 @@ Accept: application/json
 
 {"code": "5.1.0.0", "name": "Recebimento", "account_type":4, "parent":5}
 
-<> 2022-08-06T192433-1.201.json
+<> 2022-08-11T114725-1.201.json
 
 ###
 
