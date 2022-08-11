@@ -41,7 +41,7 @@ class AccountRecord(Base):
 
 
 class Record(Base, Mix):
-    anotation = Column(VARCHAR(100), nullable=True)
+    note = Column(VARCHAR(100), nullable=True)
     date = Column(DATE, nullable=False)
     total_amount = Column(BIGINT, nullable=False)
     my_tags = relationship('Tag', secondary=tag_recorde, back_populates='my_records')
@@ -56,7 +56,7 @@ class RecordAccountData(DataModelDefault):
 
 
 class RecordData(DataModelDefault):
-    anotation: Optional[str]
+    note: Optional[str]
     date: Optional[date]
     total_amount: Optional[int]
     my_tags: Optional[list[int]]

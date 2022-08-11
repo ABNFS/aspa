@@ -80,7 +80,7 @@ def upgrade() -> None:
     op.create_table(
         "record",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement="auto"),
-        sa.Column('anotation', sa.VARCHAR(200), nullable=False),
+        sa.Column('note', sa.VARCHAR(200), nullable=False),
         sa.Column('date', sa.DATE, nullable=False),
         sa.Column('total_amount', sa.BIGINT, nullable=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
