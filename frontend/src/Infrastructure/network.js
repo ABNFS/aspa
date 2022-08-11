@@ -49,18 +49,14 @@ class Connector {
         });
     };
 
-    get = (...params) => {
+    get = (params) => {
         let id = -1;
         let search = undefined;
-        if(params.length>0){
-            for (let v in params){
-                if("id" in params[v]){
-                    id = (typeof(params[v].id) == 'number')? params[v].id: parseInt(params[v].id);
-                }
-                else if("search" in params[v]){
-                    search = (typeof(params[v].search) == 'object')? params[v].search: undefined;
-                }
-            }
+        if(params && ("id" in params)){
+            id = (typeof(params.id) == 'number')? params.id: parseInt(params.id);
+        }
+        if(params && ("search" in params)){
+            search = (typeof(params.search) == 'object')? params.search: undefined;
         }
 
         this.#param.method = "GET";
