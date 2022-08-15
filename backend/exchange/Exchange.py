@@ -1,4 +1,4 @@
-from typing import Optional, ClassVar
+from typing import Optional
 from datetime import datetime
 
 from pydantic import ValidationError
@@ -7,8 +7,10 @@ from sqlalchemy import Column, BIGINT, DATETIME, ForeignKey
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from currency import CurrencyService, Currency
 from default import ControllerDefault, ServiceDefault, \
     Base, Mix, MessageDataDefault, DataModelDefault
+from default import log, ServiceError
 
 
 class Exchange(Base, Mix):
@@ -36,19 +38,23 @@ class ExchangeData(DataModelDefault):
 
 
 class Service(ServiceDefault):
+    service_currency: CurrencyService
 
     def __init__(self):
         super().__init__(database_class=Exchange)
+        self.service_currency = CurrencyService()
 
-    async def save(self, db, data: ExchangeDataOut):
-        from currency.Currency import Currency
-        currency_default_list: Currency = await self.repository.search_by_fields(db, Currency, {"default": True})
-        new_data: ExchangeData | None
+    async def save(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
+        currency_default: Currency = await self.service_currency.get_default(db)
+        exchange_data_to_save: ExchangeData | None
         try:
-            new_data = ExchangeData(data, currency_default_list[0].id)
+            exchange_data_to_save = ExchangeData(data, currency_default.id)
         except ValidationError:
-            new_data = None
-        return await super().save(db, new_data)
+            log.debug(f'Erro in Exchange {data}')
+            raise ServiceError(message='Erro in Exchange')
+        if max_deep == -1:
+            return await super().save(db, exchange_data_to_save)
+        return await super().save(db, exchange_data_to_save, max_deep)
 
 
 class Controller(ControllerDefault):

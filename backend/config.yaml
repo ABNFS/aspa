@@ -12,3 +12,6 @@ allow_origins:
 
 number:
   digits: 2
+
+log:
+  level: DEBUG
