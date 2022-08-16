@@ -1,1 +1,1 @@
-from .Currency import app
+from .Currency import app, CurrencyService, Currency

@@ -1,0 +1,25 @@
+label {
+    /**/
+    margin: 0;
+    padding: 0;
+}
+
+.label {
+    font-size: small;
+}
+
+.required {
+    font-stretch: semi-expanded;
+    font-weight: bold;
+}
+
+.required::after {
+    content: '*';
+    color: red;
+    font-style: italic;
+}
+
+.error {
+    color: red;
+    font-size: 0.5rem;
+}

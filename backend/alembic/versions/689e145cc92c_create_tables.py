@@ -39,7 +39,7 @@ def upgrade() -> None:
         "currency",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement="auto"),
         sa.Column('name', sa.VARCHAR(200), nullable=False, unique=True),
-        sa.Column('alias', sa.VARCHAR(5), nullable=False, unique=True),
+        sa.Column('iso_code', sa.VARCHAR(5), nullable=False, unique=True),
         sa.Column('default', sa.BOOLEAN, default=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )
@@ -80,9 +80,9 @@ def upgrade() -> None:
     op.create_table(
         "record",
         sa.Column('id', sa.BIGINT, primary_key=True, autoincrement="auto"),
-        sa.Column('anotation', sa.VARCHAR(200), nullable=False),
+        sa.Column('note', sa.VARCHAR(200), nullable=False),
         sa.Column('date', sa.DATE, nullable=False),
-        sa.Column('amount', sa.BIGINT, nullable=False),
+        sa.Column('total_amount', sa.BIGINT, nullable=False),
         sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
@@ -91,7 +91,8 @@ def upgrade() -> None:
         sa.Column('record', sa.BIGINT, sa.ForeignKey("record.id"), primary_key=True),
         sa.Column('account', sa.BIGINT, sa.ForeignKey("account.id"), primary_key=True),
         sa.Column('operation', sa.BIGINT, sa.ForeignKey("operation_type.id"), primary_key=True),
-        sa.Column('amount', sa.BIGINT, nullable=False)
+        sa.Column('value', sa.BIGINT, nullable=False),
+        sa.Column('deleted', sa.BOOLEAN, default=False)
     )
 
     op.create_table(

@@ -1,0 +1,58 @@
+.recordListTable {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    text-align: left;
+    margin-left: 1%;
+    width: 98%;
+    align-items: center;
+    position: center;
+}
+
+.recordListHead {
+    font-weight: bold;
+    background-color: #dddddd;
+}
+
+.recordListRow {
+
+}
+
+.recordListRow:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+.recordListRow:hover {
+    background-color: #b8b8ec;
+}
+
+
+.recordListColumnText {
+
+}
+
+.recordListColumnDate {
+
+}
+
+.recordListColumnMoney {
+    text-align: right;
+}
+
+.debit {
+    color: #e43c33;
+}
+.view:before {
+    content: "View";
+    margin: 1px;
+}
+
+.edit:before {
+    content: "Edit";
+    margin: 1px;
+}
+
+.delete:before {
+    content: "Delete";
+    margin: 1px;
+}

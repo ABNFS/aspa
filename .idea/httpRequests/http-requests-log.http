@@ -1,103 +1,14 @@
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
-
-<> 2022-07-29T130758.400.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
-
-<> 2022-07-29T130128.500.txt
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "rate": 583}
-
-<> 2022-07-29T130122.400.json
-
-###
-
-DELETE http://127.0.0.1:8000/exchange/2
-Content-Type: application/json
-Accept: application/json
-
-<> 2022-07-29T130109.200.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "when": "2020-06-20 12:00", "rate": 583}
-
-<> 2022-07-29T130057.201.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "when": "2020-06-20", "rate": 583}
-
-<> 2022-07-29T130003.422.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "when": "2020-06-21 12:04", "rate": 586}
-
-<> 2022-07-29T125236.201.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "datetime": "2020-06-21 12:04", "rate": 586}
-
-<> 2022-07-29T125109.500.txt
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "datetime": "2020-06-21 12:04", "rate": 586}
-
-<> 2022-07-29T125027.500.txt
-
-###
-
 POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "amount":2231, "accounts":[
-  {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "amount":  1130},
-  {"account":  104, "operation": 2, "amount":  1101}],
-"my_tags": [1, 3]
+{"note": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+  {"account":  19, "operation": 1, "value":  323342},
+  {"account":  63, "operation": 2, "value":  323342}],
+"my_tags": [3,2,1]
 }
 
-<> 2022-07-29T125004.400.json
+<> 2022-08-14T215635-1.201.json
 
 ###
 
@@ -105,68 +16,71 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "amount":2231, "accounts":[
-  {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "amount":  1130},
-  {"account":  104, "operation": 2, "amount":  1101}],
-"my_tags": [1, 3]
-}
-
-<> 2022-07-29T124556.500.txt
-
-###
-
-POST http://127.0.0.1:8000/record/
-Content-Type: application/json
-Accept: application/json
-
-{"anotation": "Errado #0", "date": "2020-06-21", "amount":2231, "accounts":[
-  {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "amount":  1130},
-  {"account":  104, "operation": 2, "amount":  1101}],
-"my_tags": [1, 3]
-}
-
-<> 2022-07-29T124325.500.txt
-
-###
-
-POST http://127.0.0.1:8000/record/
-Content-Type: application/json
-Accept: application/json
-
-{"anotation": "Salários", "date": "2020-06-21", "amount":7789432, "accounts":[
-{"account":  105, "operation": 1, "amount":  5000000},
-{"account":  104, "operation": 2, "amount":  7789432}],
-"my_tags": [3, 2]
-}
-
-<> 2022-07-29T124313.400.json
-
-###
-
-POST http://127.0.0.1:8000/exchange/
-Content-Type: application/json
-Accept: application/json
-
-{"currency": 2, "datetime": "2020-06-21 12:04", "rate": 586}
-
-<> 2022-07-29T123517-1.500.txt
-
-###
-
-POST http://127.0.0.1:8000/record/
-Content-Type: application/json
-Accept: application/json
-
-{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
-  {"account":  19, "operation": 1, "amount":  10000},
-  {"account":  63, "operation": 2, "amount":  5000},
-  {"account":  18, "operation": 2, "amount":  5000}],
+{"note": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+  {"account":  19, "operation": 1, "value":  109532},
+  {"account":  63, "operation": 2, "value":  109532}],
 "my_tags": [2]
 }
 
-<> 2022-07-29T123517.400.json
+<> 2022-08-14T215635.201.json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
+
+<> 2022-08-14T215635.400.json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 31, "rate": 583}
+
+<> 2022-08-14T215634-2.400.json
+
+###
+
+DELETE http://127.0.0.1:8000/exchange/null
+Content-Type: application/json
+Accept: application/json
+
+<> 2022-08-14T215634-1.422.json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 31, "when": "2020-06-20 12:00", "rate": 583}
+
+<> 2022-08-14T215634-1.400.json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 31, "when": "2020-06-20", "rate": 583}
+
+<> 2022-08-14T215634.422.json
+
+###
+
+POST http://127.0.0.1:8000/exchange/
+Content-Type: application/json
+Accept: application/json
+
+{"currency": 31, "when": "2020-06-21 12:04", "rate": 586}
+
+<> 2022-08-14T215634.400.json
 
 ###
 
@@ -174,14 +88,29 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "amount":2231, "accounts":[
+{"note": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
+  {"account":  19, "operation": 1, "value":  10000},
+  {"account":  63, "operation": 2, "value":  5000},
+  {"account":  18, "operation": 2, "value":  5000}],
+"my_tags": [2]
+}
+
+<> 2022-08-14T215633-4.201.json
+
+###
+
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"note": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
   {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "amount":  1130},
-  {"account":  104, "operation": 2, "amount":  1101}],
+  {"account":  63, "operation": 2, "value":  1130},
+  {"account":  104, "operation": 2, "value":  1101}],
 "my_tags": [1, 3]
 }
 
-<> 2022-07-29T123517.500.txt
+<> 2022-08-14T215633.422.json
 
 ###
 
@@ -189,14 +118,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Salários", "date": "2020-06-21", "amount":7789432, "accounts":[
-{"account":  105, "operation": 1, "amount":  5000000},
-{"account":  104, "operation": 2, "amount":  7789432},
-],
-"my_tags": [3, 2]
+{"note": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
+{"account":  434, "operation": 1, "value":  5000000},
+{"account":  433, "operation": 2, "value":  7789432}],
+"my_tags": [21, 20]
 }
 
-<> 2022-07-29T123517.422.json
+<> 2022-08-14T215633-3.201.json
 
 ###
 
@@ -204,13 +132,13 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Carro novo", "date": "2020-05-12", "amount":10000000, "accounts":[
-{"account":  106, "operation": 2, "amount":  10000000},
-{"account":  103, "operation": 1, "amount":  5000000},
-{"account":  104, "operation": 1, "amount":  4000000},
-{"account":  105, "operation": 1, "amount":  1000000}]}
+{"note": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
+{"account":  435, "operation": 2, "value":  10000000},
+{"account":  432, "operation": 1, "value":  5000000},
+{"account":  433, "operation": 1, "value":  4000000},
+{"account":  434, "operation": 1, "value":  1000000}]}
 
-<> 2022-07-29T123517.201.json
+<> 2022-08-14T215633-2.201.json
 
 ###
 
@@ -218,12 +146,12 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Compra no mercado", "date": "2020-05-12", "amount":40000,
-"accounts":[{"account":  105, "operation": 1, "amount":  40000},
-{"account":  103, "operation": 2, "amount":  40000}], "my_tags": [1, 3]
+{"note": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
+"accounts":[{"account":  434, "operation": 1, "value":  40000},
+{"account":  432, "operation": 2, "value":  40000}], "my_tags": [19, 21]
 }
 
-<> 2022-07-29T123516-3.201.json
+<> 2022-08-14T215633-1.201.json
 
 ###
 
@@ -233,7 +161,7 @@ Accept: application/json
 
 {"name": "Nova"}
 
-<> 2022-07-29T123516-2.201.json
+<> 2022-08-14T215633.201.json
 
 ###
 
@@ -243,7 +171,7 @@ Accept: application/json
 
 {"name": "Apagar Também"}
 
-<> 2022-07-29T123516-1.201.json
+<> 2022-08-14T215632-1.201.json
 
 ###
 
@@ -253,15 +181,15 @@ Accept: application/json
 
 {"name": "Apagar"}
 
-<> 2022-07-29T123516.201.json
+<> 2022-08-14T215632.201.json
 
 ###
 
-DELETE http://127.0.0.1:8000/account/174
+DELETE http://127.0.0.1:8000/account/503
 Content-Type: application/json
 Accept: application/json
 
-<> 2022-07-29T123516.200.json
+<> 2022-08-14T215632.200.json
 
 ###
 
@@ -269,9 +197,9 @@ PUT http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"id": 174,"code": "10.1.6.0.84", "name": "Excluindo", "account_type":1, "parent":84}
+{"id": 503,"code": "10.1.6.0.84", "name": "Excluindo", "account_type":40, "parent":413}
 
-<> 2022-07-29T123515-1.200.json
+<> 2022-08-14T215632.400.json
 
 ###
 
@@ -279,9 +207,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "10.1.6.0.84", "name": "Lucros", "account_type":4, "parent":84}
+{"code": "10.1.6.0.84", "name": "Lucros", "account_type":71, "parent":413}
 
-<> 2022-07-29T123515-1.201.json
+<> 2022-08-14T215631.201.json
 
 ###
 
@@ -289,9 +217,9 @@ PUT http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"id": 52,"code": "2.2.0.0", "name": "Contas Serviço Público", "account_type":3 }
+{"id": 381,"code": "2.2.0.0", "name": "Contas Serviço Público", "account_type":70 }
 
-<> 2022-07-29T123515.200.json
+<> 2022-08-14T215631.200.json
 
 ###
 
@@ -299,7 +227,7 @@ DELETE http://127.0.0.1:8000/currency/null
 Content-Type: application/json
 Accept: application/json
 
-<> 2022-07-29T123515.422.json
+<> 2022-08-14T215631.422.json
 
 ###
 
@@ -309,7 +237,7 @@ Accept: application/json
 
 {"id": null, "name": "Excluir2", "alias": "EE$" }
 
-<> 2022-07-29T123515.201.json
+<> 2022-08-14T215630-3.400.json
 
 ###
 
@@ -317,16 +245,16 @@ POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Dólar", "alias": "US$" }
+{"name": "Dólar", "iso_code": "USD" }
 
-<> 2022-07-29T123512.500.txt
+<> 2022-08-14T215630-2.400.json
 
 ###
 
-DELETE http://127.0.0.1:8000/account-type/8
+DELETE http://127.0.0.1:8000/account-type/null
 Accept: application/json
 
-<> 2022-07-29T123512-2.200.json
+<> 2022-08-14T215630.422.json
 
 ###
 
@@ -334,9 +262,9 @@ PUT http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
-{"id": 8, "name": "Excluir4", "alias": "ee3", "operation": 2 }
+{"id": null, "name": "Excluir4", "alias": "ee3", "operation": 2 }
 
-<> 2022-07-29T123512-1.200.json
+<> 2022-08-14T215630-1.400.json
 
 ###
 
@@ -346,7 +274,7 @@ Accept: application/json
 
 {"name": "Excluir3", "alias": "EE3", "operation": 1 }
 
-<> 2022-07-29T123512.201.json
+<> 2022-08-14T215630.400.json
 
 ###
 
@@ -355,130 +283,130 @@ Content-Type: application/json
 Accept: application/json
 
        [
-            {"code": "4.1.2.1", "name": "Gasolina", "account_type":5, "parent":86, "operate": true},
-            {"code": "4.1.2.2", "name": "Passagens", "account_type":5, "parent":86, "operate": true},
-            {"code": "4.1.2.3", "name": "Diárias Hotel", "account_type":5, "parent":86,
+            {"code": "4.1.2.1", "name": "Gasolina", "account_type":72, "parent":415, "operate": true},
+            {"code": "4.1.2.2", "name": "Passagens", "account_type":72, "parent":415, "operate": true},
+            {"code": "4.1.2.3", "name": "Diárias Hotel", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.4", "name": "Aluguel Carro", "account_type":5, "parent":86,
+            {"code": "4.1.2.4", "name": "Aluguel Carro", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.5", "name": "Manutenção veículo", "account_type":5, "parent":86,
+            {"code": "4.1.2.5", "name": "Manutenção veículo", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.6", "name": "Seguro Veículo", "account_type":5, "parent":86,
+            {"code": "4.1.2.6", "name": "Seguro Veículo", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.7", "name": "Seguro Viagem", "account_type":5, "parent":86,
+            {"code": "4.1.2.7", "name": "Seguro Viagem", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.8", "name": "Taxi/Aplicativo", "account_type":5, "parent":86,
+            {"code": "4.1.2.8", "name": "Taxi/Aplicativo", "account_type":72, "parent":415,
              "operate": true},
-            {"code": "4.1.2.9", "name": "Entregador/Aplicativo", "account_type":5, "parent":86,
-             "operate": true},
-
-            {"code": "4.1.11.1", "name": "Restaurante", "account_type":5, "parent":94,
-             "operate": true},
-            {"code": "4.1.11.2", "name": "Entrega", "account_type":5, "parent":94,
-             "operate": true},
-            {"code": "4.1.11.3", "name": "Encomenda", "account_type":5, "parent":94,
-             "operate": true},
-            {"code": "4.1.11.4", "name": "Lanche", "account_type":5, "parent":94,
-             "operate": true},
-            {"code": "4.1.11.5", "name": "Doces", "account_type":5, "parent":94,
+            {"code": "4.1.2.9", "name": "Entregador/Aplicativo", "account_type":72, "parent":415,
              "operate": true},
 
-            {"code": "4.1.4.1", "name": "Mercadinho", "account_type":5, "parent":87, "operate": true},
-            {"code": "4.1.4.2", "name": "Farmácia", "account_type":5, "parent":87, "operate": true},
-            {"code": "4.1.4.3", "name": "Atacarejo", "account_type":5, "parent":87, "operate": true},
-            {"code": "4.1.4.4", "name": "Livraria", "account_type":5, "parent":87, "operate": true},
-            {"code": "4.1.4.5", "name": "Bazar", "account_type":5, "parent":87, "operate": true},
-            {"code": "4.1.4.6", "name": "Supermercado", "account_type":5, "parent":87,
+            {"code": "4.1.11.1", "name": "Restaurante", "account_type":72, "parent":423,
+             "operate": true},
+            {"code": "4.1.11.2", "name": "Entrega", "account_type":72, "parent":423,
+             "operate": true},
+            {"code": "4.1.11.3", "name": "Encomenda", "account_type":72, "parent":423,
+             "operate": true},
+            {"code": "4.1.11.4", "name": "Lanche", "account_type":72, "parent":423,
+             "operate": true},
+            {"code": "4.1.11.5", "name": "Doces", "account_type":72, "parent":423,
              "operate": true},
 
-            {"code": "4.1.5.1", "name": "Cachaçada", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.2", "name": "Cinema", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.3", "name": "Stream", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.4", "name": "Livros e Gibis", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.5", "name": "Acampamento", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.6", "name": "Clube", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.7", "name": "RPG", "account_type":5, "parent":88,
-             "operate": true},
-            {"code": "4.1.5.8", "name": "Jogos", "account_type":5, "parent":88,
+            {"code": "4.1.4.1", "name": "Mercadinho", "account_type":72, "parent":416, "operate": true},
+            {"code": "4.1.4.2", "name": "Farmácia", "account_type":72, "parent":416, "operate": true},
+            {"code": "4.1.4.3", "name": "Atacarejo", "account_type":72, "parent":416, "operate": true},
+            {"code": "4.1.4.4", "name": "Livraria", "account_type":72, "parent":416, "operate": true},
+            {"code": "4.1.4.5", "name": "Bazar", "account_type":72, "parent":416, "operate": true},
+            {"code": "4.1.4.6", "name": "Supermercado", "account_type":72, "parent":416,
              "operate": true},
 
-            {"code": "4.1.6.1", "name": "Escola/Faculdade", "account_type":5, "parent":89,
+            {"code": "4.1.5.1", "name": "Cachaçada", "account_type":72, "parent":417,
              "operate": true},
-            {"code": "4.1.6.2", "name": "Cursos", "account_type":5, "parent":89,
+            {"code": "4.1.5.2", "name": "Cinema", "account_type":72, "parent":417,
              "operate": true},
-            {"code": "4.1.6.3", "name": "Livros Didáticos", "account_type":5, "parent":89,
+            {"code": "4.1.5.3", "name": "Stream", "account_type":72, "parent":417,
              "operate": true},
-            {"code": "4.1.6.4", "name": "Material de Escritório", "account_type":5, "parent":89,
+            {"code": "4.1.5.4", "name": "Livros e Gibis", "account_type":72, "parent":417,
              "operate": true},
-
-            {"code": "4.1.7.1", "name": "Roupas", "account_type":5, "parent":90, "operate": true},
-            {"code": "4.1.7.2", "name": "Calçados", "account_type":5, "parent":90, "operate": true},
-            {"code": "4.1.7.3", "name": "Lingerie", "account_type":5, "parent":90, "operate": true},
-            {"code": "4.1.7.4", "name": "Fantasia", "account_type":5, "parent":90, "operate": true},
-            {"code": "4.1.7.5", "name": "Corte Cabelo", "account_type":5, "parent":90,
+            {"code": "4.1.5.5", "name": "Acampamento", "account_type":72, "parent":417,
              "operate": true},
-            {"code": "4.1.7.6", "name": "Manicure", "account_type":5, "parent":90, "operate": true},
-            {"code": "4.1.7.7", "name": "Depilação", "account_type":5, "parent":90, "operate": true},
-
-            {"code": "4.1.8.1", "name": "Ração", "account_type":5, "parent":91, "operate": true},
-            {"code": "4.1.8.2", "name": "Veterinário", "account_type":5, "parent":91,
+            {"code": "4.1.5.6", "name": "Clube", "account_type":72, "parent":417,
              "operate": true},
-            {"code": "4.1.8.3", "name": "Salão", "account_type":5, "parent":91, "operate": true},
-            {"code": "4.1.8.4", "name": "Assessórios", "account_type":5, "parent":91,
+            {"code": "4.1.5.7", "name": "RPG", "account_type":72, "parent":417,
+             "operate": true},
+            {"code": "4.1.5.8", "name": "Jogos", "account_type":72, "parent":417,
              "operate": true},
 
-            {"code": "4.1.9.1", "name": "Animais", "account_type":5, "parent":92, "operate": true},
-            {"code": "4.1.9.2", "name": "Artistas", "account_type":5, "parent":92, "operate": true},
-            {"code": "4.1.9.3", "name": "Cientístas", "account_type":5, "parent":92,
+            {"code": "4.1.6.1", "name": "Escola/Faculdade", "account_type":72, "parent":418,
              "operate": true},
-            {"code": "4.1.9.4", "name": "Crianças", "account_type":5, "parent":92, "operate": true},
-            {"code": "4.1.9.5", "name": "Pessoas na Rua", "account_type":5, "parent":92,
+            {"code": "4.1.6.2", "name": "Cursos", "account_type":72, "parent":418,
              "operate": true},
-
-            {"code": "4.1.10.1", "name": "Cloud Armazenamento", "account_type":5, "parent":93,
+            {"code": "4.1.6.3", "name": "Livros Didáticos", "account_type":72, "parent":418,
              "operate": true},
-            {"code": "4.1.10.2", "name": "Servidores", "account_type":5, "parent":93,
-             "operate": true},
-            {"code": "4.1.10.3", "name": "Desenvolvimento", "account_type":5, "parent":93,
-             "operate": true},
-            {"code": "4.1.10.4", "name": "Arte", "account_type":5, "parent":93, "operate": true},
-            {"code": "4.1.10.5", "name": "Segurança", "account_type":5, "parent":93,
+            {"code": "4.1.6.4", "name": "Material de Escritório", "account_type":72, "parent":418,
              "operate": true},
 
-            {"code": "4.1.12.1", "name": "Móveis", "account_type":5, "parent":95, "operate": true},
-            {"code": "4.1.12.2", "name": "Veículos", "account_type":5, "parent":95, "operate": true},
-            {"code": "4.1.12.3", "name": "Eletrônicos", "account_type":5, "parent":95,
+            {"code": "4.1.7.1", "name": "Roupas", "account_type":72, "parent":419, "operate": true},
+            {"code": "4.1.7.2", "name": "Calçados", "account_type":72, "parent":419, "operate": true},
+            {"code": "4.1.7.3", "name": "Lingerie", "account_type":72, "parent":419, "operate": true},
+            {"code": "4.1.7.4", "name": "Fantasia", "account_type":72, "parent":419, "operate": true},
+            {"code": "4.1.7.5", "name": "Corte Cabelo", "account_type":72, "parent":419,
              "operate": true},
-            {"code": "4.1.12.4", "name": "Imóveis", "account_type":5, "parent":95, "operate": true},
+            {"code": "4.1.7.6", "name": "Manicure", "account_type":72, "parent":419, "operate": true},
+            {"code": "4.1.7.7", "name": "Depilação", "account_type":72, "parent":419, "operate": true},
 
-            {"code": "4.1.13.1", "name": "Previdência Privada", "account_type":5, "parent":96,
+            {"code": "4.1.8.1", "name": "Ração", "account_type":72, "parent":420, "operate": true},
+            {"code": "4.1.8.2", "name": "Veterinário", "account_type":72, "parent":420,
              "operate": true},
-            {"code": "4.1.13.2", "name": "Fundos de Ação", "account_type":5, "parent":96,
-             "operate": true},
-            {"code": "4.1.13.3", "name": "Juros", "account_type":5, "parent":96, "operate": true},
-            {"code": "4.1.13.4", "name": "Empréstimos", "account_type":5, "parent":96,
-             "operate": true},
-            {"code": "4.1.13.5", "name": "Dívidas", "account_type":5, "parent":96, "operate": true},
-
-            {"code": "6.1.0.0", "name": "Saldo Inicial", "account_type":6, "parent":6,
-             "operate": true},
-            {"code": "6.2.0.0", "name": "Extorno", "account_type":6, "parent":6, "operate": true},
-            {"code": "6.3.0.0", "name": "Depreciação", "account_type":6, "parent":6,
+            {"code": "4.1.8.3", "name": "Salão", "account_type":72, "parent":420, "operate": true},
+            {"code": "4.1.8.4", "name": "Assessórios", "account_type":72, "parent":420,
              "operate": true},
 
-            {"code": "7.1.0.0", "name": "Saldo Inicial", "account_type":7, "parent":7,
+            {"code": "4.1.9.1", "name": "Animais", "account_type":72, "parent":421, "operate": true},
+            {"code": "4.1.9.2", "name": "Artistas", "account_type":72, "parent":421, "operate": true},
+            {"code": "4.1.9.3", "name": "Cientístas", "account_type":72, "parent":421,
              "operate": true},
-            {"code": "7.2.0.0", "name": "Extorno", "account_type":7, "parent":7, "operate": true}
+            {"code": "4.1.9.4", "name": "Crianças", "account_type":72, "parent":421, "operate": true},
+            {"code": "4.1.9.5", "name": "Pessoas na Rua", "account_type":72, "parent":421,
+             "operate": true},
+
+            {"code": "4.1.10.1", "name": "Cloud Armazenamento", "account_type":72, "parent":422,
+             "operate": true},
+            {"code": "4.1.10.2", "name": "Servidores", "account_type":72, "parent":422,
+             "operate": true},
+            {"code": "4.1.10.3", "name": "Desenvolvimento", "account_type":72, "parent":422,
+             "operate": true},
+            {"code": "4.1.10.4", "name": "Arte", "account_type":72, "parent":422, "operate": true},
+            {"code": "4.1.10.5", "name": "Segurança", "account_type":72, "parent":422,
+             "operate": true},
+
+            {"code": "4.1.12.1", "name": "Móveis", "account_type":72, "parent":424, "operate": true},
+            {"code": "4.1.12.2", "name": "Veículos", "account_type":72, "parent":424, "operate": true},
+            {"code": "4.1.12.3", "name": "Eletrônicos", "account_type":72, "parent":424,
+             "operate": true},
+            {"code": "4.1.12.4", "name": "Imóveis", "account_type":72, "parent":424, "operate": true},
+
+            {"code": "4.1.13.1", "name": "Previdência Privada", "account_type":72, "parent":425,
+             "operate": true},
+            {"code": "4.1.13.2", "name": "Fundos de Ação", "account_type":72, "parent":425,
+             "operate": true},
+            {"code": "4.1.13.3", "name": "Juros", "account_type":72, "parent":425, "operate": true},
+            {"code": "4.1.13.4", "name": "Empréstimos", "account_type":72, "parent":425,
+             "operate": true},
+            {"code": "4.1.13.5", "name": "Dívidas", "account_type":72, "parent":425, "operate": true},
+
+            {"code": "6.1.0.0", "name": "Saldo Inicial", "account_type":73, "parent":335,
+             "operate": true},
+            {"code": "6.2.0.0", "name": "Extorno", "account_type":73, "parent":335, "operate": true},
+            {"code": "6.3.0.0", "name": "Depreciação", "account_type":73, "parent":335,
+             "operate": true},
+
+            {"code": "7.1.0.0", "name": "Saldo Inicial", "account_type":74, "parent":336,
+             "operate": true},
+            {"code": "7.2.0.0", "name": "Extorno", "account_type":74, "parent":336, "operate": true}
 
         ]
 
-<> 2022-07-29T123512.200.json
+<> 2022-08-14T215630.200.json
 
 ###
 
@@ -486,19 +414,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.1.4", "name": "Segurança Casa", "account_type":5, "parent":85,"operate": true}
+{"code": "4.1.1.4", "name": "Segurança Casa", "account_type":72, "parent":414,"operate": true}
 
-<> 2022-07-29T123508-5.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":5, "parent":85,"operate": true}
-
-<> 2022-07-29T123508-4.201.json
+<> 2022-08-14T215627-4.201.json
 
 ###
 
@@ -506,19 +424,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.1.2", "name": "Diárias", "account_type":5, "parent":85, "operate": true}
+{"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":72, "parent":414,"operate": true}
 
-<> 2022-07-29T123508-3.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.1.1", "name": "Aluguel", "account_type":5, "parent":85, "operate": true}
-
-<> 2022-07-29T123508-2.201.json
+<> 2022-08-14T215627-3.201.json
 
 ###
 
@@ -526,19 +434,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "5.1.6.0", "name": "Lucros", "account_type":4, "parent":84}
+{"code": "4.1.1.2", "name": "Diárias", "account_type":72, "parent":414, "operate": true}
 
-<> 2022-07-29T123508-1.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "5.1.5.0", "name": "Rendimentos Financeiros", "account_type":4, "parent":84}
-
-<> 2022-07-29T123508.201.json
+<> 2022-08-14T215627-2.201.json
 
 ###
 
@@ -546,19 +444,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "5.1.4.0", "name": "Vendas", "account_type":4, "parent":84}
+{"code": "4.1.1.1", "name": "Aluguel", "account_type":72, "parent":414, "operate": true}
 
-<> 2022-07-29T123507-5.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "5.1.3.0", "name": "Serviços", "account_type":4, "parent":84}
-
-<> 2022-07-29T123507-4.201.json
+<> 2022-08-14T215627-1.201.json
 
 ###
 
@@ -566,19 +454,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "5.1.2.0", "name": "Honorários", "account_type":4, "parent":84}
+{"code": "5.1.6.0", "name": "Lucros", "account_type":71, "parent":413}
 
-<> 2022-07-29T123507-3.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "5.1.1.0", "name": "Salários", "account_type":4, "parent":84}
-
-<> 2022-07-29T123507-2.201.json
+<> 2022-08-14T215627.201.json
 
 ###
 
@@ -586,19 +464,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.13.0", "name": "Financeiro", "account_type":5, "parent":83}
+{"code": "5.1.5.0", "name": "Rendimentos Financeiros", "account_type":71, "parent":413}
 
-<> 2022-07-29T123507-1.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.12.0", "name": "Bens", "account_type":5, "parent":83}
-
-<> 2022-07-29T123507.201.json
+<> 2022-08-14T215626-5.201.json
 
 ###
 
@@ -606,19 +474,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.11.0", "name": "Alimentação", "account_type":5, "parent":83}
+{"code": "5.1.4.0", "name": "Vendas", "account_type":71, "parent":413}
 
-<> 2022-07-29T123506-5.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.10.0", "name": "Softwares", "account_type":5, "parent":83}
-
-<> 2022-07-29T123506-4.201.json
+<> 2022-08-14T215626-4.201.json
 
 ###
 
@@ -626,19 +484,9 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.9.0", "name": "Doação", "account_type":5, "parent":83}
+{"code": "5.1.3.0", "name": "Serviços", "account_type":71, "parent":413}
 
-<> 2022-07-29T123506-3.201.json
-
-###
-
-POST http://127.0.0.1:8000/account/
-Content-Type: application/json
-Accept: application/json
-
-{"code": "4.1.8.0", "name": "Animais de estimação", "account_type":5, "parent":83}
-
-<> 2022-07-29T123506-2.201.json
+<> 2022-08-14T215626-3.201.json
 
 ###
 
@@ -646,9 +494,149 @@ POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
-{"code": "4.1.7.0", "name": "Roupa e beleza", "account_type":5, "parent":83}
+{"code": "5.1.2.0", "name": "Honorários", "account_type":71, "parent":413}
 
-<> 2022-07-29T123506-1.201.json
+<> 2022-08-14T215626-2.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.1.0", "name": "Salários", "account_type":71, "parent":413}
+
+<> 2022-08-14T215626-1.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.13.0", "name": "Financeiro", "account_type":72, "parent":412}
+
+<> 2022-08-14T215626.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.12.0", "name": "Bens", "account_type":72, "parent":412}
+
+<> 2022-08-14T215625-2.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.11.0", "name": "Alimentação", "account_type":72, "parent":412}
+
+<> 2022-08-14T215625-1.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.10.0", "name": "Softwares", "account_type":72, "parent":412}
+
+<> 2022-08-14T215625.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.9.0", "name": "Doação", "account_type":72, "parent":412}
+
+<> 2022-08-14T215624-4.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.8.0", "name": "Animais de estimação", "account_type":72, "parent":412}
+
+<> 2022-08-14T215624-3.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.7.0", "name": "Roupa e beleza", "account_type":72, "parent":412}
+
+<> 2022-08-14T215624-2.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.6.0", "name": "Estudo", "account_type":72, "parent":412}
+
+<> 2022-08-14T215624-1.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":72, "parent":412}
+
+<> 2022-08-14T215624.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.4.0", "name": "Compras", "account_type":72, "parent":412}
+
+<> 2022-08-14T215623-4.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.2.0", "name": "Locomoção", "account_type":72, "parent":412}
+
+<> 2022-08-14T215623-3.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "4.1.1.0", "name": "Casa", "account_type":72, "parent":412}
+
+<> 2022-08-14T215623-2.201.json
+
+###
+
+POST http://127.0.0.1:8000/account/
+Content-Type: application/json
+Accept: application/json
+
+{"code": "5.1.0.0", "name": "Recebimento", "account_type":71, "parent":334}
+
+<> 2022-08-14T215623-1.201.json
 
 ###
 

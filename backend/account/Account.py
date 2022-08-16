@@ -3,15 +3,12 @@ from typing import Optional, ClassVar
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from default import Mix, Base, \
-    DataModelDefault, MessageDataDefault, \
-    ControllerDefault as Controller, ServiceDefault
+from default import Mix, Base, DataModelDefault, MessageDataDefault, ControllerDefault, ServiceDefault
 from sqlalchemy import Column, ForeignKey, VARCHAR, BIGINT, BOOLEAN
 from sqlalchemy.orm import relationship, declared_attr, Session
 
-from account_type.AccountType import AccountType
-from currency.Currency import Currency
-from record.Record import account_record
+from account_type import AccountType
+from currency import Currency, CurrencyService
 
 
 class Account(Mix, Base):
@@ -33,10 +30,7 @@ class Account(Mix, Base):
 
     my_account_type = relationship("AccountType", back_populates="accounts")
     my_currency = relationship("Currency", back_populates="accounts")
-    my_records = relationship('Record', back_populates="my_accounts", secondary=account_record)
-
-    def __str__(self):
-        return f'{self.code} - {self.name}{f" ({self.alias})" if self.alias else None} - {str(self.account_type)}'
+    my_records = relationship('AccountRecord', back_populates="account_in_record")
 
 
 class AccountData(DataModelDefault):
@@ -52,14 +46,37 @@ class AccountData(DataModelDefault):
     deleted: Optional[bool]
 
 
-class Service(ServiceDefault):
+class AccountService(ServiceDefault):
+    currency_service: CurrencyService
 
-    def __init__(self, database_class=Account):
-        super().__init__(database_class=database_class)
+    def __init__(self):
+        super().__init__(database_class=Account)
+        self.currency_service = CurrencyService()
 
-    def can_operate(self, db: Session, id: int):
-        account = self.repository.__get_by_id__(db=db, cls=Account,id=id)
+    async def can_operate(self, db: Session, id: int):
+        account = await self.repository.__get_by_id__(db=db, cls=Account, id=id)
         return account.operate if account else False
+
+    async def save(self, db: Session, data: AccountData, max_deep: int = -1) -> dict:
+        if not data.currency:
+            _default_currency = await self.currency_service.get_default(db)
+            data.currency = _default_currency.id
+        if max_deep >= 0:
+            return await super().save(db, data, max_deep)
+        return await super().save(db, data)
+
+    async def new(self, db: Session, data: AccountData, max_deep: int = -1) -> dict:
+        if not data.currency:
+            _default_currency = await self.currency_service.get_default(db)
+            data.currency = _default_currency.id
+        if max_deep >= 0:
+            return await super().new(db, data, max_deep)
+        return await super().new(db, data)
+
+
+class AccountController(ControllerDefault):
+    def __init__(self):
+        super().__init__(AccountService())
 
 
 app: FastAPI = FastAPI()
@@ -68,15 +85,16 @@ app: FastAPI = FastAPI()
 @app.get("/{id}", response_class=JSONResponse, response_model=AccountData)
 @app.get("/", response_class=JSONResponse, response_model=list[AccountData])
 async def search(name: Optional[str] = '', id: Optional[int] = -1, code: Optional[str] = None):
-    return Controller(Service()).search(name=name, id=id, free_fields={"code": code})
+    return await AccountController().search(name=name, id=id, free_fields={"code": code})
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[AccountData])
 @app.post("/", response_class=JSONResponse, response_model=list[AccountData], status_code=201)
 async def create(account: AccountData | list[AccountData]):
-    return Controller(Service()).new(data=account)
+    return await AccountController().new(data=account)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})
+    return await AccountController().delete(id=id,
+                                            message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})

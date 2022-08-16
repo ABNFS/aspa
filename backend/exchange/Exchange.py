@@ -1,4 +1,4 @@
-from typing import Optional, ClassVar
+from typing import Optional
 from datetime import datetime
 
 from pydantic import ValidationError
@@ -7,8 +7,10 @@ from sqlalchemy import Column, BIGINT, DATETIME, ForeignKey
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from currency import CurrencyService, Currency
 from default import ControllerDefault, ServiceDefault, \
     Base, Mix, MessageDataDefault, DataModelDefault
+from default import log, ServiceError
 
 
 class Exchange(Base, Mix):
@@ -36,24 +38,37 @@ class ExchangeData(DataModelDefault):
 
 
 class Service(ServiceDefault):
+    service_currency: CurrencyService
 
     def __init__(self):
         super().__init__(database_class=Exchange)
+        self.service_currency = CurrencyService()
 
-    def save(self, db, data: ExchangeDataOut):
-        from currency.Currency import Currency
-        currency_default_dict = self.repository.search_by_fields(db, Currency, {"default": True})[0]
-        new_data: ExchangeData | None
+    async def __convert_exchange_data(self, db, data: ExchangeDataOut) -> ExchangeData:
+        currency_default: Currency = await self.service_currency.get_default(db)
         try:
-            new_data = ExchangeData(data, currency_default_dict["id"])
+            if currency_default:
+                return ExchangeData(data, currency_default.id)
+            else:
+                raise ServiceError("No default Currency found!")
         except ValidationError:
-            new_data = None
-        return super().save(db, new_data)
+            log.debug(f'Erro in Exchange {data}')
+            raise ServiceError(message='Erro in Exchange')
+
+    async def new(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
+        if max_deep == -1:
+            return await super().new(db, await self.__convert_exchange_data(db,data))
+        return await super().new(db, await self.__convert_exchange_data(db,data), max_deep)
+
+    async def save(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
+        if max_deep == -1:
+            return await super().save(db, await self.__convert_exchange_data(db, data))
+        return await super().save(db, await self.__convert_exchange_data(db, data), max_deep)
 
 
 class Controller(ControllerDefault):
 
-    def search(self, id: Optional[int] = -1, startdate: Optional[datetime] = None, enddate: Optional[datetime] = None,
+    async def search(self, id: Optional[int] = -1, startdate: Optional[datetime] = None, enddate: Optional[datetime] = None,
                currency: Optional[int] = -1):
         _when: dict = {}
         _currency: dict = {}
@@ -67,7 +82,7 @@ class Controller(ControllerDefault):
         if currency >= 0:
             _currency = {"currency_buy": currency}
 
-        return super().search(service=self.service, name=None, id=id, free_fields=_when | _currency)
+        return await super().search(service=self.service, name=None, id=id, free_fields=_when | _currency)
 
 
 app = FastAPI()
@@ -77,15 +92,15 @@ app = FastAPI()
 @app.get("/", response_class=JSONResponse, response_model=list[ExchangeDataOut])
 async def search(id: Optional[int] = -1, datainicio: Optional[datetime] = None, datafim: Optional[datetime] = None,
                  currency: Optional[int] = -1):
-    return Controller(Service()).search(id, datainicio, datafim, currency)
+    return await Controller(Service()).search(id, datainicio, datafim, currency)
 
 
 @app.put("/", response_class=JSONResponse, response_model=list[ExchangeDataOut])
 @app.post("/", response_class=JSONResponse, response_model=list[ExchangeDataOut], status_code=201)
 async def create(exchange: ExchangeDataOut | list[ExchangeDataOut]):
-    return Controller(Service()).new(data=exchange)
+    return await Controller(Service()).new(data=exchange)
 
 
 @app.delete("/{id}", response_model=MessageDataDefault)
 async def delete(id: int):
-    return Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})
+    return await Controller(Service()).delete(id=id, message_sucess={"code": "ok", "text": f"Account with id {id} deleted"})

@@ -3,7 +3,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Débito", "alias": "D"}
-> {% client.global.set("id_debit", response.body[0].id); %}
+> {% client.global.set("id_debit", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/operation-type/
@@ -11,7 +11,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Crédito", "alias": "C"}
-> {% client.global.set("id_credit", response.body[0].id); %}
+> {% client.global.set("id_credit", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/operation-type/
@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Another", "alias": "A"}
-> {% client.global.set("id_another", response.body[0].id); %}
+> {% client.global.set("id_another", response.body.id); %}
 ###
 
 PUT http://127.0.0.1:8000/operation-type/
@@ -33,12 +33,17 @@ Content-Type: application/json
 Accept: application/json
 
 ###
+GET http://127.0.0.1:8000/operation-type/
+Content-Type: application/json
+Accept: application/json
+
+###
 POST http://127.0.0.1:8000/account-type/
 Content-Type: application/json
 Accept: application/json
 
 {"name": "Patrimônio", "alias": "PL", "operation": {{id_credit}}}
-> {% client.global.set("id_pl", response.body[0].id); %}
+> {% client.global.set("id_pl", response.body.id); %}
 
 ###
 
@@ -47,7 +52,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Ativo", "alias": "ATV", "operation": {{id_debit}} }
-> {% client.global.set("id_atv", response.body[0].id); %}
+> {% client.global.set("id_atv", response.body.id); %}
 
 ###
 
@@ -56,7 +61,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Exegível", "alias": "EXE", "operation": {{id_credit}}}
-> {% client.global.set("id_exe", response.body[0].id); %}
+> {% client.global.set("id_exe", response.body.id); %}
 
 ###
 
@@ -65,7 +70,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Receitas", "alias": "REC", "operation": {{id_credit}}}
-> {% client.global.set("id_rec", response.body[0].id); %}
+> {% client.global.set("id_rec", response.body.id); %}
 
 ###
 
@@ -74,7 +79,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Despesas", "alias": "DES", "operation": {{id_debit}}}
-> {% client.global.set("id_des", response.body[0].id); %}
+> {% client.global.set("id_des", response.body.id); %}
 
 ###
 
@@ -83,7 +88,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Conta Retificadora Ativo", "alias": "CRA", "operation": {{id_credit}}}
-> {% client.global.set("id_cra", response.body[0].id); %}
+> {% client.global.set("id_cra", response.body.id); %}
 
 ###
 
@@ -92,32 +97,52 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Conta Retificadora Passivo", "alias": "CRP", "operation": {{id_debit}}}
-> {% client.global.set("id_crp", response.body[0].id); %}
+> {% client.global.set("id_crp", response.body.id); %}
 
 ###
+POST http://127.0.0.1:8000/account-type/
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Apagar", "alias": "APG", "operation": {{id_debit}}}
+> {% client.global.set("id_atapagar", response.body.id); %}
+
+###
+DELETE http://127.0.0.1:8000/account-type/{{id_atapagar}}
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/account-type/?id={{id_crp}}
+Content-Type: application/json
+Accept: application/json
+
+###
+
 POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Real", "alias": "R$", "default": true}
+{"name": "Real", "iso_code": "BRL", "default": true}
 
-> {% client.global.set("id_currency_default", response.body[0].id); %}
+> {% client.global.set("id_currency_default", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Dolar", "alias": "US$", "default": false}
+{"name": "Dolar", "iso_code": "USD", "default": false}
 
-> {% client.global.set("id_dolar", response.body[0].id); %}
+> {% client.global.set("id_dolar", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Libra", "alias": "£", "default": true}
+{"name": "Libra", "iso_code": "GBP", "default": true}
 ###
 
 
@@ -126,7 +151,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "1.0.0.0", "name": "Ativo", "balance": 0, "alias": "ATV", "currency": {{id_currency_default}},"account_type":{{id_atv}}, "operate": false}
-> {% client.global.set("id_onze", response.body[0].id); %}
+> {% client.global.set("id_onze", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -134,7 +159,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.0.0.0", "name": "Passivo Exegível", "balance": 0, "alias": "EXE", "currency": {{id_currency_default}},"account_type":{{id_exe}}, "operate": false}
-> {% client.global.set("id_doze", response.body[0].id); %}
+> {% client.global.set("id_doze", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -143,7 +168,7 @@ Accept: application/json
 
 
 {"code": "3.0.0.0", "name": "Patrimônio Líquido", "balance": 0, "alias": "PL", "currency": {{id_currency_default}},"account_type":{{id_pl}},"operate": false}
-> {% client.global.set("id_treze", response.body[0].id); %}
+> {% client.global.set("id_treze", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -151,7 +176,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.0.0.0", "name": "Pagamentos", "balance": 0, "alias": "PGMTO", "currency": {{id_currency_default}},"account_type":{{id_des}},"operate": false}
-> {% client.global.set("id_catorse", response.body[0].id); %}
+> {% client.global.set("id_catorse", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -159,7 +184,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.0.0.0", "name": "Recebimentos", "balance": 0, "alias": "REC", "currency": {{id_currency_default}},"account_type":{{id_rec}},"operate": false}
-> {% client.global.set("id_quinze", response.body[0].id); %}
+> {% client.global.set("id_quinze", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -167,7 +192,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "6.0.0.0", "name": "Ajustes Ativos", "balance": 0, "alias": "AA", "currency": {{id_currency_default}},"account_type":{{id_cra}},"operate": false}
-> {% client.global.set("id_umsetedois", response.body[0].id); %}
+> {% client.global.set("id_umsetedois", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -175,7 +200,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "7.0.0.0", "name": "Ajustes Passivos", "balance": 0, "alias": "AP", "currency": {{id_currency_default}},"account_type":{{id_crp}},"operate": false}
-> {% client.global.set("id_umsetetres", response.body[0].id); %}
+> {% client.global.set("id_umsetetres", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -184,7 +209,7 @@ Accept: application/json
 
 
 {"code": "1.1.0.0", "name": "Financeiro", "account_type":{{id_atv}}, "parent":{{id_onze}} }
-> {% client.global.set("id_dezeseis", response.body[0].id); %}
+> {% client.global.set("id_dezeseis", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -193,7 +218,7 @@ Accept: application/json
 
 
 {"code": "1.2.0.0", "name": "Bens", "account_type":{{id_atv}}, "parent":{{id_onze}}}
-> {% client.global.set("id_dezessete", response.body[0].id); %}
+> {% client.global.set("id_dezessete", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -202,7 +227,7 @@ Accept: application/json
 
 
 {"code": "1.3.0.0", "name": "Recebíveis", "account_type":{{id_atv}}, "parent":{{id_onze}}}
-> {% client.global.set("id_dezoito", response.body[0].id); %}
+> {% client.global.set("id_dezoito", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -211,7 +236,7 @@ Accept: application/json
 
 
 {"code": "1.1.2.0", "name": "Saldos à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
-> {% client.global.set("id_vinte", response.body[0].id); %}
+> {% client.global.set("id_vinte", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -220,7 +245,7 @@ Accept: application/json
 
 
 {"code": "1.1.3.0", "name": "Investimentos à vista", "account_type":{{id_atv}}, "parent":{{id_dezeseis}}}
-> {% client.global.set("id_quatrooito", response.body[0].id); %}
+> {% client.global.set("id_quatrooito", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -229,7 +254,7 @@ Accept: application/json
 
 
 {"code": "1.2.1.0", "name": "Móveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
-> {% client.global.set("id_doisum", response.body[0].id); %}
+> {% client.global.set("id_doisum", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -238,7 +263,7 @@ Accept: application/json
 
 
 {"code": "1.2.2.0", "name": "Imóveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
-> {% client.global.set("id_doisdois", response.body[0].id); %}
+> {% client.global.set("id_doisdois", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -247,7 +272,7 @@ Accept: application/json
 
 
 {"code": "1.2.3.0", "name": "Intangíveis", "account_type":{{id_atv}}, "parent":{{id_dezessete}}}
-> {% client.global.set("id_doistres", response.body[0].id); %}
+> {% client.global.set("id_doistres", response.body.id); %}
 
 ###
 
@@ -257,7 +282,7 @@ Accept: application/json
 
 {"code": "1.3.1.0", "name": "Salário", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
 
-> {% client.global.set("id_doisquatro", response.body[0].id); %}
+> {% client.global.set("id_doisquatro", response.body.id); %}
 
 ###
 
@@ -266,7 +291,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "1.3.2.0", "name": "Férias", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
-> {% client.global.set("id_doiscinco", response.body[0].id); %}
+> {% client.global.set("id_doiscinco", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/account/
@@ -274,7 +299,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "1.3.3.0", "name": "Décimo-terceiro", "account_type":{{id_atv}}, "parent":{{id_dezoito}}}
-> {% client.global.set("id_doisseis", response.body[0].id); %}
+> {% client.global.set("id_doisseis", response.body.id); %}
 ###
 POST http://127.0.0.1:8000/account/
 Content-Type: application/json
@@ -371,7 +396,7 @@ Accept: application/json
 
 
 {"code": "2.1.0.0", "name": "Financeiro", "account_type":{{id_exe}}, "parent": {{id_doze}}}
-> {% client.global.set("id_cinconove", response.body[0].id); %}
+> {% client.global.set("id_cinconove", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -379,7 +404,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.2.0.0", "name": "accounts Serviço Público", "account_type":{{id_exe}}, "parent":{{id_doze}}}
-> {% client.global.set("id_seiszero", response.body[0].id); %}
+> {% client.global.set("id_seiszero", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -387,7 +412,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.3.0.0", "name": "Impostos", "account_type":{{id_exe}}, "parent":{{id_doze}}}
-> {% client.global.set("id_seisum", response.body[0].id); %}
+> {% client.global.set("id_seisum", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -395,7 +420,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.4.0.0", "name": "Dívidas", "account_type":{{id_exe}}, "parent":{{id_doze}}}
-> {% client.global.set("id_seisdois", response.body[0].id); %}
+> {% client.global.set("id_seisdois", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -403,7 +428,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.1.1.0", "name": "Bancos", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
-> {% client.global.set("id_seistres", response.body[0].id); %}
+> {% client.global.set("id_seistres", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -411,7 +436,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.1.2.0", "name": "Cartões de Crédito", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
-> {% client.global.set("id_seisquatro", response.body[0].id); %}
+> {% client.global.set("id_seisquatro", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -419,7 +444,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.1.3.0", "name": "Empréstimos", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
-> {% client.global.set("id_seiscinco", response.body[0].id); %}
+> {% client.global.set("id_seiscinco", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -427,7 +452,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "2.1.4.0", "name": "Cheque Especial", "account_type":{{id_exe}}, "parent":{{id_cinconove}}}
-> {% client.global.set("id_seisseis", response.body[0].id); %}
+> {% client.global.set("id_seisseis", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -467,7 +492,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.0.0", "name": "Pagamento", "account_type":{{id_des}}, "parent":{{id_catorse}}}
-> {% client.global.set("id_noveum", response.body[0].id); %}
+> {% client.global.set("id_noveum", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -475,7 +500,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.0.0", "name": "Recebimento", "account_type":{{id_rec}}, "parent":{{id_quinze}}}
-> {% client.global.set("id_novedois", response.body[0].id); %}
+> {% client.global.set("id_novedois", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -483,7 +508,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.1.0", "name": "Casa", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_novetres", response.body[0].id); %}
+> {% client.global.set("id_novetres", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -492,7 +517,7 @@ Accept: application/json
 
 
 {"code": "4.1.2.0", "name": "Locomoção", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_novequatro", response.body[0].id); %}
+> {% client.global.set("id_novequatro", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -500,7 +525,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.4.0", "name": "Compras", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_novecinco", response.body[0].id); %}
+> {% client.global.set("id_novecinco", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -508,7 +533,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.5.0", "name": "Diversão e Bem estar", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_noveseis", response.body[0].id); %}
+> {% client.global.set("id_noveseis", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -517,7 +542,7 @@ Accept: application/json
 
 
 {"code": "4.1.6.0", "name": "Estudo", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_noveoito", response.body[0].id); %}
+> {% client.global.set("id_noveoito", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -526,7 +551,7 @@ Accept: application/json
 
 
 {"code": "4.1.7.0", "name": "Roupa e beleza", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_novenove", response.body[0].id); %}
+> {% client.global.set("id_novenove", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -535,7 +560,7 @@ Accept: application/json
 
 
 {"code": "4.1.8.0", "name": "Animais de estimação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_cem", response.body[0].id); %}
+> {% client.global.set("id_cem", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -544,7 +569,7 @@ Accept: application/json
 
 
 {"code": "4.1.9.0", "name": "Doação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_cemeum", response.body[0].id); %}
+> {% client.global.set("id_cemeum", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -553,7 +578,7 @@ Accept: application/json
 
 
 {"code": "4.1.10.0", "name": "Softwares", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_catorse4", response.body[0].id); %}
+> {% client.global.set("id_catorse4", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -562,7 +587,7 @@ Accept: application/json
 
 
 {"code": "4.1.11.0", "name": "Alimentação", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_centoequize", response.body[0].id); %}
+> {% client.global.set("id_centoequize", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -570,7 +595,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.12.0", "name": "Bens", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_centoetresum", response.body[0].id); %}
+> {% client.global.set("id_centoetresum", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -579,7 +604,7 @@ Accept: application/json
 
 
 {"code": "4.1.13.0", "name": "Financeiro", "account_type":{{id_des}}, "parent":{{id_noveum}}}
-> {% client.global.set("id_umseiszero", response.body[0].id); %}
+> {% client.global.set("id_umseiszero", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -587,7 +612,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.1.0", "name": "Salários", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umseisseis", response.body[0].id); %}
+> {% client.global.set("id_umseisseis", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -595,7 +620,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.2.0", "name": "Honorários", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umseissete", response.body[0].id); %}
+> {% client.global.set("id_umseissete", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -604,7 +629,7 @@ Accept: application/json
 
 
 {"code": "5.1.3.0", "name": "Serviços", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umseisoito", response.body[0].id); %}
+> {% client.global.set("id_umseisoito", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -612,7 +637,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.4.0", "name": "Vendas", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umseisnove", response.body[0].id); %}
+> {% client.global.set("id_umseisnove", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -620,7 +645,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.5.0", "name": "Rendimentos Financeiros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umsetezero", response.body[0].id); %}
+> {% client.global.set("id_umsetezero", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/account/
@@ -628,14 +653,14 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "5.1.6.0", "name": "Lucros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_umseteum", response.body[0].id); %}
+> {% client.global.set("id_umseteum", response.body.id); %}
 ###
 POST http://127.0.0.1:8000/account/
 Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.1.1", "name": "Aluguel", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true}
-> {% client.global.set("id_cred_account_um", response.body[0].id); %}
+> {% client.global.set("id_cred_account_um", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/account/
@@ -643,7 +668,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.1.2", "name": "Diárias", "account_type":{{id_des}}, "parent":{{id_novetres}}, "operate": true}
-> {% client.global.set("id_cred_account_dois", response.body[0].id); %}
+> {% client.global.set("id_cred_account_dois", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/account/
@@ -651,7 +676,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "4.1.1.3", "name": "Manutenção Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},"operate": true}
-> {% client.global.set("id_debi_account_um", response.body[0].id); %}
+> {% client.global.set("id_debi_account_um", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/account/
@@ -660,7 +685,7 @@ Accept: application/json
 
 
 {"code": "4.1.1.4", "name": "Segurança Casa", "account_type":{{id_des}}, "parent":{{id_novetres}},"operate": true}
-> {% client.global.set("id_debi_account_dois", response.body[0].id); %}
+> {% client.global.set("id_debi_account_dois", response.body.id); %}
 
 ###
 POST http://127.0.0.1:8000/account/
@@ -797,7 +822,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Excluir3", "alias": "EE3", "operation": 1 }
-> {% client.global.set("id_acct_excluir", response.body[0].id); %}
+> {% client.global.set("id_acct_excluir", response.body.id); %}
 
 ###
 PUT  http://127.0.0.1:8000/account-type/
@@ -815,8 +840,8 @@ POST http://127.0.0.1:8000/currency/
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Dólar", "alias": "US$" }
-> {% client.global.set("id_curr_excluir", response.body[0].id); %}
+{"name": "Dólar", "iso_code": "USD" }
+> {% client.global.set("id_curr_excluir", response.body.id); %}
 
 ###
 PUT http://127.0.0.1:8000/currency/
@@ -843,7 +868,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"code": "10.1.6.0.84", "name": "Lucros", "account_type":{{id_rec}}, "parent":{{id_novedois}}}
-> {% client.global.set("id_acct_exc", response.body[0].id); %}
+> {% client.global.set("id_acct_exc", response.body.id); %}
 ###
 PUT http://127.0.0.1:8000/account/
 Content-Type: application/json
@@ -861,7 +886,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Apagar"}
-> {% client.global.set("id_tag_um", response.body[0].id); %}
+> {% client.global.set("id_tag_um", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/tag/
@@ -869,14 +894,14 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "Apagar Também"}
-> {% client.global.set("id_tag_dois", response.body[0].id); %}
+> {% client.global.set("id_tag_dois", response.body.id); %}
 ###
 POST http://127.0.0.1:8000/tag/
 Content-Type: application/json
 Accept: application/json
 
 {"name": "Nova"}
-> {% client.global.set("id_tag_tres", response.body[0].id); %}
+> {% client.global.set("id_tag_tres", response.body.id); %}
 ###
 
 
@@ -884,11 +909,11 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Compra no mercado", "date": "2020-05-12", "amount":40000,
-"accounts":[{"account":  {{id_debi_account_um}}, "operation": 1, "amount":  40000},
-{"account":  {{id_cred_account_um}}, "operation": 2, "amount":  40000}], "my_tags": [{{id_tag_um}}, {{id_tag_tres}}]
+{"note": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
+"accounts":[{"account":  {{id_debi_account_um}}, "operation": {{id_debit}}, "value":  40000},
+{"account":  {{id_cred_account_um}}, "operation": {{id_credit}}, "value":  40000}], "my_tags": [{{id_tag_um}}, {{id_tag_tres}}]
 }
-> {% client.global.set("id_mov_um", response.body[0].id); %}
+> {% client.global.set("id_mov_um", response.body.id); %}
 
 ###
 
@@ -896,12 +921,12 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Carro novo", "date": "2020-05-12", "amount":10000000, "accounts":[
-{"account":  {{id_debi_account_dois}}, "operation": 2, "amount":  10000000},
-{"account":  {{id_cred_account_um}}, "operation": 1, "amount":  5000000},
-{"account":  {{id_cred_account_dois}}, "operation": 1, "amount":  4000000},
-{"account":  {{id_debi_account_um}}, "operation": 1, "amount":  1000000}]}
-> {% client.global.set("id_mov_dois", response.body[0].id); %}
+{"note": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
+{"account":  {{id_debi_account_dois}}, "operation": {{id_credit}}, "value":  10000000},
+{"account":  {{id_cred_account_um}}, "operation": {{id_debit}}, "value":  5000000},
+{"account":  {{id_cred_account_dois}}, "operation": {{id_debit}}, "value":  4000000},
+{"account":  {{id_debi_account_um}}, "operation": {{id_debit}}, "value":  1000000}]}
+> {% client.global.set("id_mov_dois", response.body.id); %}
 
 ###
 
@@ -909,9 +934,9 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Salários", "date": "2020-06-21", "amount":7789432, "accounts":[
-{"account":  {{id_debi_account_um}}, "operation": 1, "amount":  5000000},
-{"account":  {{id_cred_account_dois}}, "operation": 2, "amount":  7789432}],
+{"note": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
+{"account":  {{id_debi_account_um}}, "operation": {{id_credit}}, "value":  5000000},
+{"account":  {{id_cred_account_dois}}, "operation": {{id_debit}}, "value":  7789432}],
 "my_tags": [{{id_tag_tres}}, {{id_tag_dois}}]
 }
 
@@ -920,22 +945,22 @@ POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #0", "date": "2020-06-21", "amount":2231, "accounts":[
-  {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "amount":  1130},
-  {"account":  104, "operation": 2, "amount":  1101}],
-"my_tags": [1, 3]
+{"note": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
+  {"account":  19, "operation": {{id_credit}}},
+  {"account":  63, "operation": {{id_debit}}, "value":  1130},
+  {"account":  104, "operation": {{id_debit}}, "value":  1101}],
+"my_tags":  [{{id_tag_um}}, {{id_tag_tres}}]
 }
 ###
 POST http://127.0.0.1:8000/record/
 Content-Type: application/json
 Accept: application/json
 
-{"anotation": "Errado #1", "date": "2020-06-21", "amount":10000, "accounts":[
-  {"account":  19, "operation": 1, "amount":  10000},
-  {"account":  63, "operation": 2, "amount":  5000},
-  {"account":  18, "operation": 2, "amount":  5000}],
-"my_tags": [2]
+{"note": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
+  {"account":  19, "operation": {{id_credit}}, "value":  10000},
+  {"account":  63, "operation": {{id_debit}}, "value":  5000},
+  {"account":  18, "operation": {{id_debit}}, "value":  5000}],
+"my_tags":  [{{id_tag_dois}}]
 }
 ###
 POST http://127.0.0.1:8000/exchange/
@@ -943,7 +968,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"currency": {{id_dolar}}, "when": "2020-06-21 12:04", "rate": 586}
-> {% client.global.set("id_exc_um", response.body[0].id); %}
+> {% client.global.set("id_exc_um", response.body.id); %}
 ###
 
 POST http://127.0.0.1:8000/exchange/
@@ -958,7 +983,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"currency": {{id_dolar}}, "when": "2020-06-20 12:00", "rate": 583}
-> {% client.global.set("id_exc_tres", response.body[0].id); %}
+> {% client.global.set("id_exc_tres", response.body.id); %}
 
 ###
 
@@ -982,4 +1007,24 @@ Accept: application/json
 
 {"currency": 18822, "when": "2020-06-20 12:00", "rate": 583}
 
+###
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
 
+{"note": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
+  {"account":  {{id_catorse}}, "operation": {{id_credit}}, "value":  109532},
+  {"account":  {{id_cem}}, "operation": {{id_debit}}, "value":  109532}],
+"my_tags":  [{{id_tag_um}}]
+}
+
+###
+POST http://127.0.0.1:8000/record/
+Content-Type: application/json
+Accept: application/json
+
+{"note": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
+  {"account":  {{id_dezoito}}, "operation": {{id_credit}}, "value":  323342},
+  {"account":  {{id_seistres}}, "operation": {{id_debit}}, "value":  323342}],
+"my_tags":  [{{id_tag_um}}, {{id_tag_dois}}, {{id_tag_tres}}]
+}
