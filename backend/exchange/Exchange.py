@@ -44,17 +44,26 @@ class Service(ServiceDefault):
         super().__init__(database_class=Exchange)
         self.service_currency = CurrencyService()
 
-    async def save(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
+    async def __convert_exchange_data(self, db, data: ExchangeDataOut) -> ExchangeData:
         currency_default: Currency = await self.service_currency.get_default(db)
-        exchange_data_to_save: ExchangeData | None
         try:
-            exchange_data_to_save = ExchangeData(data, currency_default.id)
+            if currency_default:
+                return ExchangeData(data, currency_default.id)
+            else:
+                raise ServiceError("No default Currency found!")
         except ValidationError:
             log.debug(f'Erro in Exchange {data}')
             raise ServiceError(message='Erro in Exchange')
+
+    async def new(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
         if max_deep == -1:
-            return await super().save(db, exchange_data_to_save)
-        return await super().save(db, exchange_data_to_save, max_deep)
+            return await super().new(db, await self.__convert_exchange_data(db,data))
+        return await super().new(db, await self.__convert_exchange_data(db,data), max_deep)
+
+    async def save(self, db, data: ExchangeDataOut, max_deep: int = -1) -> dict:
+        if max_deep == -1:
+            return await super().save(db, await self.__convert_exchange_data(db, data))
+        return await super().save(db, await self.__convert_exchange_data(db, data), max_deep)
 
 
 class Controller(ControllerDefault):

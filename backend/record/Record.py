@@ -144,17 +144,31 @@ class RecordService(ServiceDefault):
         else:
             return await self.__fail__(db, item["id"] if "id" in item else -1)
 
-    async def save(self, db: Session, data: RecordData) -> dict:
-
+    async def __save_new_suport(self, oper: str, db: Session, data: RecordData, max_deep: int = -1) -> dict:
+        _operation: dict = {
+            'save': super().save,
+            'new': super().new
+        }
         _my_tags: list[int] = data.my_tags if "my_tags" in data.__dict__ else None
         _accounts: list[RecordAccountData] = data.accounts if "accounts" in data.__dict__ else None
+        _saved: dict
+        if _accounts is None:
+            raise ServiceError('Account list required')
         try:
-            saved = await super().save(db, data)
+            if max_deep == -1:
+                _saved = await _operation[oper](db, data)
+            else:
+                _saved = await _operation[oper](db, data, max_deep)
+            return await self.__new_record__(db, _saved, _my_tags, _accounts)
         except ServiceError as e:
             log.debug(f'Record Save Error: {e.message}')
             raise ServiceError(e.message)
 
-        return await self.__new_record__(db, saved, _my_tags, _accounts)
+
+    async def save(self, db: Session, data: RecordData, max_deep: int = -1) -> dict:
+        return await self.__save_new_suport('save', db, data, max_deep)
+    async def new(self, db: Session, data: RecordData, max_deep: int = -1) -> dict:
+        return await self.__save_new_suport('new', db, data, max_deep)
 
 class RecordController(ControllerDefault):
     def __init__(self):

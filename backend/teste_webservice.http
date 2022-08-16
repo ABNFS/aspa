@@ -910,8 +910,8 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Compra no mercado", "date": "2020-05-12", "total_amount":40000,
-"accounts":[{"account":  {{id_debi_account_um}}, "operation": 1, "value":  40000},
-{"account":  {{id_cred_account_um}}, "operation": 2, "value":  40000}], "my_tags": [{{id_tag_um}}, {{id_tag_tres}}]
+"accounts":[{"account":  {{id_debi_account_um}}, "operation": {{id_debit}}, "value":  40000},
+{"account":  {{id_cred_account_um}}, "operation": {{id_credit}}, "value":  40000}], "my_tags": [{{id_tag_um}}, {{id_tag_tres}}]
 }
 > {% client.global.set("id_mov_um", response.body.id); %}
 
@@ -922,10 +922,10 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Carro novo", "date": "2020-05-12", "total_amount":10000000, "accounts":[
-{"account":  {{id_debi_account_dois}}, "operation": 2, "value":  10000000},
-{"account":  {{id_cred_account_um}}, "operation": 1, "value":  5000000},
-{"account":  {{id_cred_account_dois}}, "operation": 1, "value":  4000000},
-{"account":  {{id_debi_account_um}}, "operation": 1, "value":  1000000}]}
+{"account":  {{id_debi_account_dois}}, "operation": {{id_credit}}, "value":  10000000},
+{"account":  {{id_cred_account_um}}, "operation": {{id_debit}}, "value":  5000000},
+{"account":  {{id_cred_account_dois}}, "operation": {{id_debit}}, "value":  4000000},
+{"account":  {{id_debi_account_um}}, "operation": {{id_debit}}, "value":  1000000}]}
 > {% client.global.set("id_mov_dois", response.body.id); %}
 
 ###
@@ -935,8 +935,8 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Salários", "date": "2020-06-21", "total_amount":7789432, "accounts":[
-{"account":  {{id_debi_account_um}}, "operation": 1, "value":  5000000},
-{"account":  {{id_cred_account_dois}}, "operation": 2, "value":  7789432}],
+{"account":  {{id_debi_account_um}}, "operation": {{id_credit}}, "value":  5000000},
+{"account":  {{id_cred_account_dois}}, "operation": {{id_debit}}, "value":  7789432}],
 "my_tags": [{{id_tag_tres}}, {{id_tag_dois}}]
 }
 
@@ -946,10 +946,10 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Errado #0", "date": "2020-06-21", "total_amount":2231, "accounts":[
-  {"account":  19, "operation": 1},
-  {"account":  63, "operation": 2, "value":  1130},
-  {"account":  104, "operation": 2, "value":  1101}],
-"my_tags": [1, 3]
+  {"account":  19, "operation": {{id_credit}}},
+  {"account":  63, "operation": {{id_debit}}, "value":  1130},
+  {"account":  104, "operation": {{id_debit}}, "value":  1101}],
+"my_tags":  [{{id_tag_um}}, {{id_tag_tres}}]
 }
 ###
 POST http://127.0.0.1:8000/record/
@@ -957,10 +957,10 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Errado #1", "date": "2020-06-21", "total_amount":10000, "accounts":[
-  {"account":  19, "operation": 1, "value":  10000},
-  {"account":  63, "operation": 2, "value":  5000},
-  {"account":  18, "operation": 2, "value":  5000}],
-"my_tags": [2]
+  {"account":  19, "operation": {{id_credit}}, "value":  10000},
+  {"account":  63, "operation": {{id_debit}}, "value":  5000},
+  {"account":  18, "operation": {{id_debit}}, "value":  5000}],
+"my_tags":  [{{id_tag_dois}}]
 }
 ###
 POST http://127.0.0.1:8000/exchange/
@@ -1013,9 +1013,9 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Ulbra", "date": "2020-06-21", "total_amount":109532, "accounts":[
-  {"account":  19, "operation": 1, "value":  109532},
-  {"account":  63, "operation": 2, "value":  109532}],
-"my_tags": [2]
+  {"account":  {{id_catorse}}, "operation": {{id_credit}}, "value":  109532},
+  {"account":  {{id_cem}}, "operation": {{id_debit}}, "value":  109532}],
+"my_tags":  [{{id_tag_um}}]
 }
 
 ###
@@ -1024,7 +1024,7 @@ Content-Type: application/json
 Accept: application/json
 
 {"note": "Supermercado", "date": "2020-06-21", "total_amount":323342, "accounts":[
-  {"account":  19, "operation": 1, "value":  323342},
-  {"account":  63, "operation": 2, "value":  323342}],
-"my_tags": [3,2,1]
+  {"account":  {{id_dezoito}}, "operation": {{id_credit}}, "value":  323342},
+  {"account":  {{id_seistres}}, "operation": {{id_debit}}, "value":  323342}],
+"my_tags":  [{{id_tag_um}}, {{id_tag_dois}}, {{id_tag_tres}}]
 }

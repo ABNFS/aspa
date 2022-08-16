@@ -352,7 +352,7 @@ class ServiceDefault:
                     db_obj.__setattr__(item, data.__getattribute__(item))
             except AttributeError:
                 if log:
-                    log.debug(f"Not found {item} in {data}")
+                    log.debug(f"Not found {item} in {data} or {db_obj}")
                 pass
 
         try:
