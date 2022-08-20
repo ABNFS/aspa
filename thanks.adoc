@@ -1,0 +1,20 @@
+= Thanks Open Source Community
+
+== Developers tools
+
+* Python
+* JavaScript
+* Alembic
+* node
+* podman
+* podman-compose
+* mariadb
+
+
+
+== Frameworks
+
+* FastApi
+* SQLAlchemy
+* React
+* React-route
